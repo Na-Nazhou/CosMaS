@@ -1,12 +1,12 @@
 function check(event) {
 	// Get Values
-	var matric  = document.getElementById('matric' ).value;
+	var id  = document.getElementById('id' ).value;
 	var name    = document.getElementById('name'   ).value;
-	var faculty = document.getElementById('faculty').value;
+	var password = document.getElementById('password').value;
 	
 	// Simple Check
-	if(matric.length != 9) {
-		alert("Invalid matric number");
+	if(id.length != 9) {
+		alert("Invalid user ID");
 		event.preventDefault();
 		event.stopPropagation();
 		return false;
@@ -17,8 +17,8 @@ function check(event) {
 		event.stopPropagation();
 		return false;
 	}
-	if(faculty.length != 3) {
-		alert("Invalid faculty code");
+	if(password.length < 8) {
+		alert("Password too short, must be at least 8 characters");
 		event.preventDefault();
 		event.stopPropagation();
 		return false;
