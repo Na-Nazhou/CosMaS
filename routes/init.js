@@ -14,7 +14,12 @@ const salt = bcrypt.genSaltSync(round);
 function initRouter(app) {
     /* INDEX */
     app.get('/', function (req, res, next) {
-        res.render('index', { user: req.user });
+        if (req.user) {
+            //TODO: Update to /courses
+            res.redirect("/users");
+        } else {
+            res.render("login")
+        }
     });
 
     /* LOGIN */
