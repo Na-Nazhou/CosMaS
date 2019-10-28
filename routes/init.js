@@ -14,13 +14,13 @@ const salt = bcrypt.genSaltSync(round);
 function initRouter(app) {
     /* GET */
     app.get('/', function (req, res, next) {
-        res.render('home', { user: req.user });
+        res.render('index', { user: req.user });
     });
 
     /* PROTECTED GET */
     app.get('/login',
         function (req, res) {
-            res.render('login', { title: 'Log in' });
+            res.render('login');
         });
 
     app.get('/logout', passport.authMiddleware(), 
@@ -40,7 +40,7 @@ function initRouter(app) {
 
     app.get('/signup', passport.antiMiddleware(),
         function (req, res, next) {
-            res.render('signup', { title: 'Sign up' });
+            res.render('signup');
         });
 
     /* PROTECTED POST */
@@ -57,11 +57,8 @@ function initRouter(app) {
         var salt = bcrypt.genSaltSync(10);
         var password_digest = bcrypt.hashSync(raw_password, salt);
 
-        // Construct Specific SQL Query
-        var insert_query = sql_query + "('" + id + "','" + name + "', false, '" + password_digest + "')";
-
-        pool.query(insert_query, (err, data) => {
-            res.redirect('/users')
+        pool.query(sql_query.query.add_user, [id, name, password_digest], (err, data) => {
+            res.redirect('/')
         });
     });
 }
