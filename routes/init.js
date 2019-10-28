@@ -12,42 +12,35 @@ const round = 10;
 const salt = bcrypt.genSaltSync(round);
 
 function initRouter(app) {
-    /* GET */
+    /* INDEX */
     app.get('/', function (req, res, next) {
         res.render('index', { user: req.user });
     });
 
-    /* PROTECTED GET */
+    /* LOGIN */
     app.get('/login',
         function (req, res) {
             res.render('login');
         });
+    
+    app.post('/login', passport.authenticate('local', {
+        successRedirect: '/',
+        failureRedirect: '/'
+    }));
 
-    app.get('/logout', passport.authMiddleware(), 
+    /* LOGOUT */
+    app.get('/logout', passport.authMiddleware(),
         function (req, res) {
             req.session.destroy();
             req.logout();
             res.redirect('/');
         });
 
-    app.get('/users', passport.authMiddleware(), 
-        function (req, res, next) {
-            pool.query(sql_query.query.users, (err, data) => {
-                res.render('users', { data: data.rows });
-            });
-        });
-
-
+    /* USERS */
     app.get('/signup', passport.antiMiddleware(),
         function (req, res, next) {
             res.render('signup');
         });
-
-    /* PROTECTED POST */
-    app.post('/login', passport.authenticate('local', {
-        successRedirect: '/',
-        failureRedirect: '/'
-    }));
 
     app.post('/signup', passport.antiMiddleware(), function (req, res, next) {
         // Retrieve Information
@@ -61,6 +54,13 @@ function initRouter(app) {
             res.redirect('/')
         });
     });
+
+    app.get('/users', passport.authMiddleware(), 
+        function (req, res, next) {
+            pool.query(sql_query.query.users, (err, data) => {
+                res.render('users', { data: data.rows });
+            });
+        });
 }
 
 module.exports = initRouter;
