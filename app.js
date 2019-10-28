@@ -1,11 +1,18 @@
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
-var passport = require('passport'), LocalStrategy = require('passport-local').Strategy;
-var session = require('express-session');
-var db = require('./models');
+const createError = require('http-errors');
+const express = require('express');
+const path = require('path');
+const cookieParser = require('cookie-parser');
+const logger = require('morgan');
+
+const exphbs = require('express-handlebars')
+const bodyParser = require('body-parser')
+const session = require('express-session');
+// Authentication middleware
+const passport = require('passport'), LocalStrategy = require('passport-local').Strategy;
+// A session-based middleware for displaying notifications to the user
+const flash = require('connect-flash');
+
+const db = require('./models');
 
 // Configure the local strategy for use by Passport.
 //
@@ -57,7 +64,7 @@ var loopsRouter = require('./routes/loops');
 /* ---------------------------- */
 
 /* --- V4: Database Connect --- */
-var selectRouter = require('./routes/select');
+var usersRouter = require('./routes/users');
 /* ---------------------------- */
 
 /* --- V5: Adding Forms     --- */
@@ -65,7 +72,7 @@ var formsRouter = require('./routes/forms');
 /* ---------------------------- */
 
 /* --- V6: Modify Database  --- */
-var insertRouter = require('./routes/insert');
+var signupRouter = require('./routes/signup');
 /* ---------------------------- */
 
 var loginRouter = require('./routes/login');
@@ -82,19 +89,23 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(session({
-  secret: process.env.SECRET,
-  resave: false,
-  saveUninitialized: false
-}))
+
+app.use(flash());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 // Initialize Passport and restore authentication state, if any, from the
 // session.
 app.use(passport.initialize());
 app.use(passport.session());
 
+app.use(session({
+  secret: process.env.SECRET,
+  resave: false,
+  saveUninitialized: false
+}))
+
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
 
 /* --- V2: Adding Web Pages --- */
 app.use('/about', aboutRouter);
@@ -106,7 +117,7 @@ app.use('/loops', loopsRouter);
 /* ---------------------------- */
 
 /* --- V4: Database Connect --- */
-app.use('/select', selectRouter);
+app.use('/users', usersRouter);
 /* ---------------------------- */
 
 /* --- V5: Adding Forms     --- */
@@ -114,10 +125,7 @@ app.use('/forms', formsRouter);
 /* ---------------------------- */
 
 /* --- V6: Modify Database  --- */
-var bodyParser = require('body-parser');
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use('/insert', insertRouter);
+app.use('/signup', signupRouter);
 /* ---------------------------- */
 
 app.use('/login', loginRouter);
