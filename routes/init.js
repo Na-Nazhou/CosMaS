@@ -48,21 +48,20 @@ function initRouter(app) {
         });
 
     app.post('/signup', passport.antiMiddleware(), function (req, res, next) {
-        // Retrieve Information
         var id = req.body.id;
         var name = req.body.name;
         var raw_password = req.body.password;
         var salt = bcrypt.genSaltSync(10);
         var password_digest = bcrypt.hashSync(raw_password, salt);
 
-        pool.query(sql_query.query.add_user, [id, name, password_digest], (err, data) => {
+        pool.query(sql_query.query.create_user, [id, name, password_digest], (err, data) => {
             res.redirect('/')
         });
     });
 
     app.get('/users', passport.authMiddleware(), 
         function (req, res, next) {
-            pool.query(sql_query.query.users, (err, data) => {
+            pool.query(sql_query.query.get_users, (err, data) => {
                 res.render('users', { data: data.rows });
             });
         });
