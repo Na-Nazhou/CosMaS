@@ -8,6 +8,7 @@ const bodyParser = require('body-parser')
 const session = require('express-session');
 const passport = require('passport'), LocalStrategy = require('passport-local').Strategy;
 const flash = require("connect-flash");
+const expressLayouts = require('express-ejs-layouts');
 
 /* --- V7: Using dotenv     --- */
 require('dotenv').config();
@@ -28,6 +29,7 @@ app.use(passport.session());
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
+app.use(expressLayouts);
 
 app.use(logger('dev'));
 app.use(express.json());
