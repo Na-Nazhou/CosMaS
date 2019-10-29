@@ -22,7 +22,7 @@ function findUser(id, callback) {
 
         if (data.rows.length == 0) {
             console.error("User does not exists?");
-            return callback(null)
+            return callback(null);
         } else if (data.rows.length == 1) {
             return callback(null, {
                 id: data.rows[0].id,

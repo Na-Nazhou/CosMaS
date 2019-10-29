@@ -26,8 +26,18 @@ exports.create_post = function (req, res, next) {
   var password_digest = bcrypt.hashSync(raw_password, salt);
 
   pool.query(sql_query.query.create_user, [id, name, password_digest], (err, data) => {
-    if (err) console.log("Cannot create user");
-    res.redirect('/');
+    if (err) {
+      console.log("Cannot create user");
+      return res.redirect("/signup");
+    } else {
+      req.login({id: id, password: raw_password}, function (err) {
+        if (!err) {
+          res.redirect('/');
+        } else {
+          console.log(err);
+        }
+      })
+    }
   });
 }
 
