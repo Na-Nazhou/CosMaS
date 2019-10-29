@@ -29,7 +29,9 @@
 					<a href="/users/<%= data[i].id%>/edit">Edit</a>
 				</td>
 				<td>
-					<button type="button" name="delete" id="<%=data[i].id%>">Delete</button>
+					<button class="btn" name="delete" id="<%=data[i].id%>">
+						<i class="fa fa-trash"></i>
+					</button>
 				</td>
 			</tr>
 			<% } %>

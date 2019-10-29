@@ -13,7 +13,7 @@
 		</header>
 		<div class="container">
     	<h1>Sign up</h1>
-			<form id="html_form" action="signup" role="form" method="post">
+			<form id="user_form" action="/signup" role="form" method="post">
 				<div class="form-group">
 					<label for="id">User ID</label>
 					<input type="text" class="form-control" id="id" name="id" aria-describedby="idHelp" placeholder="Enter your user ID" required="required">
@@ -37,7 +37,7 @@
 		<script>
 			(function() {
 				window.addEventListener('load', function() {
-					var forms = [document.getElementById('html_form')];
+					var forms = [document.getElementById('user_form')];
 					var validation = Array.prototype.filter.call(forms, function(form) {
 						form.addEventListener('submit', check, false);
 					});

@@ -5,7 +5,7 @@
 accordingly.
 
 ```
-DATABASE URL=postgres://:@localhost:5432/postgres
+DATABASE_URL=postgres://:@localhost:5432/postgres
 SECRET=keyboard cat 
 ```
 
