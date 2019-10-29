@@ -44,7 +44,13 @@ exports.create_post = function (req, res, next) {
 exports.delete = function (req, res, next) {
   var id = req.params.id;
   pool.query(sql_query.query.delete_user, [id], (err, data) => {
-    if (err) console.log("Cannot delete user");
+    if (err) {
+      console.log("Cannot delete user");
+    }
+    if (req.user.id == id) {
+      req.logout();
+      return res.redirect('/');
+    }
     res.send({ redirectUrl: "/users" });
   })
 }
