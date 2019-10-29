@@ -27,6 +27,7 @@ function findUser(id, callback) {
             return callback(null, {
                 id: data.rows[0].id,
                 name: data.rows[0].name,
+                is_admin: data.rows[0].is_admin,
                 password_digest: data.rows[0].password_digest,
             });
         } else {

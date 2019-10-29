@@ -22,3 +22,4 @@ the home page.
 2. `/login`
 3. `/logout`
 4. `/users`
+5. `/users/:id/edit`

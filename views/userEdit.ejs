@@ -1,12 +1,12 @@
 <%- contentFor('content') %>
-<div class="container">
-  <h1>Update profile</h1>
+<div class="container col-md-4 col-md-offset-4">
+  <h1 class="text-center">Update profile</h1>
   <form id="user_form" action="/users/<%=user.id%>" role="form" method="post">
     <div class="form-group">
       <label for="id">User ID</label>
       <input type="text" class="form-control" id="id" name="id" aria-describedby="idHelp"
         required="required" value="<%=user.id%>" disabled=true>
-      <small id="idHelp" class="form-text text-muted">Do not share your user ID with anyone else.</small>
+      <small id="idHelp" class="form-text text-muted">Note: User ID cannot be edited.</small>
     </div>
     <div class="form-group">
       <label for="name">Name</label>
@@ -23,6 +23,7 @@
 </div>
  
 <%- contentFor('script') %>
+<script src="/javascripts/userForm.js"></script>
 <script>
   (function () {
     window.addEventListener('load', function () {
@@ -47,4 +48,3 @@
     });
   });
   </script>
-  
