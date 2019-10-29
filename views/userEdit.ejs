@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <!-- Page Title -->
+  <title>Update profile</title>
+  <% include ./partials/head %>
+  <!-- ADDED JavaScript -->
+  <script src="/javascripts/userForm.js"></script>
+</head>
+
+<body>
+  <header>
+    <% include ./partials/header %>
+  </header>
+  <div class="container">
+    <h1>Update profile</h1>
+    <form id="user_form" action="/users/<%=user.id%>" role="form" method="post">
+      <div class="form-group">
+        <label for="id">User ID</label>
+        <input type="text" class="form-control" id="id" name="id" aria-describedby="idHelp"
+          required="required" value="<%=user.id%>">
+        <small id="idHelp" class="form-text text-muted">Do not share your user ID with anyone else.</small>
+      </div>
+      <div class="form-group">
+        <label for="name">Name</label>
+        <input type="text" class="form-control" id="name" name="name" 
+          required="required" value="<%=user.name%>">
+      </div>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" class="form-control" id="password" name="password" placeholder="Enter your password"
+          required="required">
+      </div>
+      <button type="submit" class="btn btn-primary">Update</button>
+    </form>
+  </div>
+  <footer>
+    <% include ./partials/footer %>
+  </footer>
+
+  <script>
+    (function () {
+      window.addEventListener('load', function () {
+        var forms = [document.getElementById('user_form')];
+        var validation = Array.prototype.filter.call(forms, function (form) {
+          form.addEventListener('submit', check, false);
+        });
+      }, false);
+    })();
+
+    $("#user_form").submit(function (e) {
+        e.preventDefault(); // avoid to execute the actual submit of the form.
+        var form = $(this);
+        var url = form.attr('action');
+        $.ajax({
+          type: "PUT",
+          url: url,
+          data: form.serialize(), // serializes the form's elements.
+          success: function (res) {
+            window.location = res.redirectUrl
+          }
+        });
+      });
+  </script>
+</body>
+
+</html>

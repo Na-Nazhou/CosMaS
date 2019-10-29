@@ -1,15 +1,6 @@
-const sql_query = require('../sql');
 const passport = require('passport');
-const bcrypt = require('bcrypt')
 
-// Postgre SQL Connection
-const { Pool } = require('pg');
-const pool = new Pool({
-    connectionString: process.env.DATABASE_URL,
-});
-
-const round = 10;
-const salt = bcrypt.genSaltSync(round);
+var users = require('../controllers/users_controller.js');
 
 function initRouter(app) {
     /* INDEX */
@@ -42,29 +33,12 @@ function initRouter(app) {
         });
 
     /* USERS */
-    app.get('/signup', passport.antiMiddleware(),
-        function (req, res, next) {
-            res.render('signup');
-        });
-
-    app.post('/signup', passport.antiMiddleware(), function (req, res, next) {
-        var id = req.body.id;
-        var name = req.body.name;
-        var raw_password = req.body.password;
-        var salt = bcrypt.genSaltSync(10);
-        var password_digest = bcrypt.hashSync(raw_password, salt);
-
-        pool.query(sql_query.query.create_user, [id, name, password_digest], (err, data) => {
-            res.redirect('/')
-        });
-    });
-
-    app.get('/users', passport.authMiddleware(), 
-        function (req, res, next) {
-            pool.query(sql_query.query.get_users, (err, data) => {
-                res.render('users', { data: data.rows });
-            });
-        });
+    app.get('/signup', passport.antiMiddleware(), users.create_get);
+    app.post('/signup', passport.antiMiddleware(), users.create_post);
+    app.get('/users', passport.authMiddleware(), users.index);
+    app.get('/users/:id/edit', passport.authMiddleware(), users.update_get);
+    app.put('/users/:id', passport.authMiddleware(), users.update_put);
+    app.delete('/users/:id', passport.authMiddleware(), users.delete)
 }
 
 module.exports = initRouter;
