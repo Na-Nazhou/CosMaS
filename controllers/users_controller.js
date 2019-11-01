@@ -28,6 +28,8 @@ exports.create_post = function (req, res, next) {
   pool.query(sql_query.query.create_user, [id, name, password_digest], (err, data) => {
     if (err) {
       console.log("Cannot create user");
+      //TODO: refine error message
+      req.flash('error', err.message);
       return res.redirect("/signup");
     } else {
       req.login({id: id, password: raw_password}, function (err) {
@@ -46,10 +48,12 @@ exports.delete = function (req, res, next) {
   pool.query(sql_query.query.delete_user, [id], (err, data) => {
     if (err) {
       console.log("Cannot delete user");
+      return res.send({ error: err.message });
     }
+    // Log out the user during self-deletion
     if (req.user.id == id) {
       req.logout();
-      return res.redirect('/');
+      return res.send({ redirectUrl: "/" });
     }
     res.send({ redirectUrl: "/users" });
   })
@@ -64,15 +68,20 @@ exports.update_get = function (req, res, next) {
 
 exports.update_put = function (req, res, next) {
   var orginalId = req.params.id;
-  var id = req.body.id;
+  //TODO: update when edit id is supported
+  var id = req.body.id || req.params.id;
   var name = req.body.name;
   var raw_password = req.body.password;
   var salt = bcrypt.genSaltSync(10);
   var password_digest = bcrypt.hashSync(raw_password, salt);
 
   pool.query(sql_query.query.update_user, [id, name, password_digest, orginalId], (err, data) => {
-    if (err) console.log("Cannot update user");
-    res.send({ redirectUrl: "/users" });
+    if (err) {
+      console.log("Cannot update user");
+      return res.send({ error: err.message });
+    } else {
+      return res.send({ redirectUrl: "/users" });
+    }
   });
 }
 

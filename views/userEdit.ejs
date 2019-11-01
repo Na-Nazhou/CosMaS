@@ -43,7 +43,11 @@
       url: url,
       data: form.serialize(), // serializes the form's elements.
       success: function (res) {
-        window.location = res.redirectUrl
+        if (res.error) {
+          alert(res.error)
+        } else {
+          window.location = res.redirectUrl
+        }
       }
     });
   });

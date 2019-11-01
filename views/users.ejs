@@ -1,6 +1,7 @@
 <%- contentFor('content') %>
 <div class="container">
-  <h1>Users</h1>
+	<h1>Users</h1>
+	<%- messages() %>
 	<table class="table table-hover">
 		<thead>
 			<tr>
@@ -37,8 +38,12 @@
 			url: '/users/' + `${ $(this).attr('id') }`,
 			type: 'DELETE',
 			success: function (res) {
-				console.log("Successfully deleted user");
-				window.location = res.redirectUrl
+				if (res.error) {
+					alert(res.error)
+				} else {
+					console.log("Successfully deleted user");
+					window.location = res.redirectUrl
+				}
 			},
 			error: function () {
 				console.log("Failed to delete user");
