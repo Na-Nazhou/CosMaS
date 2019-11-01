@@ -1,3 +1,5 @@
+const initRouter = require('./init');
+
 module.exports = {
-    init: require('./init')
-}
+  init: initRouter
+};

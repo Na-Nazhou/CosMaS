@@ -1,4 +1,7 @@
+const initAuth = require('./init');
+const middleware = require('./middleware');
+
 module.exports = {
-    init: require('./init'),
-    middleware: require('./middleware')
-}
+  init: initAuth,
+  middleware
+};
