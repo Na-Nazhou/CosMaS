@@ -18,10 +18,12 @@ var app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
 
 require('./auth').init(app);
+app.use(cookieParser());
 app.use(session({
   secret: process.env.SECRET,
   resave: true,
-  saveUninitialized: true
+  saveUninitialized: true,
+  cookie: { maxAge: 60000 }
 }))
 app.use(passport.initialize());
 app.use(passport.session());
@@ -38,9 +40,12 @@ app.use(expressLayouts);
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(flash());
+app.use(function (req, res, next) {
+  res.locals.messages = require('express-messages')(req, res);
+  next();
+});
 
 // Router Setup
 require('./routes').init(app);
