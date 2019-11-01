@@ -12,6 +12,10 @@ exports.index = function (req, res, next) {
   pool.query(sql.semesters.queries.get_semesters, (err, data) => {
     if (err) console.log("Cannot get semesters");
     //TODO: format datetime
+    data.rows.forEach(sem => {
+      sem.start_time = formatDate(sem.start_time);
+      sem.end_time = formatDate(sem.end_time);
+    })
     res.render('semesters', { data: data.rows });
   });
 }
@@ -34,8 +38,7 @@ exports.create_post = function (req, res, next) {
       return res.redirect("/semesters/new");
     } else {
       req.flash('info', 'Semester successfully created!');
-      //TODO: to be updated to /courses
-      return res.redirect('/users');
+      return res.redirect('/semesters');
     }
   })
 }
@@ -58,8 +61,8 @@ exports.update_get = function (req, res, next) {
     //TODO: refactor
     var semester = {
       name: data.rows[0].name,
-      start_time: format(toDate(data.rows[0].start_time), 'yyyy-MM-dd'),
-      end_time: format(toDate(data.rows[0].end_time), 'yyyy-MM-dd'),
+      start_time: formatDate(data.rows[0].start_time),
+      end_time: formatDate(data.rows[0].end_time)
     }
     res.render('semesterEdit', { semester: semester });
   })
@@ -84,4 +87,8 @@ exports.update_put = function (req, res, next) {
   });
 }
 
+/* HELPERS */
+function formatDate(dateString) {
+  return format(toDate(dateString), 'yyyy-MM-dd');
+}
 
