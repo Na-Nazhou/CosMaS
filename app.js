@@ -1,15 +1,14 @@
-const createError = require('http-errors');
 const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
-
 const bodyParser = require('body-parser');
 const session = require('express-session');
 const passport = require('passport');
 const flash = require('connect-flash');
 const expressLayouts = require('express-ejs-layouts');
 const expressMessages = require('express-messages');
+const router = require('./controllers');
 
 /* --- V7: Using dotenv     --- */
 require('dotenv').config();
@@ -52,22 +51,12 @@ app.use((req, res, next) => {
 });
 
 // Router Setup
-require('./routes').init(app);
-
-// catch 404 and forward to error handler
-app.use((req, res, next) => {
-  next(createError(404));
-});
+app.use(router);
 
 // error handler
-app.use((err, req, res) => {
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
-
-  // render the error page
-  res.status(err.status || 500);
-  res.render('error');
+app.use((err, req, res, next) => {
+  console.error('Fatal: Unhandled error');
+  next(err);
 });
 
 module.exports = app;

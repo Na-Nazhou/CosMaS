@@ -1,12 +1,10 @@
 const bcrypt = require('bcrypt');
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
-
 const { Pool } = require('pg');
-
-// Database connection
 const sql = require('../sql');
 
+// Database connection
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL
 });
