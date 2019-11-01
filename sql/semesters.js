@@ -9,8 +9,8 @@ semesters.queries = {
 };
 
 semesters.functions = {
-  //TODO: Returns true if there are no overlapping intervals
+  // TODO: Returns true if there are no overlapping intervals
   no_overlapp: '',
-}
+};
 
 module.exports = semesters;

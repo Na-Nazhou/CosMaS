@@ -1,8 +1,7 @@
 {
   "env": {
-    "commonjs": true,
-    "es6": true,
-    "node": true
+    "browser": true,
+    "es6": true
   },
   "extends": ["airbnb-base"],
   "globals": {
@@ -16,6 +15,7 @@
     "no-console": "off",
     "comma-dangle": "off",
     "camelcase": "off",
-    "no-param-reassign": "warn"
+    "no-param-reassign": "warn",
+    "no-unused-vars": "off"
   }
 }

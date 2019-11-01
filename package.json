@@ -5,6 +5,7 @@
   "scripts": {
     "start": "nodemon ./bin/www",
     "lint": "eslint app.js auth controllers public routes sql; exit 0",
+    "lint:fix": "eslint --fix app.js auth controllers public routes sql; exit 0",
     "format": "prettier -c app.js {auth,controllers,public,routes,sql,views}/**/*.{js,css}; exit 0",
     "check": "npm run lint && npm run format"
   },
