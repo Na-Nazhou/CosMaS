@@ -1,6 +1,7 @@
 const passport = require('passport');
 const users = require('../controllers/users_controller.js');
 const semesters = require('../controllers/semesters_controller.js');
+const modules = require('../controllers/modules_controller.js');
 
 function initRouter(app) {
     /* INDEX */
@@ -36,6 +37,10 @@ function initRouter(app) {
     /* SEMESTERS */
     app.get('/semesters/new', passport.authMiddleware(), semesters.create_get);
     app.post('/semesters', passport.authMiddleware(), semesters.create_post);
+
+    /* MODULES */
+    app.get('/modules/new', passport.authMiddleware(), modules.create_get);
+    app.post('/modules', passport.authMiddleware(), modules.create_post);
 }
 
 module.exports = initRouter;

@@ -11,31 +11,28 @@ exports.create_get = function (req, res, next) {
 }
 
 exports.create_post = function (req, res, next) {
-  var academic_year = req.body.academic_year;
-  var semester_number = req.body.semester_number;
+  var name = req.body.name;
   var start_time = req.body.start_time;
   var end_time = req.body.end_time;
 
   pool.query(sql_query.query.create_semester, 
-    [academic_year, semester_number, start_time, end_time], (err, data) => {
+    [name, start_time, end_time], (err, data) => {
     if (err) {
       console.log("Cannot create semester");
       //TODO: refine error message
       req.flash('error', err.message);
-      return res.redirect("/semesterNew");
+      return res.redirect("/semesters/new");
     } else {
-      console.log('Semester successfully created!');
-      //TODO: to be updated to /courses
       req.flash('info', 'Semester successfully created!');
+      //TODO: to be updated to /courses
       return res.redirect('/users');
     }
   })
 }
 
 // exports.delete = function (req, res, next) {
-//   var academic_year = req.params.academic_year;
-//   var semester_number = req.params.semester_number;
-//   pool.query(sql_query.query.delete_semester, [academic_year, semester_number], (err, data) => {
+//   var name = req.params.name;
+//   pool.query(sql_query.query.delete_semester, [name], (err, data) => {
 //     if (err) {
 //       console.log("Cannot delete semester");
 //       return res.send({ error: err.message });
@@ -46,25 +43,22 @@ exports.create_post = function (req, res, next) {
 // }
 
 // exports.update_get = function (req, res, next) {
-//   var academic_year = req.params.academic_year;
-//   var semester_number = req.params.semester_number;
-//   pool.query(sql_query.query.find_semester, [academic_year, semester_number], (err, data) => {
+//   var name = req.params.name;
+//   pool.query(sql_query.query.find_semester, [name], (err, data) => {
 //     if (err) console.log("Cannot find semester");
 //     res.render('semesterEdit', { semester: data.rows[0] });
 //   })
 // }
 
 // exports.update_put = function (req, res, next) {
-//   var old_academic_year = req.params.academic_year;
-//   var old_semester_number = req.params.semester_number;
+//   var old_name = req.params.name;
   
-//   var academic_year = req.body.academic_year;
-//   var semester_number = req.body.semester_number;
+//   var name = req.body.name;
 //   var start_time = req.body.start_time;
 //   var end_time = req.body.end_time;
 
 //   pool.query(sql_query.query.update_semester, 
-//     [academic_year, semester_number, start_time, end_time, old_academic_year, old_semester_number], 
+//     [name, start_time, end_time, old_name], 
 //     (err, data) => {
 //     if (err) {
 //       console.log("Cannot update user");

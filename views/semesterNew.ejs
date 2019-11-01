@@ -3,14 +3,9 @@
   <h1 class="text-center">New Semester</h1>
   <%- messages() %>
   <form id="semester_form" action="/semesters" role="form" method="post">
-    <!-- TODO:Confirm whether we need acad year and sem no -->
     <div class="form-group">
-      <label for="academic_year">Academic Year</label>
-      <input type="text" class="form-control" id="academic_year" name="academic_year" required="required">
-    </div>
-    <div class="form-group">
-      <label for="semester_number">Semester Number</label>
-      <input type="text" class="form-control" id="semester_number" name="semester_number" required="required">
+      <label for="name">Semester Name</label>
+      <input type="text" class="form-control" id="name" name="name" required="required">
     </div>
     <div class="form-group">
       <label for="start_time">Start Time</label>
