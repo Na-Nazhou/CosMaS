@@ -2,6 +2,7 @@ const passport = require('passport');
 const users = require('../controllers/users_controller.js');
 const semesters = require('../controllers/semesters_controller.js');
 const modules = require('../controllers/modules_controller.js');
+const { ensureAuthenticated, ensureUnauthenticated } = require('../auth/middleware');
 
 function initRouter(app) {
   /* INDEX */
@@ -27,31 +28,31 @@ function initRouter(app) {
   );
 
   /* LOGOUT */
-  app.get('/logout', passport.authMiddleware(), users.logout_get);
+  app.get('/logout', ensureAuthenticated, users.logout_get);
 
   /* USERS */
-  app.get('/signup', passport.antiMiddleware(), users.create_get);
-  app.post('/signup', passport.antiMiddleware(), users.create_post);
-  app.get('/users', passport.authMiddleware(), users.index);
-  app.get('/users/:id/edit', passport.authMiddleware(), users.update_get);
-  app.put('/users/:id', passport.authMiddleware(), users.update_put);
-  app.delete('/users/:id', passport.authMiddleware(), users.delete);
+  app.get('/signup', ensureUnauthenticated, users.create_get);
+  app.post('/signup', ensureUnauthenticated, users.create_post);
+  app.get('/users', ensureAuthenticated, users.index);
+  app.get('/users/:id/edit', ensureAuthenticated, users.update_get);
+  app.put('/users/:id', ensureAuthenticated, users.update_put);
+  app.delete('/users/:id', ensureAuthenticated, users.delete);
 
   /* SEMESTERS */
-  app.get('/semesters/new', passport.authMiddleware(), semesters.create_get);
-  app.post('/semesters', passport.authMiddleware(), semesters.create_post);
-  app.get('/semesters', passport.authMiddleware(), semesters.index);
-  app.get('/semesters/:name*/edit', passport.authMiddleware(), semesters.update_get);
-  app.put('/semesters/:name*', passport.authMiddleware(), semesters.update_put);
-  app.delete('/semesters/:name*', passport.authMiddleware(), semesters.delete);
+  app.get('/semesters/new', ensureAuthenticated, semesters.create_get);
+  app.post('/semesters', ensureAuthenticated, semesters.create_post);
+  app.get('/semesters', ensureAuthenticated, semesters.index);
+  app.get('/semesters/:name*/edit', ensureAuthenticated, semesters.update_get);
+  app.put('/semesters/:name*', ensureAuthenticated, semesters.update_put);
+  app.delete('/semesters/:name*', ensureAuthenticated, semesters.delete);
 
   /* MODULES */
-  app.get('/modules/new', passport.authMiddleware(), modules.create_get);
-  app.post('/modules', passport.authMiddleware(), modules.create_post);
-  app.get('/modules', passport.authMiddleware(), modules.index);
-  app.get('/modules/:module_code*/edit', passport.authMiddleware(), modules.update_get);
-  app.put('/modules/:module_code*', passport.authMiddleware(), modules.update_put);
-  app.delete('/modules/:module_code*', passport.authMiddleware(), modules.delete);
+  app.get('/modules/new', ensureAuthenticated, modules.create_get);
+  app.post('/modules', ensureAuthenticated, modules.create_post);
+  app.get('/modules', ensureAuthenticated, modules.index);
+  app.get('/modules/:module_code*/edit', ensureAuthenticated, modules.update_get);
+  app.put('/modules/:module_code*', ensureAuthenticated, modules.update_put);
+  app.delete('/modules/:module_code*', ensureAuthenticated, modules.delete);
 }
 
 module.exports = initRouter;
