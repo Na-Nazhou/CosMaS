@@ -16,6 +16,7 @@
     "no-console": "off",
     "comma-dangle": "off",
     "camelcase": "off",
-    "no-param-reassign": "warn"
+    "no-param-reassign": "warn",
+    "arrow-parens": ["error", "as-needed"]
   }
 }

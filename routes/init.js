@@ -17,11 +17,14 @@ function initRouter(app) {
   /* LOGIN */
   app.get('/login', users.login_get);
 
-  app.post('/login', passport.authenticate('local', {
-    successRedirect: '/',
-    failureRedirect: '/login',
-    failureFlash: true
-  }));
+  app.post(
+    '/login',
+    passport.authenticate('local', {
+      successRedirect: '/',
+      failureRedirect: '/login',
+      failureFlash: true
+    })
+  );
 
   /* LOGOUT */
   app.get('/logout', passport.authMiddleware(), users.logout_get);

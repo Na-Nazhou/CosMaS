@@ -1,4 +1,3 @@
-
 const bcrypt = require('bcrypt');
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
@@ -11,7 +10,7 @@ const antiMiddleware = require('./antimiddle');
 const sql = require('../sql');
 
 const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
+  connectionString: process.env.DATABASE_URL
 });
 
 function findUser(id, callback) {
@@ -24,12 +23,13 @@ function findUser(id, callback) {
     if (data.rows.length === 0) {
       console.error('User does not exist?');
       return callback(null);
-    } if (data.rows.length === 1) {
+    }
+    if (data.rows.length === 1) {
       return callback(null, {
         id: data.rows[0].id,
         name: data.rows[0].name,
         is_admin: data.rows[0].is_admin,
-        password_digest: data.rows[0].password_digest,
+        password_digest: data.rows[0].password_digest
       });
     }
     console.error('More than one user?');
@@ -46,42 +46,44 @@ passport.deserializeUser((id, done) => {
 });
 
 function initPassport() {
-  passport.use(new LocalStrategy(
-    {
-      passReqToCallback: true,
-      usernameField: 'id',
-      passwordField: 'password'
-    },
-    (req, id, password, done) => {
-      findUser(id, (err, user) => {
-        if (err) {
-          return done(err);
-        }
-
-        // User not found
-        if (!user) {
-          return done(null, false, {
-            message: 'User Not Found',
-            type: 'error'
-          });
-        }
-
-        // Always use hashed passwords and fixed time comparison
-        return bcrypt.compare(password, user.password_digest, (error, isValid) => {
-          if (error) {
-            return done(error);
+  passport.use(
+    new LocalStrategy(
+      {
+        passReqToCallback: true,
+        usernameField: 'id',
+        passwordField: 'password'
+      },
+      (req, id, password, done) => {
+        findUser(id, (err, user) => {
+          if (err) {
+            return done(err);
           }
-          if (!isValid) {
+
+          // User not found
+          if (!user) {
             return done(null, false, {
-              message: 'Incorrect password',
+              message: 'User Not Found',
               type: 'error'
             });
           }
-          return done(null, user);
+
+          // Always use hashed passwords and fixed time comparison
+          return bcrypt.compare(password, user.password_digest, (error, isValid) => {
+            if (error) {
+              return done(error);
+            }
+            if (!isValid) {
+              return done(null, false, {
+                message: 'Incorrect password',
+                type: 'error'
+              });
+            }
+            return done(null, user);
+          });
         });
-      });
-    }
-  ));
+      }
+    )
+  );
 
   passport.authMiddleware = authMiddleware;
   passport.antiMiddleware = antiMiddleware;

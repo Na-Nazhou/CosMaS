@@ -5,7 +5,7 @@ const { Pool } = require('pg');
 const sql = require('../sql');
 
 const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
+  connectionString: process.env.DATABASE_URL
 });
 
 exports.login_get = (req, res) => {
@@ -36,14 +36,14 @@ exports.create_post = (req, res) => {
   const salt = bcrypt.genSaltSync(10);
   const password_digest = bcrypt.hashSync(raw_password, salt);
 
-  pool.query(sql.users.queries.create_user, [id, name, password_digest], (err) => {
+  pool.query(sql.users.queries.create_user, [id, name, password_digest], err => {
     if (err) {
       console.log('Cannot create user');
       // TODO: refine error message
       req.flash('error', err.message);
       res.redirect('/signup');
     } else {
-      req.login({ id, password: raw_password }, (loginError) => {
+      req.login({ id, password: raw_password }, loginError => {
         if (!loginError) {
           res.redirect('/');
         } else {
@@ -56,12 +56,12 @@ exports.create_post = (req, res) => {
 
 exports.delete = (req, res) => {
   const { id } = req.params;
-  pool.query(sql.users.queries.delete_user, [id], (err) => {
+  pool.query(sql.users.queries.delete_user, [id], err => {
     if (err) {
       console.log('Cannot delete user');
       res.send({ error: err.message });
     } else if (req.user.id === id) {
-    // Log out the user during self-deletion
+      // Log out the user during self-deletion
       req.logout();
       res.send({ redirectUrl: '/' });
     } else {
@@ -86,7 +86,7 @@ exports.update_put = (req, res) => {
   const salt = bcrypt.genSaltSync(10);
   const password_digest = bcrypt.hashSync(raw_password, salt);
 
-  pool.query(sql.users.queries.update_user, [id, name, password_digest, orginalId], (err) => {
+  pool.query(sql.users.queries.update_user, [id, name, password_digest, orginalId], err => {
     if (err) {
       console.log('Cannot update user');
       return res.send({ error: err.message });

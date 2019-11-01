@@ -6,7 +6,7 @@ const { Pool } = require('pg');
 const sql = require('../sql');
 
 const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
+  connectionString: process.env.DATABASE_URL
 });
 
 /* HELPERS */
@@ -18,7 +18,7 @@ exports.index = (req, res) => {
   pool.query(sql.semesters.queries.get_semesters, (err, data) => {
     if (err) console.log('Cannot get semesters');
     // TODO: format datetime
-    data.rows.forEach((sem) => {
+    data.rows.forEach(sem => {
       sem.start_time = formatDate(sem.start_time);
       sem.end_time = formatDate(sem.end_time);
     });
@@ -35,22 +35,21 @@ exports.create_post = (req, res) => {
   const { start_time } = req.body;
   const { end_time } = req.body;
 
-  pool.query(sql.semesters.queries.create_semester,
-    [name, start_time, end_time], (err) => {
-      if (err) {
-        console.log('Cannot create semester');
-        // TODO: refine error message
-        req.flash('error', err.message);
-        return res.redirect('/semesters/new');
-      }
-      req.flash('info', 'Semester successfully created!');
-      return res.redirect('/semesters');
-    });
+  pool.query(sql.semesters.queries.create_semester, [name, start_time, end_time], err => {
+    if (err) {
+      console.log('Cannot create semester');
+      // TODO: refine error message
+      req.flash('error', err.message);
+      return res.redirect('/semesters/new');
+    }
+    req.flash('info', 'Semester successfully created!');
+    return res.redirect('/semesters');
+  });
 };
 
 exports.delete = (req, res) => {
   const name = req.params.name + req.params['0'];
-  pool.query(sql.semesters.queries.delete_semester, [name], (err) => {
+  pool.query(sql.semesters.queries.delete_semester, [name], err => {
     if (err) {
       console.log('Cannot delete semester');
       res.send({ error: err.message });
@@ -81,13 +80,11 @@ exports.update_put = (req, res) => {
   const { start_time } = req.body;
   const { end_time } = req.body;
 
-  pool.query(sql.semesters.queries.update_semester,
-    [name, start_time, end_time, old_name],
-    (err) => {
-      if (err) {
-        console.log('Cannot update semester');
-        return res.send({ error: err.message });
-      }
-      return res.send({ redirectUrl: '/semesters' });
-    });
+  pool.query(sql.semesters.queries.update_semester, [name, start_time, end_time, old_name], err => {
+    if (err) {
+      console.log('Cannot update semester');
+      return res.send({ error: err.message });
+    }
+    return res.send({ redirectUrl: '/semesters' });
+  });
 };

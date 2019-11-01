@@ -21,12 +21,14 @@ app.use(bodyParser.urlencoded({ extended: false }));
 require('./auth').init(app);
 
 app.use(cookieParser());
-app.use(session({
-  secret: process.env.SECRET,
-  resave: true,
-  saveUninitialized: true,
-  cookie: { maxAge: 60000 }
-}));
+app.use(
+  session({
+    secret: process.env.SECRET,
+    resave: true,
+    saveUninitialized: true,
+    cookie: { maxAge: 60000 }
+  })
+);
 app.use(passport.initialize());
 app.use(passport.session());
 app.use((req, res, next) => {
