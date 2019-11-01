@@ -4,6 +4,30 @@
   <!-- TODO: CHANGE NAME -->
   <a class="navbar-brand" href="/">Course Management System</a>
 
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item">
+        <a class="nav-link" href="#">
+          <i class="fa fa-graduation-cap"></i>
+          Courses
+        </a>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link" href="/semesters">
+          <i class="fa fa-calendar"></i>
+          Semesters
+        </a>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link" href="/users">
+          <i class="fa fa-users"></i>
+          Users
+        </a>
+      </li>
+    </ul>
+  </div>
   <div class="dropdown ml-auto">
     <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown"
       aria-haspopup="true" aria-expanded="false">
@@ -11,21 +35,6 @@
       <%=user.name%>
     </button>
     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-      <a class="dropdown-item" href="/users">
-        <i class="fa fa-users"></i>
-        Users
-      </a>
-      <a class="dropdown-item" href="#">
-        <i class="fa fa-graduation-cap"></i>
-        Courses
-      </a>
-      <a class="dropdown-item" href="/semesters">
-        <i class="fa fa-calendar"></i>
-        Semesters
-      </a>
-      
-      <div class="dropdown-divider"></div>
-
       <a class="dropdown-item" href="/semesters/new">
         New semester
       </a>
