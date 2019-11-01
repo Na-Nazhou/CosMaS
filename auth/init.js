@@ -3,10 +3,8 @@ const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 
 const { Pool } = require('pg');
-const authMiddleware = require('./middleware');
-const antiMiddleware = require('./antimiddle');
 
-// Postgre SQL Connection
+// Database connection
 const sql = require('../sql');
 
 const pool = new Pool({
@@ -84,10 +82,6 @@ function initPassport() {
       }
     )
   );
-
-  passport.authMiddleware = authMiddleware;
-  passport.antiMiddleware = antiMiddleware;
-  passport.findUser = findUser;
 }
 
 module.exports = initPassport;
