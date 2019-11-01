@@ -37,10 +37,15 @@ function initRouter(app) {
     /* SEMESTERS */
     app.get('/semesters/new', passport.authMiddleware(), semesters.create_get);
     app.post('/semesters', passport.authMiddleware(), semesters.create_post);
+    app.get('/semesters', passport.authMiddleware(), semesters.index);
+    app.get('/semesters/:name*/edit', passport.authMiddleware(), semesters.update_get);
+    app.put('/semesters/:name*', passport.authMiddleware(), semesters.update_put);
+    app.delete('/semesters/:name*', passport.authMiddleware(), semesters.delete);
 
     /* MODULES */
     app.get('/modules/new', passport.authMiddleware(), modules.create_get);
     app.post('/modules', passport.authMiddleware(), modules.create_post);
+    
 }
 
 module.exports = initRouter;
