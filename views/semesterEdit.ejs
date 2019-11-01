@@ -8,11 +8,11 @@
       </div>
       <div class="form-group">
         <label for="start_time">Start Time</label>
-        <input type="date" class="form-control" id="start_time" name="start_time" required="required" value="<%=moment(semester.start_time).format('YYYY-MM-DD');%>">
+        <input type="date" class="form-control" id="start_time" name="start_time" required="required" value="<%=semester.start_time%>">
       </div>
       <div class="form-group">
         <label for="end_time">End Time</label>
-        <input type="date" class="form-control" id="end_time" name="end_time" required="required" value="<%=moment(semester.end_time).format('YYYY-MM-DD');%>">
+        <input type="date" class="form-control" id="end_time" name="end_time" required="required" value="<%=semester.end_time%>">
       </div>
     <button type="submit" class="btn btn-primary">Update</button>
   </form>

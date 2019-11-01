@@ -8,4 +8,9 @@ semesters.queries = {
   delete_semester: 'DELETE FROM semesters WHERE name=$1',
 };
 
+semesters.functions = {
+  //TODO: Returns true if there are no overlapping intervals
+  no_overlapp: '',
+}
+
 module.exports = semesters;

@@ -1,4 +1,6 @@
 const sql = require('../sql');
+var toDate = require('date-fns/toDate')
+var format = require('date-fns/format')
 
 // Postgre SQL Connection
 const { Pool } = require('pg');
@@ -6,11 +8,10 @@ const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
 });
 
-var moment = require('moment');
-
 exports.index = function (req, res, next) {
-  pool.query(sql_query.query.get_semesters, (err, data) => {
+  pool.query(sql.semesters.queries.get_semesters, (err, data) => {
     if (err) console.log("Cannot get semesters");
+    //TODO: format datetime
     res.render('semesters', { data: data.rows });
   });
 }
@@ -41,7 +42,7 @@ exports.create_post = function (req, res, next) {
 
 exports.delete = function (req, res, next) {
   var name = req.params.name + req.params['0'];
-  pool.query(sql_query.query.delete_semester, [name], (err, data) => {
+  pool.query(sql.semesters.queries.delete_semester, [name], (err, data) => {
     if (err) {
       console.log("Cannot delete semester");
       return res.send({ error: err.message });
@@ -52,9 +53,15 @@ exports.delete = function (req, res, next) {
 
 exports.update_get = function (req, res, next) {
   var name = req.params.name + req.params['0'];
-  pool.query(sql_query.query.find_semester, [name], (err, data) => {
+  pool.query(sql.semesters.queries.find_semester, [name], (err, data) => {
     if (err) console.log("Cannot find semester");
-    res.render('semesterEdit', { semester: data.rows[0], moment: moment });
+    //TODO: refactor
+    var semester = {
+      name: data.rows[0].name,
+      start_time: format(toDate(data.rows[0].start_time), 'yyyy-MM-dd'),
+      end_time: format(toDate(data.rows[0].end_time), 'yyyy-MM-dd'),
+    }
+    res.render('semesterEdit', { semester: semester });
   })
 }
 
@@ -65,7 +72,7 @@ exports.update_put = function (req, res, next) {
   var start_time = req.body.start_time;
   var end_time = req.body.end_time;
 
-  pool.query(sql_query.query.update_semester, 
+  pool.query(sql.semesters.queries.update_semester, 
     [name, start_time, end_time, old_name], 
     (err, data) => {
     if (err) {
