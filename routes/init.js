@@ -1,6 +1,6 @@
 const passport = require('passport');
-
-var users = require('../controllers/users_controller.js');
+const users = require('../controllers/users_controller.js');
+const semesters = require('../controllers/semesters_controller.js');
 
 function initRouter(app) {
     /* INDEX */
@@ -14,10 +14,7 @@ function initRouter(app) {
     });
 
     /* LOGIN */
-    app.get('/login',
-        function (req, res) {
-            res.render('login');
-        });
+    app.get('/login', users.login_get);
     
     app.post('/login', passport.authenticate('local', {
         successRedirect: '/',
@@ -26,12 +23,7 @@ function initRouter(app) {
     }));
 
     /* LOGOUT */
-    app.get('/logout', passport.authMiddleware(),
-        function (req, res) {
-            req.session.destroy();
-            req.logout();
-            res.redirect('/');
-        });
+    app.get('/logout', passport.authMiddleware(), users.logout_get);
 
     /* USERS */
     app.get('/signup', passport.antiMiddleware(), users.create_get);
@@ -39,7 +31,11 @@ function initRouter(app) {
     app.get('/users', passport.authMiddleware(), users.index);
     app.get('/users/:id/edit', passport.authMiddleware(), users.update_get);
     app.put('/users/:id', passport.authMiddleware(), users.update_put);
-    app.delete('/users/:id', passport.authMiddleware(), users.delete)
+    app.delete('/users/:id', passport.authMiddleware(), users.delete);
+
+    /* SEMESTERS */
+    app.get('/semesters/new', passport.authMiddleware(), semesters.create_get);
+    app.post('/semesters', passport.authMiddleware(), semesters.create_post);
 }
 
 module.exports = initRouter;

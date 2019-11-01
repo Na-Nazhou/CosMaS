@@ -1,6 +1,7 @@
 <%- contentFor('content') %>
 <div class="container col-md-4 col-md-offset-4">
-  <h1 class="text-center">Sign up</h1>
+	<h1 class="text-center">Sign up</h1>
+	<%- messages() %>
 	<form id="user_form" action="/signup" role="form" method="post">
 		<div class="form-group">
 			<label for="id">User ID</label>

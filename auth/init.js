@@ -16,12 +16,12 @@ const pool = new Pool({
 function findUser(id, callback) {
     pool.query(sql_query.query.find_user_by_id, [id], (err, data) => {
         if (err) {
-            console.error("Cannot find user");
+            console.error("Cannot find users table");
             return callback(null);
         }
 
         if (data.rows.length == 0) {
-            console.error("User does not exists?");
+            console.error("User does not exist?");
             return callback(null);
         } else if (data.rows.length == 1) {
             return callback(null, {
@@ -37,21 +37,22 @@ function findUser(id, callback) {
     });
 }
 
-passport.serializeUser(function (user, cb) {
-    cb(null, user.id);
+passport.serializeUser(function (user, done) {
+    done(null, user.id);
 })
 
-passport.deserializeUser(function (id, cb) {
-    findUser(id, cb);
+passport.deserializeUser(function (id, done) {
+    findUser(id, done);
 })
 
 function initPassport() {
     passport.use(new LocalStrategy(
         {
+            passReqToCallback: true,
             usernameField: 'id',
             passwordField: 'password'
         },
-        (id, password, done) => {
+        (req, id, password, done) => {
             findUser(id, (err, user) => {
                 if (err) {
                     return done(err);
@@ -59,8 +60,10 @@ function initPassport() {
 
                 // User not found
                 if (!user) {
-                    console.error('User not found');
-                    return done(null, false);
+                    return done(null, false, {
+                        message: "User Not Found",
+                        type: "error"
+                    });
                 }
 
                 // Always use hashed passwords and fixed time comparison
@@ -69,7 +72,10 @@ function initPassport() {
                         return done(err);
                     }
                     if (!isValid) {
-                        return done(null, false);
+                        return done(null, false, {
+                            message: "Incorrect password",
+                            type: "error"
+                        });
                     }
                     return done(null, user);
                 })
