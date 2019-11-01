@@ -7,6 +7,16 @@ const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
 });
 
+exports.login_get = function (req, res) {
+  res.render('login');
+}
+
+exports.logout_get = function(req, res) {
+  req.session.destroy();
+  req.logout();
+  res.redirect('/');
+}
+
 exports.index = function (req, res, next) {
   pool.query(sql_query.query.get_users, (err, data) => {
     if (err) console.log("Cannot get users");
