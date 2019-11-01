@@ -27,5 +27,10 @@ the home page.
 3. `/logout`
 4. `/users`
 5. `/users/:id/edit`
-6. `/semesters/new`
-7. `/modules/new`
+6. `/semesters`
+7. `/semesters/new`
+8. `/semesters/:name/edit`
+9. `/modules`
+10. `/modules/new`
+11. `/modules/:module_code/edit`
+
