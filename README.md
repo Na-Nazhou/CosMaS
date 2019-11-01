@@ -1,8 +1,12 @@
 # CS2102 Project - Course Management System
 
+### Pre-requisites
+- npm
+- node
+- psql
+
 ### Getting started
-- Add an `.env` file to the project root directory and the following information to it. You may change these variables
-accordingly.
+- Create a file named `.env`  under the project root directory and copy the content in the `.env.template` to it.
 
 ```
 DATABASE_URL=postgres://:@localhost:5432/postgres
@@ -23,3 +27,5 @@ the home page.
 3. `/logout`
 4. `/users`
 5. `/users/:id/edit`
+6. `/semesters/new`
+7. `/modules/new`
