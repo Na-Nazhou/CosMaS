@@ -48,6 +48,10 @@ function initRouter(app) {
   /* MODULES */
   app.get('/modules/new', passport.authMiddleware(), modules.create_get);
   app.post('/modules', passport.authMiddleware(), modules.create_post);
+  app.get('/modules', passport.authMiddleware(), modules.index);
+  app.get('/modules/:module_code*/edit', passport.authMiddleware(), modules.update_get);
+  app.put('/modules/:module_code*', passport.authMiddleware(), modules.update_put);
+  app.delete('/modules/:module_code*', passport.authMiddleware(), modules.delete);
 }
 
 module.exports = initRouter;

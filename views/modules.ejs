@@ -1,0 +1,51 @@
+<%- contentFor('content') %>
+<div class="container">
+  <h1>Modules</h1>
+  <%- messages() %>
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th scope="col">Module Code</th>
+        <th scope="col"></th>
+        <th scope="col"></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% for(var i=0; i<data.length; i++) { %>
+      <tr>
+        <td><%= data[i].module_code%></td>
+        <td>
+          <a href="/modules/<%= data[i].module_code%>/edit">Edit</a>
+        </td>
+        <td>
+          <button class="btn" name="delete" id="<%=data[i].module_code%>">
+            <i class="fa fa-trash"></i> Delete
+          </button>
+        </td>
+      </tr>
+      <% } %>
+    </tbody>
+  </table>
+</div>
+
+<%- contentFor('script') %>
+<script>
+  // TODO:CAN BE IMPROVED (SELECT THE ENTIRE COLUMN)
+  $("button[name='delete']").click(function () {
+    $.ajax({
+      url: '/modules/' + `${$(this).attr('id')}`,
+      type: 'DELETE',
+      success: function (res) {
+        if (res.error) {
+          alert(res.error)
+        } else {
+          console.log("Successfully deleted module");
+          window.location = res.redirectUrl
+        }
+      },
+      error: function () {
+        console.log("Failed to delete module");
+      }
+    });
+  });
+</script>

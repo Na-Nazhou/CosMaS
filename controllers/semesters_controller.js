@@ -17,7 +17,6 @@ function formatDate(dateString) {
 exports.index = (req, res) => {
   pool.query(sql.semesters.queries.get_semesters, (err, data) => {
     if (err) console.log('Cannot get semesters');
-    // TODO: format datetime
     data.rows.forEach(sem => {
       sem.start_time = formatDate(sem.start_time);
       sem.end_time = formatDate(sem.end_time);
