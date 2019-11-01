@@ -15,6 +15,11 @@ sql.query = {
     create_semester: 'INSERT INTO semesters (academic_year, semester_number, start_time, end_time) VALUES ($1,$2,$3,$4)', 
     update_semester: 'UPDATE semesters SET academic_year=$1,semester_number=$2,start_time=$3,end_time=$4 WHERE academic_year=$5 AND semester_number=$6',
     delete_semester: 'DELETE FROM semesters WHERE academic_year=$1 AND semester_number=$2',
+
+    /* MODULES */
+    get_modules: 'SELECT * FROM modules',
+    create_module: 'INSERT INTO modules (module_code) VALUES ($1)',
+    delete_module: 'DELETE FROM modules WHERE module_code=$1',
     
 }
 

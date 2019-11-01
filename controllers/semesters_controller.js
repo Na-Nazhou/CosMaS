@@ -24,9 +24,8 @@ exports.create_post = function (req, res, next) {
       req.flash('error', err.message);
       return res.redirect("/semesterNew");
     } else {
-      console.log('Semester successfully created!');
-      //TODO: to be updated to /courses
       req.flash('info', 'Semester successfully created!');
+      //TODO: to be updated to /courses
       return res.redirect('/users');
     }
   })
