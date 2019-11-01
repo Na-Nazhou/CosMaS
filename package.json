@@ -4,7 +4,9 @@
   "private": true,
   "scripts": {
     "start": "nodemon ./bin/www",
-    "lint": "eslint app.js auth controllers public routes sql; exit 0"
+    "lint": "eslint app.js auth controllers public routes sql; exit 0",
+    "format": "prettier -c app.js {auth,controllers,public,routes,sql,views}/**/*.{js,css}; exit 0",
+    "check": "npm run lint && npm run format"
   },
   "dependencies": {
     "bcrypt": "^3.0.6",
@@ -29,6 +31,7 @@
     "eslint": "^6.6.0",
     "eslint-config-airbnb-base": "^14.0.0",
     "eslint-plugin-import": "^2.18.2",
-    "nodemon": "^1.19.4"
+    "nodemon": "^1.19.4",
+    "prettier": "1.18.2"
   }
 }
