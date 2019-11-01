@@ -1,4 +1,4 @@
-const sql_query = require('../sql');
+const sql = require('../sql');
 const bcrypt = require('bcrypt')
 
 // Postgre SQL Connection
@@ -18,7 +18,7 @@ exports.logout_get = function(req, res) {
 }
 
 exports.index = function (req, res, next) {
-  pool.query(sql_query.query.get_users, (err, data) => {
+  pool.query(sql.users.queries.get_users, (err, data) => {
     if (err) console.log("Cannot get users");
     res.render('users', { data: data.rows });
   });
@@ -35,7 +35,7 @@ exports.create_post = function (req, res, next) {
   var salt = bcrypt.genSaltSync(10);
   var password_digest = bcrypt.hashSync(raw_password, salt);
 
-  pool.query(sql_query.query.create_user, [id, name, password_digest], (err, data) => {
+  pool.query(sql.users.queries.create_user, [id, name, password_digest], (err, data) => {
     if (err) {
       console.log("Cannot create user");
       //TODO: refine error message
@@ -55,7 +55,7 @@ exports.create_post = function (req, res, next) {
 
 exports.delete = function (req, res, next) {
   var id = req.params.id;
-  pool.query(sql_query.query.delete_user, [id], (err, data) => {
+  pool.query(sql.users.queries.delete_user, [id], (err, data) => {
     if (err) {
       console.log("Cannot delete user");
       return res.send({ error: err.message });
@@ -70,7 +70,7 @@ exports.delete = function (req, res, next) {
 }
 
 exports.update_get = function (req, res, next) {
-  pool.query(sql_query.query.find_user_by_id, [req.params.id], (err, data) => {
+  pool.query(sql.users.queries.find_user_by_id, [req.params.id], (err, data) => {
     if (err) console.log("Cannot find user");
     res.render('userEdit', { user: data.rows[0] });
   })
@@ -85,7 +85,7 @@ exports.update_put = function (req, res, next) {
   var salt = bcrypt.genSaltSync(10);
   var password_digest = bcrypt.hashSync(raw_password, salt);
 
-  pool.query(sql_query.query.update_user, [id, name, password_digest, orginalId], (err, data) => {
+  pool.query(sql.users.queries.update_user, [id, name, password_digest, orginalId], (err, data) => {
     if (err) {
       console.log("Cannot update user");
       return res.send({ error: err.message });

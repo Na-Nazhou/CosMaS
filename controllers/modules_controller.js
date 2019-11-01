@@ -1,4 +1,4 @@
-const sql_query = require('../sql');
+const sql = require('../sql');
 
 // Postgre SQL Connection
 const { Pool } = require('pg');
@@ -13,14 +13,14 @@ exports.create_get = function (req, res, next) {
 exports.create_post = function (req, res, next) {
   var module_code = req.body.module_code;
 
-  pool.query(sql_query.query.create_module,
+  pool.query(sql.modules.queries.create_module,
     [module_code], (err, data) => {
       if (err) {
         console.log("Cannot create module");
         //TODO: refine error message
         req.flash('error', err.message);
         return res.redirect("/modules/new");
-      } else {        
+      } else {
         req.flash('info', 'Module successfully created!');
         //TODO: to be updated to /courses
         return res.redirect('/users');

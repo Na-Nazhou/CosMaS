@@ -1,4 +1,4 @@
-const sql_query = require('../sql');
+const sql = require('../sql');
 
 const bcrypt = require('bcrypt');
 const passport = require('passport');
@@ -14,7 +14,7 @@ const pool = new Pool({
 });
 
 function findUser(id, callback) {
-    pool.query(sql_query.query.find_user_by_id, [id], (err, data) => {
+    pool.query(sql.users.queries.find_user_by_id, [id], (err, data) => {
         if (err) {
             console.error("Cannot find users table");
             return callback(null);
