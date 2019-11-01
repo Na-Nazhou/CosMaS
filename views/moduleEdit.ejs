@@ -1,0 +1,32 @@
+<%- contentFor('content') %>
+<div class="container col-md-4 col-md-offset-4">
+  <h1 class="text-center">Update Module</h1>
+  <form id="module_form" action="/modules/<%=module.module_code%>" role="form" method="post">
+    <div class="form-group">
+      <label for="module_code">Module Code</label>
+      <input type="text" class="form-control" id="module_code" name="module_code" required="required" value="<%=module.module_code%>">
+    </div>
+    <button type="submit" class="btn btn-primary">Update</button>
+  </form>
+</div>
+
+<%- contentFor('script') %>
+<script>
+  $("#module_form").submit(function (e) {
+    e.preventDefault(); // avoid to execute the actual submit of the form.
+    var form = $(this);
+    var url = form.attr('action');
+    $.ajax({
+      type: "PUT",
+      url: url,
+      data: form.serialize(), // serializes the form's elements.
+      success: function (res) {
+        if (res.error) {
+          alert(res.error)
+        } else {
+          window.location = res.redirectUrl
+        }
+      }
+    });
+  });
+</script>
