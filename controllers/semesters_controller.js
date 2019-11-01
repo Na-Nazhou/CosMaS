@@ -1,4 +1,4 @@
-const sql_query = require('../sql');
+const sql = require('../sql');
 
 // Postgre SQL Connection
 const { Pool } = require('pg');
@@ -15,7 +15,7 @@ exports.create_post = function (req, res, next) {
   var start_time = req.body.start_time;
   var end_time = req.body.end_time;
 
-  pool.query(sql_query.query.create_semester, 
+  pool.query(sql.semesters.queries.create_semester,
     [name, start_time, end_time], (err, data) => {
     if (err) {
       console.log("Cannot create semester");
@@ -32,7 +32,7 @@ exports.create_post = function (req, res, next) {
 
 // exports.delete = function (req, res, next) {
 //   var name = req.params.name;
-//   pool.query(sql_query.query.delete_semester, [name], (err, data) => {
+//   pool.query(sql.semesters.queries.delete_semester, [name], (err, data) => {
 //     if (err) {
 //       console.log("Cannot delete semester");
 //       return res.send({ error: err.message });
@@ -44,7 +44,7 @@ exports.create_post = function (req, res, next) {
 
 // exports.update_get = function (req, res, next) {
 //   var name = req.params.name;
-//   pool.query(sql_query.query.find_semester, [name], (err, data) => {
+//   pool.query(sql.semesters.queries.find_semester, [name], (err, data) => {
 //     if (err) console.log("Cannot find semester");
 //     res.render('semesterEdit', { semester: data.rows[0] });
 //   })
@@ -52,13 +52,13 @@ exports.create_post = function (req, res, next) {
 
 // exports.update_put = function (req, res, next) {
 //   var old_name = req.params.name;
-  
+
 //   var name = req.body.name;
 //   var start_time = req.body.start_time;
 //   var end_time = req.body.end_time;
 
-//   pool.query(sql_query.query.update_semester, 
-//     [name, start_time, end_time, old_name], 
+//   pool.query(sql.semesters.queries.update_semester,
+//     [name, start_time, end_time, old_name],
 //     (err, data) => {
 //     if (err) {
 //       console.log("Cannot update user");
