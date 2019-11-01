@@ -10,17 +10,16 @@ sql.query = {
     delete_user: 'DELETE FROM users WHERE id=$1',
 
     /* SEMESTERS */
-    find_semester: 'SELECT * FROM semesters WHERE academic_year=$1 AND semester_number=$2',
+    find_semester: 'SELECT * FROM semesters WHERE name=$1',
     get_semesters: 'SELECT * FROM semesters',
-    create_semester: 'INSERT INTO semesters (academic_year, semester_number, start_time, end_time) VALUES ($1,$2,$3,$4)', 
-    update_semester: 'UPDATE semesters SET academic_year=$1,semester_number=$2,start_time=$3,end_time=$4 WHERE academic_year=$5 AND semester_number=$6',
-    delete_semester: 'DELETE FROM semesters WHERE academic_year=$1 AND semester_number=$2',
+    create_semester: 'INSERT INTO semesters (name, start_time, end_time) VALUES ($1,$2,$3)', 
+    update_semester: 'UPDATE semesters SET name=$1,start_time=$2,end_time=$3 WHERE name=$4',
+    delete_semester: 'DELETE FROM semesters WHERE name=$1',
 
     /* MODULES */
     get_modules: 'SELECT * FROM modules',
     create_module: 'INSERT INTO modules (module_code) VALUES ($1)',
     delete_module: 'DELETE FROM modules WHERE module_code=$1',
-    
 }
 
 module.exports = sql
