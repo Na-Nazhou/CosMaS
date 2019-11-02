@@ -16,12 +16,7 @@ function findUser(id, callback) {
       return callback(null);
     }
     if (data.rows.length === 1) {
-      return callback(null, {
-        id: data.rows[0].id,
-        name: data.rows[0].name,
-        is_admin: data.rows[0].is_admin,
-        password_digest: data.rows[0].password_digest
-      });
+      return callback(null, data.rows[0]);
     }
     console.error('More than one user?');
     return callback(null);
