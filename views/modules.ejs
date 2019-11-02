@@ -17,12 +17,14 @@
           <a href="#" class="btn btn-primary">
             <i class="far fa-eye"></i>
           </a>
+          <% if (user.is_admin) { %>
           <a href="/modules/<%= encodeURIComponent(data[i].module_code)%>/edit" class="btn btn-success">
             <i class="fas fa-edit"></i>
           </a>
           <button type="button" class="btn btn-danger" name="delete" id="<%=encodeURIComponent(data[i].module_code)%>">
             <i class="far fa-trash-alt"></i>
           </button>
+          <% } %>
         </td>
       </tr>
       <% } %>

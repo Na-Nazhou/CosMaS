@@ -22,9 +22,11 @@
 					<a href="/users/<%= data[i].id%>/edit" class="btn btn-success">
 						<i class="fas fa-edit"></i>
 					</a>
+					<% if (user.is_admin) { %>
 					<button type="button" class="btn btn-danger" name="delete" id="<%=data[i].id%>">
 						<i class="far fa-trash-alt"></i>
 					</button>
+					<% } %>
 				</td>
 			</tr>
 			<% } %>

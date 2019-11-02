@@ -13,3 +13,13 @@ exports.ensureUnauthenticated = (req, res, next) => {
     res.redirect('/');
   }
 };
+
+exports.ensureIsAdmin = (req, res, next) => {
+  if (req.user.is_admin) {
+    next();
+  } else {
+    res.status(403);
+    req.flash('error', 'Access Denied');
+    res.redirect('back');
+  }
+};

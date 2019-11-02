@@ -39,9 +39,10 @@
     <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown"
       aria-haspopup="true" aria-expanded="false">
       <i class="fa fa-user"></i>
-      <%=user.name%>
+      <%=user.id%> - <%=user.name%>
     </button>
     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+      <% if (user.is_admin) { %>
       <a class="dropdown-item" href="/courses/new">
         <i class="fas fa-plus"></i>
         New Course
@@ -54,6 +55,8 @@
         <i class="fas fa-plus"></i>
         New module
       </a>
+      <% } %>
+      <div class="dropdown-divider"></div>
       <a class="dropdown-item" href="/users/<%=user.id%>/edit">
         <i class="fas fa-user-edit"></i>
         Profile

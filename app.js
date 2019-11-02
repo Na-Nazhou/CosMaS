@@ -7,6 +7,7 @@ const passport = require('passport');
 const flash = require('connect-flash');
 const expressLayouts = require('express-ejs-layouts');
 const expressMessages = require('express-messages');
+const cors = require('cors');
 require('dotenv').config();
 const router = require('./routes');
 
@@ -40,6 +41,7 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(cors());
 
 // Flash Messages Setup
 app.use(flash());
@@ -51,7 +53,7 @@ app.use((req, res, next) => {
 // Router Setup
 app.use(router);
 
-// error handler
+// Error Handler
 app.use((err, req, res, next) => {
   console.error('Fatal: Unhandled error');
   next(err);
