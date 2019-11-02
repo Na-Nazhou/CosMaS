@@ -4,7 +4,6 @@
     "es6": true,
     "node": true
   },
-  "extends": ["airbnb-base"],
   "globals": {
     "Atomics": "readonly",
     "SharedArrayBuffer": "readonly"
@@ -18,5 +17,9 @@
     "camelcase": "off",
     "no-param-reassign": "warn",
     "arrow-parens": ["error", "as-needed"]
-  }
+  },
+  "extends": [
+    "airbnb-base",
+    "prettier"
+  ]
 }
