@@ -1,28 +1,26 @@
-const { Pool } = require('pg');
+const router = require('express').Router();
+const db = require('../db');
 const sql = require('../sql');
 
-// Postgre SQL Connection
-const pool = new Pool({
-  connectionString: process.env.DATABASE_URL
-});
-
-exports.index = (req, res) => {
-  pool.query(sql.modules.queries.get_modules, (err, data) => {
-    if (err) console.log('Cannot get modules');
+// Index
+router.get('/', (req, res) => {
+  db.query(sql.modules.queries.get_modules, (err, data) => {
+    if (err) console.error('Cannot get modules');
     res.render('modules', { data: data.rows });
   });
-};
+});
 
-exports.create_get = (req, res) => {
+// Create
+router.get('/new', (req, res) => {
   res.render('moduleNew');
-};
+});
 
-exports.create_post = (req, res) => {
+router.post('/', (req, res) => {
   const { module_code } = req.body;
 
-  pool.query(sql.modules.queries.create_module, [module_code], err => {
+  db.query(sql.modules.queries.create_module, [module_code], err => {
     if (err) {
-      console.log('Cannot create module');
+      console.error('Cannot create module');
       // TODO: refine error message
       req.flash('error', err.message);
       return res.redirect('/modules/new');
@@ -30,37 +28,40 @@ exports.create_post = (req, res) => {
     req.flash('info', 'Module successfully created!');
     return res.redirect('/modules');
   });
-};
+});
 
-exports.delete = (req, res) => {
+// Delete
+router.delete('/:module_code*', (req, res) => {
   const module_code = req.params.module_code + req.params['0'];
-  pool.query(sql.modules.queries.delete_module, [module_code], err => {
+  db.query(sql.modules.queries.delete_module, [module_code], err => {
     if (err) {
-      console.log('Cannot delete module');
+      console.error('Cannot delete module');
       return res.send({ error: err.message });
     }
     return res.send({ redirectUrl: '/modules' });
   });
-};
+});
 
-exports.update_get = (req, res) => {
+// Update
+router.get('/:module_code*/edit', (req, res) => {
   const module_code = req.params.module_code + req.params['0'];
-  pool.query(sql.modules.queries.find_module, [module_code], (err, data) => {
-    if (err) console.log('Cannot find module');
+  db.query(sql.modules.queries.find_module, [module_code], (err, data) => {
+    if (err) console.error('Cannot find module');
     res.render('moduleEdit', { module: data.rows[0] });
   });
-};
+});
 
-exports.update_put = (req, res) => {
+router.put('/:module_code*', (req, res) => {
   const old_module_code = req.params.module_code + req.params['0'];
-
   const { module_code } = req.body;
 
-  pool.query(sql.modules.queries.update_module, [module_code, old_module_code], err => {
+  db.query(sql.modules.queries.update_module, [module_code, old_module_code], err => {
     if (err) {
-      console.log('Cannot update module');
+      console.error('Cannot update module');
       return res.send({ error: err.message });
     }
     return res.send({ redirectUrl: '/modules' });
   });
-};
+});
+
+module.exports = router;

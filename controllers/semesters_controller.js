@@ -1,42 +1,33 @@
-const toDate = require('date-fns/toDate');
-const format = require('date-fns/format');
-
-// Postgre SQL Connection
-const { Pool } = require('pg');
+const router = require('express').Router();
+const db = require('../db');
 const sql = require('../sql');
+const { formatDate } = require('../helpers/data');
 
-const pool = new Pool({
-  connectionString: process.env.DATABASE_URL
-});
-
-/* HELPERS */
-function formatDate(dateString) {
-  return format(toDate(dateString), 'yyyy-MM-dd');
-}
-
-exports.index = (req, res) => {
-  pool.query(sql.semesters.queries.get_semesters, (err, data) => {
-    if (err) console.log('Cannot get semesters');
+// Index
+router.get('/', (req, res) => {
+  db.query(sql.semesters.queries.get_semesters, (err, data) => {
+    if (err) console.error('Cannot get semesters');
     data.rows.forEach(sem => {
       sem.start_time = formatDate(sem.start_time);
       sem.end_time = formatDate(sem.end_time);
     });
     res.render('semesters', { data: data.rows });
   });
-};
+});
 
-exports.create_get = (req, res) => {
+// Create
+router.get('/new', (req, res) => {
   res.render('semesterNew');
-};
+});
 
-exports.create_post = (req, res) => {
+router.post('/', (req, res) => {
   const { name } = req.body;
   const { start_time } = req.body;
   const { end_time } = req.body;
 
-  pool.query(sql.semesters.queries.create_semester, [name, start_time, end_time], err => {
+  db.query(sql.semesters.queries.create_semester, [name, start_time, end_time], err => {
     if (err) {
-      console.log('Cannot create semester');
+      console.error('Cannot create semester');
       // TODO: refine error message
       req.flash('error', err.message);
       return res.redirect('/semesters/new');
@@ -44,24 +35,26 @@ exports.create_post = (req, res) => {
     req.flash('info', 'Semester successfully created!');
     return res.redirect('/semesters');
   });
-};
+});
 
-exports.delete = (req, res) => {
+// Delete
+router.delete('/:name*', (req, res) => {
   const name = req.params.name + req.params['0'];
-  pool.query(sql.semesters.queries.delete_semester, [name], err => {
+  db.query(sql.semesters.queries.delete_semester, [name], err => {
     if (err) {
-      console.log('Cannot delete semester');
+      console.error('Cannot delete semester');
       res.send({ error: err.message });
     } else {
       res.send({ redirectUrl: '/semesters' });
     }
   });
-};
+});
 
-exports.update_get = (req, res) => {
+// Update
+router.get('/:name*/edit', (req, res) => {
   const name = req.params.name + req.params['0'];
-  pool.query(sql.semesters.queries.find_semester, [name], (err, data) => {
-    if (err) console.log('Cannot find semester');
+  db.query(sql.semesters.queries.find_semester, [name], (err, data) => {
+    if (err) console.error('Cannot find semester');
     // TODO: refactor
     const semester = {
       name: data.rows[0].name,
@@ -70,20 +63,21 @@ exports.update_get = (req, res) => {
     };
     res.render('semesterEdit', { semester });
   });
-};
+});
 
-exports.update_put = (req, res) => {
+router.put('/:name*', (req, res) => {
   const old_name = req.params.name + req.params['0'];
-
   const { name } = req.body;
   const { start_time } = req.body;
   const { end_time } = req.body;
 
-  pool.query(sql.semesters.queries.update_semester, [name, start_time, end_time, old_name], err => {
+  db.query(sql.semesters.queries.update_semester, [name, start_time, end_time, old_name], err => {
     if (err) {
-      console.log('Cannot update semester');
+      console.error('Cannot update semester');
       return res.send({ error: err.message });
     }
     return res.send({ redirectUrl: '/semesters' });
   });
-};
+});
+
+module.exports = router;
