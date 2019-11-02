@@ -28,7 +28,7 @@ exports.create = (req, res) => {
 };
 
 exports.delete = (req, res) => {
-  const module_code = req.params.module_code + req.params['0'];
+  const { module_code } = req.params;
   db.query(sql.modules.queries.delete_module, [module_code], err => {
     if (err) {
       console.error('Cannot delete module');
@@ -39,7 +39,7 @@ exports.delete = (req, res) => {
 };
 
 exports.edit = (req, res) => {
-  const module_code = req.params.module_code + req.params['0'];
+  const { module_code } = req.params;
   db.query(sql.modules.queries.find_module, [module_code], (err, data) => {
     if (err) console.error('Cannot find module');
     res.render('moduleEdit', { module: data.rows[0] });
@@ -47,7 +47,7 @@ exports.edit = (req, res) => {
 };
 
 exports.update = (req, res) => {
-  const old_module_code = req.params.module_code + req.params['0'];
+  const old_module_code = req.params.module_code;
   const { module_code } = req.body;
 
   db.query(sql.modules.queries.update_module, [module_code, old_module_code], err => {

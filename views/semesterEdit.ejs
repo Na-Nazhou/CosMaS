@@ -1,38 +1,52 @@
 <%- contentFor('content') %>
 <div class="container col-md-4 col-md-offset-4">
   <h1 class="text-center">Update Semester</h1>
-  <form id="semester_form" action="/semesters/<%=semester.name%>" role="form" method="post">
-      <div class="form-group">
-        <label for="name">Semester Name</label>
-        <input type="text" class="form-control" id="name" name="name" required="required" value="<%=semester.name%>">
-      </div>
-      <div class="form-group">
-        <label for="start_time">Start Time</label>
-        <input type="date" class="form-control" id="start_time" name="start_time" required="required" value="<%=semester.start_time%>">
-      </div>
-      <div class="form-group">
-        <label for="end_time">End Time</label>
-        <input type="date" class="form-control" id="end_time" name="end_time" required="required" value="<%=semester.end_time%>">
-      </div>
+  <form id="semester_form" action="/semesters/<%=encodeURIComponent(semester.name)%>" role="form" method="post">
+    <div class="form-group">
+      <label for="name">Semester Name</label>
+      <input type="text" class="form-control" id="name" name="name" required="required" value="<%=semester.name%>" />
+    </div>
+    <div class="form-group">
+      <label for="start_time">Start Time</label>
+      <input
+        type="date"
+        class="form-control"
+        id="start_time"
+        name="start_time"
+        required="required"
+        value="<%=semester.start_time%>"
+      />
+    </div>
+    <div class="form-group">
+      <label for="end_time">End Time</label>
+      <input
+        type="date"
+        class="form-control"
+        id="end_time"
+        name="end_time"
+        required="required"
+        value="<%=semester.end_time%>"
+      />
+    </div>
     <button type="submit" class="btn btn-primary">Update</button>
   </form>
 </div>
 
 <%- contentFor('script') %>
 <script>
-  $("#semester_form").submit(function (e) {
+  $('#semester_form').submit(function(e) {
     e.preventDefault(); // avoid to execute the actual submit of the form.
     var form = $(this);
     var url = form.attr('action');
     $.ajax({
-      type: "PUT",
+      type: 'PUT',
       url: url,
       data: form.serialize(), // serializes the form's elements.
-      success: function (res) {
+      success: function(res) {
         if (res.error) {
-          alert(res.error)
+          alert(res.error);
         } else {
-          window.location = res.redirectUrl
+          window.location = res.redirectUrl;
         }
       }
     });
