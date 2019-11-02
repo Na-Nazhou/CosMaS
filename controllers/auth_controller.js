@@ -1,14 +1,9 @@
 const router = require('express').Router();
 const bcrypt = require('bcrypt');
 const passport = require('passport');
-const { Pool } = require('pg');
+const db = require('../db');
 const sql = require('../sql');
 const { ensureUnauthenticated, ensureAuthenticated } = require('../auth/middleware');
-
-// Database connection
-const pool = new Pool({
-  connectionString: process.env.DATABASE_URL
-});
 
 // Login
 router.get('/login', ensureUnauthenticated, (req, res) => {
@@ -44,7 +39,7 @@ router.post('/signup', ensureUnauthenticated, (req, res) => {
   const salt = bcrypt.genSaltSync(10);
   const password_digest = bcrypt.hashSync(raw_password, salt);
 
-  pool.query(sql.users.queries.create_user, [id, name, password_digest], err => {
+  db.query(sql.users.queries.create_user, [id, name, password_digest], err => {
     if (err) {
       console.error('Cannot create user');
       // TODO: refine error message

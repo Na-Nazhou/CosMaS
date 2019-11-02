@@ -1,16 +1,11 @@
 const bcrypt = require('bcrypt');
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
-const { Pool } = require('pg');
+const db = require('../db');
 const sql = require('../sql');
 
-// Database connection
-const pool = new Pool({
-  connectionString: process.env.DATABASE_URL
-});
-
 function findUser(id, callback) {
-  pool.query(sql.users.queries.find_user_by_id, [id], (err, data) => {
+  db.query(sql.users.queries.find_user_by_id, [id], (err, data) => {
     if (err) {
       console.error('Cannot find users table');
       return callback(null);

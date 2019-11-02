@@ -8,10 +8,8 @@ const passport = require('passport');
 const flash = require('connect-flash');
 const expressLayouts = require('express-ejs-layouts');
 const expressMessages = require('express-messages');
-const router = require('./controllers');
-
-/* --- V7: Using dotenv     --- */
 require('dotenv').config();
+const router = require('./controllers');
 
 const app = express();
 
