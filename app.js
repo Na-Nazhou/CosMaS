@@ -13,8 +13,7 @@ const router = require('./controllers');
 
 const app = express();
 
-app.use(bodyParser.urlencoded({ extended: false }));
-
+// Session & Auth Setup
 require('./auth').init(app);
 
 app.use(cookieParser());
@@ -33,7 +32,7 @@ app.use((req, res, next) => {
   next();
 });
 
-// view engine setup
+// View Engine Setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 app.use(expressLayouts);
@@ -41,7 +40,10 @@ app.use(expressLayouts);
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
+
+// Flash Messages Setup
 app.use(flash());
 app.use((req, res, next) => {
   res.locals.messages = expressMessages(req, res);
