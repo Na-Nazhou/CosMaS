@@ -20,6 +20,10 @@ SECRET=keyboard cat
 - Run `npm start` and go to `localhost:3000`, you should see 
 the home page.
 
+### Contributing
+- Remember to run `npm run check` and `npm run fix` (if the previous check fails) before you commit!
+
+
 *{To be updated}*
 - Currently, the following pages should be working:
 1. `/signup`

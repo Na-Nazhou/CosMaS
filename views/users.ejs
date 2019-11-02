@@ -7,8 +7,7 @@
 			<tr>
 				<th scope="col">User ID</th>
 				<th scope="col">Name</th>
-				<th scope="col"></th>
-				<th scope="col"></th>
+				<th scope="col">Actions</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -17,11 +16,14 @@
 				<td><%= data[i].id%></td>
 				<td><%= data[i].name%></td>
 				<td>
-					<a href="/users/<%= data[i].id%>/edit">Edit</a>
-				</td>
-				<td>
-					<button class="btn" name="delete" id="<%=data[i].id%>">
-						<i class="fa fa-trash"></i> Delete
+					<a href="#" class="btn btn-primary">
+						<i class="far fa-eye"></i>
+					</a>
+					<a href="/users/<%= data[i].id%>/edit" class="btn btn-success">
+						<i class="fas fa-edit"></i>
+					</a>
+					<button type="button" class="btn btn-danger" name="delete" id="<%=data[i].id%>">
+						<i class="far fa-trash-alt"></i>
 					</button>
 				</td>
 			</tr>
@@ -29,13 +31,13 @@
 		</tbody>
 	</table>
 </div>
-	
+
 <%- contentFor('script') %>
 <script>
 	// TODO:CAN BE IMPROVED (SELECT THE ENTIRE COLUMN)
 	$("button[name='delete']").click(function () {
 		$.ajax({
-			url: '/users/' + `${ $(this).attr('id') }`,
+			url: '/users/' + `${$(this).attr('id')}`,
 			type: 'DELETE',
 			success: function (res) {
 				if (res.error) {

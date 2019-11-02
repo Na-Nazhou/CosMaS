@@ -6,8 +6,7 @@
     <thead>
       <tr>
         <th scope="col">Module Code</th>
-        <th scope="col"></th>
-        <th scope="col"></th>
+        <th scope="col">Actions</th>
       </tr>
     </thead>
     <tbody>
@@ -15,11 +14,14 @@
       <tr>
         <td><%= data[i].module_code%></td>
         <td>
-          <a href="/modules/<%= data[i].module_code%>/edit">Edit</a>
-        </td>
-        <td>
-          <button class="btn" name="delete" id="<%=data[i].module_code%>">
-            <i class="fa fa-trash"></i> Delete
+          <a href="#" class="btn btn-primary">
+            <i class="far fa-eye"></i>
+          </a>
+          <a href="/modules/<%= data[i].module_code%>/edit" class="btn btn-success">
+            <i class="fas fa-edit"></i>
+          </a>
+          <button type="button" class="btn btn-danger" name="delete" id="<%=data[i].module_code%>">
+            <i class="far fa-trash-alt"></i>
           </button>
         </td>
       </tr>
