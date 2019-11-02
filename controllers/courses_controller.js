@@ -42,34 +42,51 @@ exports.delete = (req, res) => {
   const { module_code } = req.params;
   db.query(sql.courses.queries.delete_course, [semester_name, module_code], err => {
     if (err) {
-      console.error('Cannot delete course');
-      res.send({ error: err.message });
+      console.error('Failed to delete course');
+      req.flash('error', err.message);
     } else {
-      res.send({ redirectUrl: '/courses' });
+      req.flash('success', 'Successfully deleted course');
     }
+    res.redirect('/courses');
   });
 };
 
-exports.edit = (req, res) => {
+exports.edit = (req, res, next) => {
   const { semester_name } = req.params;
   const { module_code } = req.params;
   db.query(sql.courses.queries.find_course, [semester_name, module_code], (err, data) => {
-    if (err) console.error('Cannot find course');
-    // TODO: refactor
-    const course = {
-      semester_name: data.rows[0].semester_name,
-      module_code: data.rows[0].module_code,
-      title: data.rows[0].title,
-      description: data.rows[0].description,
-      credits: data.rows[0].credits
-    };
-    db.query(sql.semesters.queries.get_semesters, (err1, semesters) => {
-      if (err1) console.error('Cannot get semesters');
-      db.query(sql.modules.queries.get_modules, (err2, modules) => {
-        if (err2) console.error('Cannot get modules');
-        res.render('courseEdit', { course, semesters: semesters.rows, modules: modules.rows });
+    if (err) {
+      console.error('Cannot find course');
+      next(err);
+    } else {
+      // TODO: refactor
+      const course = {
+        semester_name: data.rows[0].semester_name,
+        module_code: data.rows[0].module_code,
+        title: data.rows[0].title,
+        description: data.rows[0].description,
+        credits: data.rows[0].credits
+      };
+      db.query(sql.semesters.queries.get_semesters, (err1, semesters) => {
+        if (err1) {
+          console.error('Failed to get semesters');
+          next(err1);
+        } else {
+          db.query(sql.modules.queries.get_modules, (err2, modules) => {
+            if (err2) {
+              console.error('Failed to get modules');
+              next(err2);
+            } else {
+              res.render('courseEdit', {
+                course,
+                semesters: semesters.rows,
+                modules: modules.rows
+              });
+            }
+          });
+        }
       });
-    });
+    }
   });
 };
 
@@ -87,10 +104,13 @@ exports.update = (req, res) => {
     [semester_name, module_code, title, description, credits, old_semester_name, old_module_code],
     err => {
       if (err) {
-        console.error('Cannot update course');
-        return res.send({ error: err.message });
+        console.error('Failed to update course');
+        req.flash('error', err.message);
+        res.redirect(`/${encodeURIComponent(semester_name)}/${encodeURIComponent(module_code)}/edit`);
+      } else {
+        req.flash('success', `Successfully updated course ${module_code} ${title} offered in ${semester_name}`);
+        res.redirect('/courses');
       }
-      return res.send({ redirectUrl: '/courses' });
     }
   );
 };

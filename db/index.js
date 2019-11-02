@@ -10,9 +10,9 @@ module.exports = {
     return pool.query(text, params, (err, res) => {
       const duration = Date.now() - start;
       if (err) {
-        console.error('Error while executing query', { text, duration, err });
+        console.error('Error while executing query', { text, params, duration, err });
       } else {
-        console.log('Executed query', { text, duration, rows: res.rowCount });
+        console.log('Executed query', { text, params, duration, rows: res.rowCount });
       }
       callback(err, res);
     });

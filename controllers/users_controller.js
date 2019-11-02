@@ -13,14 +13,17 @@ exports.delete = (req, res) => {
   const { id } = req.params;
   db.query(sql.users.queries.delete_user, [id], err => {
     if (err) {
-      console.error('Cannot delete user');
-      res.send({ error: err.message });
+      console.error('Failed to delete user');
+      req.flash('error', err.message);
+      res.redirect('/users');
     } else if (req.user.id === id) {
       // Log out the user during self-deletion
       req.logout();
-      res.send({ redirectUrl: '/' });
+      req.flash('success', 'Your account has been successfully deleted. You have been logged out.');
+      res.redirect('/');
     } else {
-      res.send({ redirectUrl: '/users' });
+      req.flash('success', `User ${id} has been successfully deleted`);
+      res.redirect('/users');
     }
   });
 };
@@ -43,9 +46,12 @@ exports.update = (req, res) => {
 
   db.query(sql.users.queries.update_user, [id, name, password_digest, originalId], err => {
     if (err) {
-      console.error('Cannot update user');
-      return res.send({ error: err.message });
+      console.error('Failed up update user');
+      req.flash('error', err.message);
+      res.render('userEdit', { user: { id: originalId, name } });
+    } else {
+      req.flash('success', 'Profile successfully updated!');
+      res.redirect('/users');
     }
-    return res.send({ redirectUrl: '/users' });
   });
 };

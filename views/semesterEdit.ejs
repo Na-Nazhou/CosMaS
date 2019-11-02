@@ -1,7 +1,9 @@
 <%- contentFor('content') %>
 <div class="container col-md-4 col-md-offset-4">
   <h1 class="text-center">Update Semester</h1>
-  <form id="semester_form" action="/semesters/<%=encodeURIComponent(semester.name)%>" role="form" method="post">
+  <%- messages() %>
+  <form id="semester_form" action="/semesters/<%=encodeURIComponent(semester.name)%>" role="form" method="POST">
+    <input type="hidden" name="_method" value="PUT"/>
     <div class="form-group">
       <label for="name">Semester Name</label>
       <input type="text" class="form-control" id="name" name="name" required="required" value="<%=semester.name%>" />
@@ -31,24 +33,3 @@
     <button type="submit" class="btn btn-primary">Update</button>
   </form>
 </div>
-
-<%- contentFor('script') %>
-<script>
-  $('#semester_form').submit(function(e) {
-    e.preventDefault(); // avoid to execute the actual submit of the form.
-    var form = $(this);
-    var url = form.attr('action');
-    $.ajax({
-      type: 'PUT',
-      url: url,
-      data: form.serialize(), // serializes the form's elements.
-      success: function(res) {
-        if (res.error) {
-          alert(res.error);
-        } else {
-          window.location = res.redirectUrl;
-        }
-      }
-    });
-  });
-</script>
