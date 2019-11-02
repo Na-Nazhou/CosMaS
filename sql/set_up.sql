@@ -32,12 +32,11 @@ CREATE TABLE Modules (
 );
 
 CREATE TABLE Courses (
-    semester_name   VARCHAR(50),
+    semester_name   VARCHAR(50) REFERENCES Semesters(name),
     module_code     VARCHAR(10) REFERENCES Modules(module_code),
     title           VARCHAR(100) NOT NULL,
     description     TEXT NOT NULL,
     credits         INTEGER NOT NULL,
-    FOREIGN KEY(semester_name) REFERENCES Semesters(name),
     PRIMARY KEY(semester_name, module_code)
 );
 
