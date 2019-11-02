@@ -31,35 +31,10 @@
             class="btn btn-success">
             <i class="fas fa-edit"></i>
           </a>
-          <button type="button" class="btn btn-danger" name="delete"
-            id="<%=encodeURIComponent(data[i].semester_name)%>/<%=encodeURIComponent(data[i].module_code)%>">
-            <i class="far fa-trash-alt"></i>
-          </button>
+          <%- include('./partials/deleteButton', { action: `/courses/${encodeURIComponent(data[i].semester_name)}/${encodeURIComponent(data[i].module_code)}` }); %>
         </td>
       </tr>
       <% } %>
     </tbody>
   </table>
 </div>
-
-<%- contentFor('script') %>
-<script>
-  // TODO:CAN BE IMPROVED (SELECT THE ENTIRE COLUMN)
-  $("button[name='delete']").click(function () {
-    $.ajax({
-      url: '/courses/' + `${$(this).attr('id')}`,
-      type: 'DELETE',
-      success: function (res) {
-        if (res.error) {
-          alert(res.error)
-        } else {
-          console.log("Successfully deleted course");
-          window.location = res.redirectUrl
-        }
-      },
-      error: function () {
-        console.log("Failed to delete course");
-      }
-    });
-  });
-</script>

@@ -4,15 +4,15 @@
   <%- messages() %>
   <table class="table table-hover">
     <thead>
-      <tr>
-        <th scope="col">Semester Name</th>
-        <th scope="col">Start Time</th>
-        <th scope="col">End Time</th>
-        <th scope="col">Actions</th>
-      </tr>
+    <tr>
+      <th scope="col">Semester Name</th>
+      <th scope="col">Start Time</th>
+      <th scope="col">End Time</th>
+      <th scope="col">Actions</th>
+    </tr>
     </thead>
     <tbody>
-      <% for(var i=0; i<data.length; i++) { %>
+    <% for(var i=0; i<data.length; i++) { %>
       <tr>
         <td><%= data[i].name%></td>
         <td><%= data[i].start_time%></td>
@@ -22,38 +22,14 @@
             <i class="far fa-eye"></i>
           </a>
           <% if (user.is_admin) { %>
-          <a href="/semesters/<%= encodeURIComponent(data[i].name)%>/edit" class="btn btn-success">
-            <i class="fas fa-edit"></i>
-          </a>
-          <button type="button" class="btn btn-danger" name="delete" id="<%=encodeURIComponent(data[i].name)%>">
-            <i class="far fa-trash-alt"></i>
-          </button>
+            <a href="/semesters/<%= encodeURIComponent(data[i].name)%>/edit" class="btn btn-success">
+              <i class="fas fa-edit"></i>
+            </a>
+            <%- include('./partials/deleteButton', { action: `/semesters/${encodeURIComponent(data[i].name)}` }); %>
           <% } %>
         </td>
       </tr>
-      <% } %>
+    <% } %>
     </tbody>
   </table>
 </div>
-
-<%- contentFor('script') %>
-<script>
-  // TODO:CAN BE IMPROVED (SELECT THE ENTIRE COLUMN)
-  $("button[name='delete']").click(function () {
-    $.ajax({
-      url: '/semesters/' + `${$(this).attr('id')}`,
-      type: 'DELETE',
-      success: function (res) {
-        if (res.error) {
-          alert(res.error)
-        } else {
-          console.log("Successfully deleted semester");
-          window.location = res.redirectUrl
-        }
-      },
-      error: function () {
-        console.log("Failed to delete semester");
-      }
-    });
-  });
-</script>

@@ -24,13 +24,14 @@ exports.create = (req, res) => {
 
   db.query(sql.semesters.queries.create_semester, [name, start_time, end_time], err => {
     if (err) {
-      console.error('Cannot create semester');
+      console.error('Failed to create semester');
       // TODO: refine error message
       req.flash('error', err.message);
-      return res.redirect('/semesters/new');
+      res.redirect('/semesters/new');
+    } else {
+      req.flash('success', `Successfully created semester ${name}!`);
+      res.redirect('/semesters');
     }
-    req.flash('info', 'Semester successfully created!');
-    return res.redirect('/semesters');
   });
 };
 
@@ -38,11 +39,12 @@ exports.delete = (req, res) => {
   const { name } = req.params;
   db.query(sql.semesters.queries.delete_semester, [name], err => {
     if (err) {
-      console.error('Cannot delete semester');
-      res.send({ error: err.message });
+      console.error('Failed to delete semester');
+      req.flash('error', err.message);
     } else {
-      res.send({ redirectUrl: '/semesters' });
+      req.flash('success', `Semester ${name} has been successfully deleted`);
     }
+    res.redirect('/semesters');
   });
 };
 
@@ -68,9 +70,12 @@ exports.update = (req, res) => {
 
   db.query(sql.semesters.queries.update_semester, [name, start_time, end_time, old_name], err => {
     if (err) {
-      console.error('Cannot update semester');
-      return res.send({ error: err.message });
+      console.error('Failed to update semester');
+      req.flash('error', err.message);
+      res.render('semesterEdit', { semester: { name: old_name, start_time, end_time } });
+    } else {
+      req.flash('success', 'Semester has been successfully updated.');
+      res.redirect('/semesters');
     }
-    return res.send({ redirectUrl: '/semesters' });
   });
 };

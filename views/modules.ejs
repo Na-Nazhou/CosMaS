@@ -4,13 +4,13 @@
   <%- messages() %>
   <table class="table table-hover">
     <thead>
-      <tr>
-        <th scope="col">Module Code</th>
-        <th scope="col">Actions</th>
-      </tr>
+    <tr>
+      <th scope="col">Module Code</th>
+      <th scope="col">Actions</th>
+    </tr>
     </thead>
     <tbody>
-      <% for(var i=0; i<data.length; i++) { %>
+    <% for(var i=0; i<data.length; i++) { %>
       <tr>
         <td><%= data[i].module_code%></td>
         <td>
@@ -18,38 +18,14 @@
             <i class="far fa-eye"></i>
           </a>
           <% if (user.is_admin) { %>
-          <a href="/modules/<%= encodeURIComponent(data[i].module_code)%>/edit" class="btn btn-success">
-            <i class="fas fa-edit"></i>
-          </a>
-          <button type="button" class="btn btn-danger" name="delete" id="<%=encodeURIComponent(data[i].module_code)%>">
-            <i class="far fa-trash-alt"></i>
-          </button>
+            <a href="/modules/<%= encodeURIComponent(data[i].module_code) %>/edit" class="btn btn-success">
+              <i class="fas fa-edit"></i>
+            </a>
+            <%- include('./partials/deleteButton',  { action: `/modules/${encodeURIComponent(data[i].module_code)}` }); %>
           <% } %>
         </td>
       </tr>
-      <% } %>
+    <% } %>
     </tbody>
   </table>
 </div>
-
-<%- contentFor('script') %>
-<script>
-  // TODO:CAN BE IMPROVED (SELECT THE ENTIRE COLUMN)
-  $("button[name='delete']").click(function () {
-    $.ajax({
-      url: '/modules/' + `${$(this).attr('id')}`,
-      type: 'DELETE',
-      success: function (res) {
-        if (res.error) {
-          alert(res.error)
-        } else {
-          console.log("Successfully deleted module");
-          window.location = res.redirectUrl
-        }
-      },
-      error: function () {
-        console.log("Failed to delete module");
-      }
-    });
-  });
-</script>

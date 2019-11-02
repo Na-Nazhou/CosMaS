@@ -22,7 +22,7 @@ exports.create = (req, res) => {
       req.flash('error', err.message);
       return res.redirect('/modules/new');
     }
-    req.flash('info', 'Module successfully created!');
+    req.flash('success', 'Module successfully created!');
     return res.redirect('/modules');
   });
 };
@@ -31,10 +31,12 @@ exports.delete = (req, res) => {
   const { module_code } = req.params;
   db.query(sql.modules.queries.delete_module, [module_code], err => {
     if (err) {
-      console.error('Cannot delete module');
-      return res.send({ error: err.message });
+      console.error('Failed to delete module');
+      req.flash('error', err.message);
+    } else {
+      req.flash('success', `Module ${module_code} has been successfully deleted`);
     }
-    return res.send({ redirectUrl: '/modules' });
+    res.redirect('/modules');
   });
 };
 
@@ -52,9 +54,12 @@ exports.update = (req, res) => {
 
   db.query(sql.modules.queries.update_module, [module_code, old_module_code], err => {
     if (err) {
-      console.error('Cannot update module');
-      return res.send({ error: err.message });
+      console.error('Failed to update module');
+      req.flash('error', err.message);
+      res.render('moduleEdit', { module: { module_code: old_module_code } });
+    } else {
+      req.flash('success', 'Module successfully updated!');
+      res.redirect('/modules');
     }
-    return res.send({ redirectUrl: '/modules' });
   });
 };

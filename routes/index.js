@@ -26,6 +26,7 @@ router.use('/courses', ensureAuthenticated, courses);
 
 // Return 404 for unknown routes
 router.use((req, res, next) => {
+  console.error(`Unmatched route ${req.path}`);
   next(createError(404));
 });
 
