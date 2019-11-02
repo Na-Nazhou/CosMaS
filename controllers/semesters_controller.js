@@ -35,7 +35,7 @@ exports.create = (req, res) => {
 };
 
 exports.delete = (req, res) => {
-  const name = req.params.name + req.params['0'];
+  const { name } = req.params;
   db.query(sql.semesters.queries.delete_semester, [name], err => {
     if (err) {
       console.error('Cannot delete semester');
@@ -47,7 +47,7 @@ exports.delete = (req, res) => {
 };
 
 exports.edit = (req, res) => {
-  const name = req.params.name + req.params['0'];
+  const { name } = req.params;
   db.query(sql.semesters.queries.find_semester, [name], (err, data) => {
     if (err) console.error('Cannot find semester');
     // TODO: refactor
@@ -61,7 +61,7 @@ exports.edit = (req, res) => {
 };
 
 exports.update = (req, res) => {
-  const old_name = req.params.name + req.params['0'];
+  const old_name = req.params.name;
   const { name } = req.body;
   const { start_time } = req.body;
   const { end_time } = req.body;
