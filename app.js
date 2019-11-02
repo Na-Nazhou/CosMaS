@@ -8,7 +8,7 @@ const flash = require('connect-flash');
 const expressLayouts = require('express-ejs-layouts');
 const expressMessages = require('express-messages');
 require('dotenv').config();
-const router = require('./controllers');
+const router = require('./routes');
 
 const app = express();
 

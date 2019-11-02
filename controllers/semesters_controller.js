@@ -1,10 +1,8 @@
-const router = require('express').Router();
 const db = require('../db');
 const sql = require('../sql');
 const { formatDate } = require('../helpers/data');
 
-// Index
-router.get('/', (req, res) => {
+exports.index = (req, res) => {
   db.query(sql.semesters.queries.get_semesters, (err, data) => {
     if (err) console.error('Cannot get semesters');
     data.rows.forEach(sem => {
@@ -13,14 +11,13 @@ router.get('/', (req, res) => {
     });
     res.render('semesters', { data: data.rows });
   });
-});
+};
 
-// Create
-router.get('/new', (req, res) => {
+exports.new = (req, res) => {
   res.render('semesterNew');
-});
+};
 
-router.post('/', (req, res) => {
+exports.create = (req, res) => {
   const { name } = req.body;
   const { start_time } = req.body;
   const { end_time } = req.body;
@@ -35,10 +32,9 @@ router.post('/', (req, res) => {
     req.flash('info', 'Semester successfully created!');
     return res.redirect('/semesters');
   });
-});
+};
 
-// Delete
-router.delete('/:name*', (req, res) => {
+exports.delete = (req, res) => {
   const name = req.params.name + req.params['0'];
   db.query(sql.semesters.queries.delete_semester, [name], err => {
     if (err) {
@@ -48,10 +44,9 @@ router.delete('/:name*', (req, res) => {
       res.send({ redirectUrl: '/semesters' });
     }
   });
-});
+};
 
-// Update
-router.get('/:name*/edit', (req, res) => {
+exports.edit = (req, res) => {
   const name = req.params.name + req.params['0'];
   db.query(sql.semesters.queries.find_semester, [name], (err, data) => {
     if (err) console.error('Cannot find semester');
@@ -63,9 +58,9 @@ router.get('/:name*/edit', (req, res) => {
     };
     res.render('semesterEdit', { semester });
   });
-});
+};
 
-router.put('/:name*', (req, res) => {
+exports.update = (req, res) => {
   const old_name = req.params.name + req.params['0'];
   const { name } = req.body;
   const { start_time } = req.body;
@@ -78,6 +73,4 @@ router.put('/:name*', (req, res) => {
     }
     return res.send({ redirectUrl: '/semesters' });
   });
-});
-
-module.exports = router;
+};

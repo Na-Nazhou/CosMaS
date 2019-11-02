@@ -1,18 +1,15 @@
-const router = require('express').Router();
 const bcrypt = require('bcrypt');
 const db = require('../db');
 const sql = require('../sql');
 
-// Index
-router.get('/', (req, res) => {
+exports.index = (req, res) => {
   db.query(sql.users.queries.get_users, (err, data) => {
     if (err) console.error('Cannot get users');
     res.render('users', { data: data.rows });
   });
-});
+};
 
-// Delete
-router.delete('/:id', (req, res) => {
+exports.delete = (req, res) => {
   const { id } = req.params;
   db.query(sql.users.queries.delete_user, [id], err => {
     if (err) {
@@ -26,17 +23,16 @@ router.delete('/:id', (req, res) => {
       res.send({ redirectUrl: '/users' });
     }
   });
-});
+};
 
-// Edit
-router.get('/:id/edit', (req, res) => {
+exports.edit = (req, res) => {
   db.query(sql.users.queries.find_user_by_id, [req.params.id], (err, data) => {
     if (err) console.error('Cannot find user');
     res.render('userEdit', { user: data.rows[0] });
   });
-});
+};
 
-router.put('/:id', (req, res) => {
+exports.update = (req, res) => {
   const originalId = req.params.id;
   // TODO: update when edit id is supported
   const id = req.body.id || req.params.id;
@@ -52,6 +48,4 @@ router.put('/:id', (req, res) => {
     }
     return res.send({ redirectUrl: '/users' });
   });
-});
-
-module.exports = router;
+};

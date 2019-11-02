@@ -1,9 +1,9 @@
 const createError = require('http-errors');
 const router = require('express').Router();
-const auth = require('./auth_controller');
-const users = require('./users_controller');
-const semesters = require('./semesters_controller');
-const modules = require('./modules_controller');
+const auth = require('./auth');
+const users = require('./users');
+const semesters = require('./semesters');
+const modules = require('./modules');
 const { ensureAuthenticated } = require('../auth/middleware');
 
 // Root redirect
