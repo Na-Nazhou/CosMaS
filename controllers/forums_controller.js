@@ -1,7 +1,7 @@
 const db = require('../db');
 const sql = require('../sql');
 const log = require('../helpers/logging');
-const { coursePath } = require("../routes/helpers/courses");
+const { coursePath } = require('../routes/helpers/courses');
 const { forumPath } = require('../routes/helpers/forums');
 
 exports.show = (req, res, next) => {

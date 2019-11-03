@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const courses = require('../controllers/courses_controller');
-const forums = require('./forums');
+const forums_routes = require('./forums');
 const { ensureIsAdmin, authorisedToEditCourse } = require('../auth/middleware');
 const log = require('../helpers/logging');
 
@@ -18,6 +18,6 @@ router.get('/:semester_name/:module_code/edit', authorisedToEditCourse, courses.
 router.put('/:semester_name/:module_code', authorisedToEditCourse, courses.update);
 
 // Nest forum routes within courses
-router.use('/:semester_name/:module_code/forums', forums);
+router.use('/:semester_name/:module_code/forums', forums_routes);
 
 module.exports = router;
