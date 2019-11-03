@@ -1,9 +1,14 @@
 <%- contentFor('content') %>
 <div class="container">
   <h1>Courses
-    <a href="/courses/new" class="btn btn-primary">
-      <i class="far fa-plus"></i>
-    </a>
+    <% if (user.is_admin) { %>
+      <div class="float-right" style="display: inline">
+      <a href="/courses/new" class="btn btn-primary">
+        <i class="far fa-plus"></i>
+        New Course
+      </a>
+    </div>
+    <% } %>
   </h1>
   <%- messages() %>
   <table class="table table-hover">
