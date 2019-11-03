@@ -5,7 +5,11 @@
   <form id="semester_form" action="/semesters" role="form" method="post">
     <div class="form-group">
       <label for="name">Semester Name</label>
-      <input type="text" class="form-control" id="name" name="name" required="required" />
+      <input type="text" class="form-control" id="name" name="name" aria-describedby="nameHelp" required="required" />
+      <small id="nameHelp" class="form-text text-muted">
+          Semester name is used to identify a semester. You are recommended to name it consistently. 
+          Once there are courses offered in this semester, semester name cannot be edited.
+      </small>
     </div>
     <div class="form-group">
       <label for="start_time">Start Time</label>

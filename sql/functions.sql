@@ -1,3 +1,4 @@
+/* Course_Memberships */
 CREATE OR REPLACE FUNCTION is_member_in_course(
     users.id%TYPE, 
     semesters.name%TYPE, 
