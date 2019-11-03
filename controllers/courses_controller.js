@@ -1,10 +1,11 @@
 const db = require('../db');
 const sql = require('../sql');
+const log = require('../helpers/logging');
 
 exports.index = (req, res, next) => {
   db.query(sql.courses.queries.get_courses, (err, data) => {
     if (err) {
-      console.error('Failed to get courses');
+      log.error('Failed to get courses');
       next(err);
     } else {
       res.render('courses', { data: data.rows });
@@ -15,12 +16,12 @@ exports.index = (req, res, next) => {
 exports.new = (req, res, next) => {
   db.query(sql.semesters.queries.get_semesters, (err1, semesters) => {
     if (err1) {
-      console.error('Failed to get semesters');
+      log.error('Failed to get semesters');
       next(err1);
     } else {
       db.query(sql.modules.queries.get_modules, (err2, modules) => {
         if (err2) {
-          console.error('Failed to get modules');
+          log.error('Failed to get modules');
           next(err2);
         } else {
           res.render('courseNew', { semesters: semesters.rows, modules: modules.rows });
@@ -39,7 +40,7 @@ exports.create = (req, res) => {
 
   db.query(sql.courses.queries.create_course, [semester_name, module_code, title, description, credits], err => {
     if (err) {
-      console.error('Failed to create course');
+      log.error('Failed to create course');
       // TODO: refine error message
       req.flash('error', err.message);
       res.redirect('/courses/new');
@@ -55,7 +56,7 @@ exports.delete = (req, res) => {
   const { module_code } = req.params;
   db.query(sql.courses.queries.delete_course, [semester_name, module_code], err => {
     if (err) {
-      console.error('Failed to delete course');
+      log.error('Failed to delete course');
       req.flash('error', err.message);
     } else {
       req.flash('success', 'Course successfully deleted!');
@@ -69,18 +70,18 @@ exports.edit = (req, res, next) => {
   const { module_code } = req.params;
   db.query(sql.courses.queries.find_course, [semester_name, module_code], (err, data) => {
     if (err) {
-      console.error('Failed to find course');
+      log.error('Failed to find course');
       next(err);
     } else {
       const course = data.rows[0];
       db.query(sql.semesters.queries.get_semesters, (err1, semesters) => {
         if (err1) {
-          console.error('Failed to get semesters');
+          log.error('Failed to get semesters');
           next(err1);
         } else {
           db.query(sql.modules.queries.get_modules, (err2, modules) => {
             if (err2) {
-              console.error('Failed to get modules');
+              log.error('Failed to get modules');
               next(err2);
             } else {
               res.render('courseEdit', {
@@ -110,7 +111,7 @@ exports.update = (req, res) => {
     [semester_name, module_code, title, description, credits, old_semester_name, old_module_code],
     err => {
       if (err) {
-        console.error('Failed to update course');
+        log.error('Failed to update course');
         req.flash('error', err.message);
         res.redirect(`/${encodeURIComponent(semester_name)}/${encodeURIComponent(module_code)}/edit`);
       } else {

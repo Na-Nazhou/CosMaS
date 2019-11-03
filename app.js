@@ -10,8 +10,8 @@ const expressMessages = require('express-messages');
 const cors = require('cors');
 const methodOverride = require('method-override');
 require('dotenv').config();
-const chalk = require('chalk');
 const router = require('./routes');
+const log = require('./helpers/logging');
 
 const app = express();
 
@@ -68,15 +68,15 @@ app.use((req, res, next) => {
 
 // Router Setup
 app.use((req, res, next) => {
-  console.log('===================================================');
-  console.log(chalk.blue.bold(`Processing request ${req.method} ${req.path}`));
+  log.info('===================================================');
+  log.route(`Processing request ${req.method} ${req.path}`);
   next();
 });
 app.use(router);
 
 // Error Handler
 app.use((err, req, res, next) => {
-  console.error(chalk.red.bold('Fatal: Unhandled error'));
+  log.fatal('Unhandled error');
   next(err);
 });
 

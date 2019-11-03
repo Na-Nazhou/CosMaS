@@ -3,22 +3,23 @@ const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const db = require('../db');
 const sql = require('../sql');
+const log = require('../helpers/logging');
 
 function findUser(id, callback) {
   db.query(sql.users.queries.find_user_by_id, [id], (err, data) => {
     if (err) {
-      console.error('Failed to get users from the database');
+      log.error('Failed to get users from the database');
       return callback(null);
     }
 
     if (data.rows.length === 0) {
-      console.error('User does not exist?');
+      log.error('User does not exist?');
       return callback(null);
     }
     if (data.rows.length === 1) {
       return callback(null, data.rows[0]);
     }
-    console.error('More than one user?');
+    log.error('More than one user?');
     return callback(null);
   });
 }
