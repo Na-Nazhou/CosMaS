@@ -64,3 +64,17 @@ exports.update = (req, res) => {
     }
   });
 };
+
+exports.dashboard = (req, res, next) => {
+  const user_id = req.params.id;
+  db.query(sql.users.queries.get_user_courses, [user_id], (err, data) => {
+    if (err) {
+      log.error('Failed to get user courses');
+      next(err);
+    } else {
+      res.render('dashboard', {
+        data: data.rows
+      });
+    }
+  });
+};

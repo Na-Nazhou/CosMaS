@@ -6,13 +6,29 @@
 
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
+      <% if (!user.is_admin) { %>
+      <li class="nav-item">
+        <a class="nav-link" href="/users/<%=user.id%>/dashboard">
+          <i class="fas fa-book"></i>
+          Dashboard
+        </a>
+      </li>
+      <% } %>
+
       <li class="nav-item">
         <a class="nav-link" href="/courses">
           <i class="fa fa-graduation-cap"></i>
           Courses
         </a>
       </li>
-      <% if (user.is_admin) { %>
+      <% if (!user.is_admin) { %>
+      <li class="nav-item">
+        <a class="nav-link" href="/course_requests">
+          <i class="fas fa-plus-square"></i>
+          My Course Requests
+        </a>
+      </li>
+      <% } %> <% if (user.is_admin) { %>
       <li class="nav-item">
         <a class="nav-link" href="/modules">
           <i class="fab fa-leanpub"></i>

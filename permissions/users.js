@@ -14,8 +14,13 @@ function canDeleteUser(user) {
   return isAdmin(user);
 }
 
+function canViewDashboard(current_user, viewedUserID) {
+  return isAdmin(current_user) || isSameUserID(current_user.id, viewedUserID);
+}
+
 module.exports = {
   canIndexUsers,
   canUpdateUser,
-  canDeleteUser
+  canDeleteUser,
+  canViewDashboard
 };
