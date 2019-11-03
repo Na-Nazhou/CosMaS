@@ -23,7 +23,7 @@ exports.new_user = (req, res) => {
   res.render('signup');
 };
 
-exports.create_user = (req, res) => {
+exports.create_user = (req, res, next) => {
   const { id } = req.body;
   const { name } = req.body;
   const raw_password = req.body.password;
@@ -32,16 +32,17 @@ exports.create_user = (req, res) => {
 
   db.query(sql.users.queries.create_user, [id, name, password_digest], err => {
     if (err) {
-      console.error('Cannot create user');
+      console.error('Failed to create user');
       // TODO: refine error message
       req.flash('error', err.message);
-      res.redirect('/signup');
+      res.render('signup');
     } else {
       req.login({ id, password: raw_password }, loginError => {
         if (!loginError) {
           res.redirect('/');
         } else {
-          console.error(loginError);
+          console.error('Failed to login after creating account', { loginError });
+          next(err);
         }
       });
     }

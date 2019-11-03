@@ -7,7 +7,7 @@ const sql = require('../sql');
 function findUser(id, callback) {
   db.query(sql.users.queries.find_user_by_id, [id], (err, data) => {
     if (err) {
-      console.error('Cannot find users table');
+      console.error('Failed to get users from the database');
       return callback(null);
     }
 

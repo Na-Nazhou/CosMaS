@@ -10,9 +10,11 @@ const { ensureAuthenticated, ensureIsAdmin } = require('../auth/middleware');
 // Root redirect
 router.get('/', (req, res) => {
   if (req.user) {
+    console.log('Redirecting from /');
     res.redirect('/courses');
   } else {
-    res.render('login');
+    console.log('Unauthenticated user, redirecting to /login');
+    res.redirect('/login');
   }
 });
 
