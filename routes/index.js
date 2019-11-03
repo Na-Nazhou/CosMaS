@@ -5,6 +5,7 @@ const users = require('./users');
 const semesters = require('./semesters');
 const modules = require('./modules');
 const courses = require('./courses');
+const groups = require('./groups');
 const { ensureAuthenticated } = require('../auth/middleware');
 
 // Root redirect
@@ -23,6 +24,7 @@ router.use('/users', ensureAuthenticated, users);
 router.use('/semesters', ensureAuthenticated, semesters);
 router.use('/modules', ensureAuthenticated, modules);
 router.use('/courses', ensureAuthenticated, courses);
+router.use('/groups', ensureAuthenticated, groups);
 
 // Return 404 for unknown routes
 router.use((req, res, next) => {

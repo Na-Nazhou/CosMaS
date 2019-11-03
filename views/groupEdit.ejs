@@ -1,0 +1,41 @@
+<%- contentFor('content') %>-
+<div class="container col-md-4 col-md-offset-4">
+  <h1 class="text-center">Update Group</h1>
+  <%- messages() %>
+  <form id="group_form"
+    action="/groups/<%=encodeURIComponent(group.name)%>/<%=encodeURIComponent(group.semester_name)%>/<%=encodeURIComponent(group.module_code)%>"
+    role="form" method="POST">
+    <input type="hidden" name="_method" value="PUT" />
+    <div class="form-group">
+      <div class="form-group">
+        <label for="name">Name</label>
+        <input type="text" class="form-control" id="name" name="name" required="required" value="<%=course.name%>">
+      </div>
+      <label for="semester_name">Semester Name</label>
+      <select class="form-control" id="semester_name" name="semester_name" required="required">
+        <% for(var i=0; i<semesters.length; i++) { %>
+        <% if (semesters[i].name === course.semester_name) { %>
+        <option selected><%= semesters[i].name%></option>
+        <% } else { %>
+        <option><%= semesters[i].name%></option>
+        <% } %>
+        <% } %>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="module_code">Module Code</label>
+      <select class="form-control" id="module_code" name="module_code" required="required"
+        value="<%=course.module_code%>">
+        <% for(var i=0; i<modules.length; i++) { %>
+        <% if (modules[i].module_code === course.module_code) { %>
+        <option selected><%= modules[i].module_code%></option>
+        <% } else { %>
+        <option><%= modules[i].module_code%></option>
+        <% } %>
+        <% } %>
+      </select>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Update</button>
+  </form>
+</div>

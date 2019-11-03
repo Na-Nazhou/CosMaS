@@ -28,6 +28,14 @@ exports.ensureIsAdmin = (req, res, next) => {
   }
 };
 
+exports.ensureProfessor = (req, res, next) => {
+  if (req.role === 'professor') {
+    next();
+  } else {
+    handleAccessDenied(req, res, 'Only professor is authorised to access');
+  }
+};
+
 exports.authorisedToEditUser = (req, res, next) => {
   if (req.user.is_admin || req.params.id === req.user.id) {
     next();
