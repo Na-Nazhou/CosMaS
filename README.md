@@ -13,9 +13,9 @@ DATABASE_URL=postgres://:@localhost:5432/postgres
 SECRET=keyboard cat 
 ```
 <!-- TODO:Write a script to run these commands -->
-2. Run `psql postgres` and then run `\i ./sql/set_up.sql` to create the tables.
+2. Run `psql postgres` and then run `\i ./sql/set_up.sql;` to create the tables.
 
-3. Run `\i .sql/functions.sql` to create the functions.
+3. Run `\i .sql/functions.sql;` followed by `/i .sql/triggers.sql;` to create the functions and triggers.
 
 Note: existing database tables might be dropped.
 <!-- TODO:Add to seeds -->
