@@ -5,9 +5,16 @@
   <form id="module_form" action="/modules" role="form" method="post">
     <div class="form-group">
       <label for="module_code">Module Code</label>
-      <input type="text" class="form-control" id="module_code" name="module_code" aria-describedby="codeHelp" required="required" />
+      <input
+        type="text"
+        class="form-control"
+        id="module_code"
+        name="module_code"
+        aria-describedby="codeHelp"
+        required="required"
+      />
       <small id="codeHelp" class="form-text text-muted">
-          Once there are courses of this module, module code cannot be edited.
+        Once there are courses of this module, module code cannot be edited.
       </small>
     </div>
     <button type="submit" class="btn btn-primary">Create</button>

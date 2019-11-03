@@ -26,7 +26,7 @@
           Semesters
         </a>
       </li>
-      
+
       <li class="nav-item">
         <a class="nav-link" href="/users">
           <i class="fa fa-users"></i>
@@ -34,7 +34,6 @@
         </a>
       </li>
       <% } %>
-
     </ul>
   </div>
   <div class="dropdown ml-auto">
@@ -50,7 +49,6 @@
       <%=user.id%> - <%=user.name%>
     </button>
     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-      
       <% if (user.is_admin) { %>
       <a class="dropdown-item" href="/courses/new">
         <i class="fas fa-plus"></i>

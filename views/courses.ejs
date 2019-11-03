@@ -2,7 +2,7 @@
 <div class="container">
   <h1>Courses
     <% if (user.is_admin) { %>
-      <div class="float-right" style="display: inline">
+    <div class="float-right" style="display: inline">
       <a href="/courses/new" class="btn btn-outline-primary">
         <i class="far fa-plus"></i>
         New Course
@@ -29,15 +29,15 @@
         <td><%= data[i].title%></td>
         <td><%= data[i].credits%></td>
         <td>
-          <a href="#" class="btn btn-primary">
+          <a href="<%= coursePath(data[i].semester_name, data[i].module_code) %>" class="btn btn-primary">
             <i class="far fa-eye"></i>
           </a>
           <a href="/courses/<%=encodeURIComponent(data[i].semester_name)%>/<%=encodeURIComponent(data[i].module_code)%>/edit"
-              class="btn btn-success">
+            class="btn btn-success">
             <i class="fas fa-edit"></i>
           </a>
           <% if (user.is_admin) { %>
-            <%- include('./partials/deleteButton', { action: `/courses/${encodeURIComponent(data[i].semester_name)}/${encodeURIComponent(data[i].module_code)}` }); %>
+          <%- include('./partials/deleteButton', { action: `/courses/${encodeURIComponent(data[i].semester_name)}/${encodeURIComponent(data[i].module_code)}` }); %>
           <% } %>
         </td>
       </tr>

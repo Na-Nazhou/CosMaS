@@ -13,6 +13,26 @@ exports.index = (req, res, next) => {
   });
 };
 
+exports.show = (req, res, next) => {
+  const { semester_name, module_code } = req.params;
+  db.query(sql.courses.queries.find_course, [semester_name, module_code], (err1, data1) => {
+    if (err1) {
+      log.error(`Failed to get course ${module_code} offered in ${semester_name}`);
+      next(err1);
+    } else {
+      const course = data1.rows[0];
+      db.query(sql.forums.queries.get_forums_by_course, [semester_name, module_code], (err2, data2) => {
+        if (err2) {
+          log.error(`Failed to get forums of ${module_code} offered in ${semester_name}`);
+          next(err2);
+        } else {
+          res.render('course', { course, forums: data2.rows });
+        }
+      });
+    }
+  });
+};
+
 exports.new = (req, res, next) => {
   db.query(sql.semesters.queries.get_semesters, (err1, semesters) => {
     if (err1) {
