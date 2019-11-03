@@ -3,7 +3,7 @@
   <h1 class="text-center">Update Semester</h1>
   <%- messages() %>
   <form id="semester_form" action="/semesters/<%=encodeURIComponent(semester.name)%>" role="form" method="POST">
-    <input type="hidden" name="_method" value="PUT"/>
+    <input type="hidden" name="_method" value="PUT" />
     <div class="form-group">
       <label for="name">Semester Name</label>
       <input type="text" class="form-control" id="name" name="name" required="required" value="<%=semester.name%>" />

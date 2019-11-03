@@ -1,9 +1,9 @@
 <!-- FOR TESTING ONLY -->
 <% if (!user) { %>
-  <p>Welcome! Please <a href="/login">log in</a>.</p>
-  <p>New user? Please <a href="/signup">sign up</a>.</p>
+<p>Welcome! Please <a href="/login">log in</a>.</p>
+<p>New user? Please <a href="/signup">sign up</a>.</p>
 <% } else { %>
-  <p>Hello, <%= user.name %>. 
-  <p>To see the full list of users, click <a href="/users">here</a>.</p>
-  <p><a href="/logout">Log out</a></p>
+<p>Hello, <%= user.name %>.</p>
+<p>To see the full list of users, click <a href="/users">here</a>.</p>
+<p><a href="/logout">Log out</a></p>
 <% } %>
