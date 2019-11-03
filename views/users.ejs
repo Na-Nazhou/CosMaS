@@ -22,8 +22,7 @@
           <a href="/users/<%= data[i].id %>/edit" class="btn btn-success">
             <i class="fas fa-edit"></i>
           </a>
-          <% if (user.is_admin) { %> <%- include('./partials/deleteButton', { action: `/users/${data[i].id}` }); %> <% }
-          %>
+          <%- include('./partials/deleteButton', { action: `/users/${data[i].id}` }); %> 
         </td>
       </tr>
       <% } %>
