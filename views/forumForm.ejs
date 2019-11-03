@@ -1,29 +1,42 @@
 <%- contentFor('content') %>
 <div class="container col-md-4 col-md-offset-4">
-    <h1 class="text-center"><%= forum ? 'Edit' : 'New' %> Forum</h1>
-    <%- messages() %>
-    <form id="forum_form"
-          action="<%= forum ? forumPath(semester_name, module_code, forum.title) : forumsPath(semester_name, module_code) %>"
-          role="form"
-          method="POST">
-        <% if (forum) { /* Editing form, send PUT */ %>
-            <input type="hidden" name="_method" value="PUT"/>
-        <% } %>
-        <div class="form-group">
-            <label for="semester_name">Semester Name</label>
-            <input type="text" class="form-control" id="semester_name" name="semester_name" value="<%= semester_name %>"
-                   readonly/>
-        </div>
-        <div class="form-group">
-            <label for="module_code">Module Code</label>
-            <input type="text" class="form-control" id="module_code" name="module_code" value="<%= module_code %>"
-                   readonly/>
-        </div>
-        <div class="form-group">
-            <label for="title">Name</label>
-            <input type="text" class="form-control" id="title" name="title" required="required"
-                   value="<%= forum ? forum.title : '' %>"/>
-        </div>
-        <button type="submit" class="btn btn-primary"><%= forum ? 'Update' : 'Create' %></button>
-    </form>
+  <h1 class="text-center mt-3 mb-3"><%= forum ? 'Edit' : 'New' %> Forum</h1>
+  <%- messages() %>
+  <form
+    id="forum_form"
+    action="<%= forum ? forumPath(semester_name, module_code, forum.title) : forumsPath(semester_name, module_code) %>"
+    role="form"
+    method="POST"
+  >
+    <% if (forum) { /* Editing form, send PUT */ %>
+    <input type="hidden" name="_method" value="PUT" />
+    <% } %>
+    <div class="form-group">
+      <label for="semester_name">Semester Name</label>
+      <input
+        type="text"
+        class="form-control"
+        id="semester_name"
+        name="semester_name"
+        value="<%= semester_name %>"
+        readonly
+      />
+    </div>
+    <div class="form-group">
+      <label for="module_code">Module Code</label>
+      <input type="text" class="form-control" id="module_code" name="module_code" value="<%= module_code %>" readonly />
+    </div>
+    <div class="form-group">
+      <label for="title">Name</label>
+      <input
+        type="text"
+        class="form-control"
+        id="title"
+        name="title"
+        required="required"
+        value="<%= forum ? forum.title : '' %>"
+      />
+    </div>
+    <button type="submit" class="btn btn-primary"><%= forum ? 'Update' : 'Create' %></button>
+  </form>
 </div>

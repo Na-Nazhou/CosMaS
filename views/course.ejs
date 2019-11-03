@@ -1,39 +1,46 @@
 <%- contentFor('content') %>
 <div class="container">
-    <%- messages() %>
-    <h1><%= course.semester_name %> <%= course.module_code %> <%= course.title %></h1>
-    <p><%= course.description %></p>
-    <h2>Forums
-        <div class="float-right" style="display: inline">
-            <a href="<%= forumNewPath(course.semester_name, course.module_code) %>" class="btn btn-outline-primary">
-                <i class="far fa-plus"></i>
-                New Forum
-            </a>
-        </div>
-    </h2>
-    <%- messages() %>
-    <table class="table table-hover">
-        <thead>
-        <tr>
-            <th scope="col">Title</th>
-            <th scope="col">Actions</th>
-        </tr>
-        </thead>
-        <tbody>
-        <% for (let i = 0; i < forums.length; i++) { %>
-            <tr>
-                <td><%= forums[i].title%></td>
-                <td>
-                    <a href="<%= forumPath(course.semester_name, course.module_code, forums[i].title) %>" class="btn btn-primary">
-                        <i class="far fa-eye"></i>
-                    </a>
-                    <a href="<%= forumEditPath(course.semester_name, course.module_code, forums[i].title) %>" class="btn btn-success">
-                        <i class="fas fa-edit"></i>
-                    </a>
-                    <%- include('./partials/deleteButton', { action: forumPath(course.semester_name, course.module_code, forums[i].title) }); %>
-                </td>
-            </tr>
-        <% } %>
-        </tbody>
-    </table>
+  <%- messages() %>
+  <h1 class="mt-3 mb-3"><%= course.module_code %> <%= course.title %></h1>
+  <h2><small class="text-muted"><%= course.semester_name %></small></h2>
+  <p class="h6">Course Description: <%= course.description %></p>
+  <hr class="mt-5 mb-5" />
+  <h2>
+    Forums
+    <div class="float-right" style="display: inline">
+      <a href="<%= forumNewPath(course.semester_name, course.module_code) %>" class="btn btn-outline-primary">
+        <i class="far fa-plus"></i>
+        New Forum
+      </a>
+    </div>
+  </h2>
+  <%- messages() %>
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th scope="col">Title</th>
+        <th scope="col">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% for (let i = 0; i < forums.length; i++) { %>
+      <tr>
+        <td><%= forums[i].title%></td>
+        <td>
+          <a href="<%= forumPath(course.semester_name, course.module_code, forums[i].title) %>" class="btn btn-primary">
+            <i class="far fa-eye"></i>
+          </a>
+          <a
+            href="<%= forumEditPath(course.semester_name, course.module_code, forums[i].title) %>"
+            class="btn btn-success"
+          >
+            <i class="fas fa-edit"></i>
+          </a>
+          <%- include('./partials/deleteButton', { action: forumPath(course.semester_name, course.module_code,
+          forums[i].title) }); %>
+        </td>
+      </tr>
+      <% } %>
+    </tbody>
+  </table>
 </div>
