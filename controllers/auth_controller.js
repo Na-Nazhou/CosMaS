@@ -16,6 +16,7 @@ exports.create_session = passport.authenticate('local', {
 exports.delete_session = (req, res) => {
   req.session.destroy();
   req.logout();
+  req.flash('sucess', 'Logout success!');
   res.redirect('/');
 };
 
@@ -39,6 +40,7 @@ exports.create_user = (req, res, next) => {
     } else {
       req.login({ id, password: raw_password }, loginError => {
         if (!loginError) {
+          req.flash('sucess', 'Account successfully created!');
           res.redirect('/');
         } else {
           console.error('Failed to login after creating account', { loginError });

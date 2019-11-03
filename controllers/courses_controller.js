@@ -58,7 +58,7 @@ exports.delete = (req, res) => {
       console.error('Failed to delete course');
       req.flash('error', err.message);
     } else {
-      req.flash('success', 'Successfully deleted course');
+      req.flash('success', 'Course successfully deleted!');
     }
     res.redirect('/courses');
   });
@@ -114,7 +114,7 @@ exports.update = (req, res) => {
         req.flash('error', err.message);
         res.redirect(`/${encodeURIComponent(semester_name)}/${encodeURIComponent(module_code)}/edit`);
       } else {
-        req.flash('success', `Successfully updated course ${module_code} ${title} offered in ${semester_name}`);
+        req.flash('success', `Successfully updated course ${module_code} ${title} offered in ${semester_name}!`);
         res.redirect('/courses');
       }
     }

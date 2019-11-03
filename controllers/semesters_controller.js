@@ -33,7 +33,7 @@ exports.create = (req, res) => {
       req.flash('error', err.message);
       res.redirect('/semesters/new');
     } else {
-      req.flash('success', `Successfully created semester ${name}!`);
+      req.flash('success', `Semester ${name} has been successfully created!`);
       res.redirect('/semesters');
     }
   });
@@ -46,7 +46,7 @@ exports.delete = (req, res) => {
       console.error('Failed to delete semester');
       req.flash('error', err.message);
     } else {
-      req.flash('success', `Semester ${name} has been successfully deleted`);
+      req.flash('success', `Semester ${name} has been successfully deleted!`);
     }
     res.redirect('/semesters');
   });
@@ -81,7 +81,7 @@ exports.update = (req, res) => {
       req.flash('error', err.message);
       res.render('semesterEdit', { semester: { name: old_name, start_time, end_time } });
     } else {
-      req.flash('success', 'Semester has been successfully updated.');
+      req.flash('success', 'Semester has been successfully updated!');
       res.redirect('/semesters');
     }
   });

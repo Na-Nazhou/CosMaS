@@ -26,7 +26,7 @@ exports.delete = (req, res) => {
       req.flash('success', 'Your account has been successfully deleted. You have been logged out.');
       res.redirect('/');
     } else {
-      req.flash('success', `User ${id} has been successfully deleted`);
+      req.flash('success', `User ${id} has been successfully deleted!`);
       res.redirect('/users');
     }
   });
@@ -59,7 +59,7 @@ exports.update = (req, res) => {
       res.render('userEdit', { user: { id: originalId, name } });
     } else {
       req.flash('success', 'Profile successfully updated!');
-      res.redirect('/users');
+      res.redirect('back');
     }
   });
 };

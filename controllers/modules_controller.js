@@ -26,7 +26,7 @@ exports.create = (req, res) => {
       req.flash('error', err.message);
       res.render('moduleNew');
     } else {
-      req.flash('success', 'Module successfully created!');
+      req.flash('success', `Module ${module_code} has been successfully created!`);
       res.redirect('/modules');
     }
   });
@@ -39,7 +39,7 @@ exports.delete = (req, res) => {
       console.error('Failed to delete module');
       req.flash('error', err.message);
     } else {
-      req.flash('success', `Module ${module_code} has been successfully deleted`);
+      req.flash('success', `Module ${module_code} has been successfully deleted!`);
     }
     res.redirect('/modules');
   });
@@ -67,7 +67,7 @@ exports.update = (req, res) => {
       req.flash('error', err.message);
       res.render('moduleEdit', { module: { module_code: old_module_code } });
     } else {
-      req.flash('success', 'Module successfully updated!');
+      req.flash('success', 'Module has been successfully updated!');
       res.redirect('/modules');
     }
   });
