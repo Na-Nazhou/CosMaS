@@ -1,4 +1,3 @@
-const createError = require('http-errors');
 const router = require('express').Router();
 const auth = require('./auth');
 const users = require('./users');
@@ -26,10 +25,10 @@ router.use('/semesters', ensureAuthenticated, ensureIsAdmin, semesters);
 router.use('/modules', ensureAuthenticated, ensureIsAdmin, modules);
 router.use('/courses', ensureAuthenticated, courses);
 
-// Return 404 for unknown routes
-router.use((req, res, next) => {
+// Render 404 page for unmatched routes
+router.use((req, res) => {
   log.error(`Unmatched route ${req.path}`);
-  next(createError(404));
+  res.render('404');
 });
 
 module.exports = router;

@@ -74,9 +74,10 @@ app.use((req, res, next) => {
 });
 app.use(router);
 
-// Error Handler
+// Catch-all Error Handler
 app.use((err, req, res, next) => {
   log.fatal('Unhandled error');
+  res.render('500');
   next(err);
 });
 
