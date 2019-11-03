@@ -29,7 +29,7 @@
         <td><%= data[i].title%></td>
         <td><%= data[i].credits%></td>
         <td>
-          <a href="#" class="btn btn-primary">
+          <a href="<%= coursePath(data[i].semester_name, data[i].module_code) %>" class="btn btn-primary">
             <i class="far fa-eye"></i>
           </a>
           <a href="/courses/<%=encodeURIComponent(data[i].semester_name)%>/<%=encodeURIComponent(data[i].module_code)%>/edit"
