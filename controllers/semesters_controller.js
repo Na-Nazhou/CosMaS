@@ -1,10 +1,8 @@
-const router = require('express').Router();
 const db = require('../db');
 const sql = require('../sql');
 const { formatDate } = require('../helpers/data');
 
-// Index
-router.get('/', (req, res) => {
+exports.index = (req, res) => {
   db.query(sql.semesters.queries.get_semesters, (err, data) => {
     if (err) console.error('Cannot get semesters');
     data.rows.forEach(sem => {
@@ -13,46 +11,45 @@ router.get('/', (req, res) => {
     });
     res.render('semesters', { data: data.rows });
   });
-});
+};
 
-// Create
-router.get('/new', (req, res) => {
+exports.new = (req, res) => {
   res.render('semesterNew');
-});
+};
 
-router.post('/', (req, res) => {
+exports.create = (req, res) => {
   const { name } = req.body;
   const { start_time } = req.body;
   const { end_time } = req.body;
 
   db.query(sql.semesters.queries.create_semester, [name, start_time, end_time], err => {
     if (err) {
-      console.error('Cannot create semester');
+      console.error('Failed to create semester');
       // TODO: refine error message
       req.flash('error', err.message);
-      return res.redirect('/semesters/new');
+      res.redirect('/semesters/new');
+    } else {
+      req.flash('success', `Successfully created semester ${name}!`);
+      res.redirect('/semesters');
     }
-    req.flash('info', 'Semester successfully created!');
-    return res.redirect('/semesters');
   });
-});
+};
 
-// Delete
-router.delete('/:name*', (req, res) => {
-  const name = req.params.name + req.params['0'];
+exports.delete = (req, res) => {
+  const { name } = req.params;
   db.query(sql.semesters.queries.delete_semester, [name], err => {
     if (err) {
-      console.error('Cannot delete semester');
-      res.send({ error: err.message });
+      console.error('Failed to delete semester');
+      req.flash('error', err.message);
     } else {
-      res.send({ redirectUrl: '/semesters' });
+      req.flash('success', `Semester ${name} has been successfully deleted`);
     }
+    res.redirect('/semesters');
   });
-});
+};
 
-// Update
-router.get('/:name*/edit', (req, res) => {
-  const name = req.params.name + req.params['0'];
+exports.edit = (req, res) => {
+  const { name } = req.params;
   db.query(sql.semesters.queries.find_semester, [name], (err, data) => {
     if (err) console.error('Cannot find semester');
     // TODO: refactor
@@ -63,21 +60,22 @@ router.get('/:name*/edit', (req, res) => {
     };
     res.render('semesterEdit', { semester });
   });
-});
+};
 
-router.put('/:name*', (req, res) => {
-  const old_name = req.params.name + req.params['0'];
+exports.update = (req, res) => {
+  const old_name = req.params.name;
   const { name } = req.body;
   const { start_time } = req.body;
   const { end_time } = req.body;
 
   db.query(sql.semesters.queries.update_semester, [name, start_time, end_time, old_name], err => {
     if (err) {
-      console.error('Cannot update semester');
-      return res.send({ error: err.message });
+      console.error('Failed to update semester');
+      req.flash('error', err.message);
+      res.render('semesterEdit', { semester: { name: old_name, start_time, end_time } });
+    } else {
+      req.flash('success', 'Semester has been successfully updated.');
+      res.redirect('/semesters');
     }
-    return res.send({ redirectUrl: '/semesters' });
   });
-});
-
-module.exports = router;
+};

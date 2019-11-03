@@ -2,14 +2,15 @@ const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
-const bodyParser = require('body-parser');
 const session = require('express-session');
 const passport = require('passport');
 const flash = require('connect-flash');
 const expressLayouts = require('express-ejs-layouts');
 const expressMessages = require('express-messages');
+const cors = require('cors');
+const methodOverride = require('method-override');
 require('dotenv').config();
-const router = require('./controllers');
+const router = require('./routes');
 
 const app = express();
 
@@ -40,8 +41,22 @@ app.use(expressLayouts);
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(cors());
+
+// PUT and DELETE method override
+/* eslint-disable no-underscore-dangle */
+app.use(
+  methodOverride(req => {
+    if (req.body && typeof req.body === 'object' && '_method' in req.body) {
+      const method = req.body._method;
+      delete req.body._method;
+      return method;
+    }
+    return undefined;
+  })
+);
+/* eslint-enable no-underscore-dangle */
 
 // Flash Messages Setup
 app.use(flash());
@@ -53,7 +68,7 @@ app.use((req, res, next) => {
 // Router Setup
 app.use(router);
 
-// error handler
+// Error Handler
 app.use((err, req, res, next) => {
   console.error('Fatal: Unhandled error');
   next(err);

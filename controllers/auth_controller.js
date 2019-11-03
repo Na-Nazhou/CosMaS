@@ -1,38 +1,29 @@
-const router = require('express').Router();
 const bcrypt = require('bcrypt');
 const passport = require('passport');
 const db = require('../db');
 const sql = require('../sql');
-const { ensureUnauthenticated, ensureAuthenticated } = require('../auth/middleware');
 
-// Login
-router.get('/login', ensureUnauthenticated, (req, res) => {
+exports.new_session = (req, res) => {
   res.render('login');
+};
+
+exports.create_session = passport.authenticate('local', {
+  successRedirect: '/',
+  failureRedirect: '/login',
+  failureFlash: true
 });
 
-router.post(
-  '/login',
-  ensureUnauthenticated,
-  passport.authenticate('local', {
-    successRedirect: '/',
-    failureRedirect: '/login',
-    failureFlash: true
-  })
-);
-
-// Logout
-router.get('/logout', ensureAuthenticated, (req, res) => {
+exports.delete_session = (req, res) => {
   req.session.destroy();
   req.logout();
   res.redirect('/');
-});
+};
 
-// Signup
-router.get('/signup', ensureUnauthenticated, (req, res) => {
+exports.new_user = (req, res) => {
   res.render('signup');
-});
+};
 
-router.post('/signup', ensureUnauthenticated, (req, res) => {
+exports.create_user = (req, res) => {
   const { id } = req.body;
   const { name } = req.body;
   const raw_password = req.body.password;
@@ -55,6 +46,4 @@ router.post('/signup', ensureUnauthenticated, (req, res) => {
       });
     }
   });
-});
-
-module.exports = router;
+};

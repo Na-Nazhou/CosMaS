@@ -1,0 +1,40 @@
+<%- contentFor('content') %>
+<div class="container">
+  <h1>Courses
+    <a href="/courses/new" class="btn btn-primary">
+      <i class="far fa-plus"></i>
+    </a>
+  </h1>
+  <%- messages() %>
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th scope="col">Semester Name</th>
+        <th scope="col">Module Code</th>
+        <th scope="col">Title</th>
+        <th scope="col">Credits</th>
+        <th scope="col">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% for(var i=0; i<data.length; i++) { %>
+      <tr>
+        <td><%= data[i].semester_name%></td>
+        <td><%= data[i].module_code%></td>
+        <td><%= data[i].title%></td>
+        <td><%= data[i].credits%></td>
+        <td>
+          <a href="#" class="btn btn-primary">
+            <i class="far fa-eye"></i>
+          </a>
+          <a href="/courses/<%=encodeURIComponent(data[i].semester_name)%>/<%=encodeURIComponent(data[i].module_code)%>/edit"
+            class="btn btn-success">
+            <i class="fas fa-edit"></i>
+          </a>
+          <%- include('./partials/deleteButton', { action: `/courses/${encodeURIComponent(data[i].semester_name)}/${encodeURIComponent(data[i].module_code)}` }); %>
+        </td>
+      </tr>
+      <% } %>
+    </tbody>
+  </table>
+</div>

@@ -1,21 +1,18 @@
-const router = require('express').Router();
 const db = require('../db');
 const sql = require('../sql');
 
-// Index
-router.get('/', (req, res) => {
+exports.index = (req, res) => {
   db.query(sql.modules.queries.get_modules, (err, data) => {
     if (err) console.error('Cannot get modules');
     res.render('modules', { data: data.rows });
   });
-});
+};
 
-// Create
-router.get('/new', (req, res) => {
+exports.new = (req, res) => {
   res.render('moduleNew');
-});
+};
 
-router.post('/', (req, res) => {
+exports.create = (req, res) => {
   const { module_code } = req.body;
 
   db.query(sql.modules.queries.create_module, [module_code], err => {
@@ -25,43 +22,44 @@ router.post('/', (req, res) => {
       req.flash('error', err.message);
       return res.redirect('/modules/new');
     }
-    req.flash('info', 'Module successfully created!');
+    req.flash('success', 'Module successfully created!');
     return res.redirect('/modules');
   });
-});
+};
 
-// Delete
-router.delete('/:module_code*', (req, res) => {
-  const module_code = req.params.module_code + req.params['0'];
+exports.delete = (req, res) => {
+  const { module_code } = req.params;
   db.query(sql.modules.queries.delete_module, [module_code], err => {
     if (err) {
-      console.error('Cannot delete module');
-      return res.send({ error: err.message });
+      console.error('Failed to delete module');
+      req.flash('error', err.message);
+    } else {
+      req.flash('success', `Module ${module_code} has been successfully deleted`);
     }
-    return res.send({ redirectUrl: '/modules' });
+    res.redirect('/modules');
   });
-});
+};
 
-// Update
-router.get('/:module_code*/edit', (req, res) => {
-  const module_code = req.params.module_code + req.params['0'];
+exports.edit = (req, res) => {
+  const { module_code } = req.params;
   db.query(sql.modules.queries.find_module, [module_code], (err, data) => {
     if (err) console.error('Cannot find module');
     res.render('moduleEdit', { module: data.rows[0] });
   });
-});
+};
 
-router.put('/:module_code*', (req, res) => {
-  const old_module_code = req.params.module_code + req.params['0'];
+exports.update = (req, res) => {
+  const old_module_code = req.params.module_code;
   const { module_code } = req.body;
 
   db.query(sql.modules.queries.update_module, [module_code, old_module_code], err => {
     if (err) {
-      console.error('Cannot update module');
-      return res.send({ error: err.message });
+      console.error('Failed to update module');
+      req.flash('error', err.message);
+      res.render('moduleEdit', { module: { module_code: old_module_code } });
+    } else {
+      req.flash('success', 'Module successfully updated!');
+      res.redirect('/modules');
     }
-    return res.send({ redirectUrl: '/modules' });
   });
-});
-
-module.exports = router;
+};

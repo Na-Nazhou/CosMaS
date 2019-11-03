@@ -1,42 +1,41 @@
-const router = require('express').Router();
 const bcrypt = require('bcrypt');
 const db = require('../db');
 const sql = require('../sql');
 
-// Index
-router.get('/', (req, res) => {
+exports.index = (req, res) => {
   db.query(sql.users.queries.get_users, (err, data) => {
     if (err) console.error('Cannot get users');
     res.render('users', { data: data.rows });
   });
-});
+};
 
-// Delete
-router.delete('/:id', (req, res) => {
+exports.delete = (req, res) => {
   const { id } = req.params;
   db.query(sql.users.queries.delete_user, [id], err => {
     if (err) {
-      console.error('Cannot delete user');
-      res.send({ error: err.message });
+      console.error('Failed to delete user');
+      req.flash('error', err.message);
+      res.redirect('/users');
     } else if (req.user.id === id) {
       // Log out the user during self-deletion
       req.logout();
-      res.send({ redirectUrl: '/' });
+      req.flash('success', 'Your account has been successfully deleted. You have been logged out.');
+      res.redirect('/');
     } else {
-      res.send({ redirectUrl: '/users' });
+      req.flash('success', `User ${id} has been successfully deleted`);
+      res.redirect('/users');
     }
   });
-});
+};
 
-// Edit
-router.get('/:id/edit', (req, res) => {
+exports.edit = (req, res) => {
   db.query(sql.users.queries.find_user_by_id, [req.params.id], (err, data) => {
     if (err) console.error('Cannot find user');
     res.render('userEdit', { user: data.rows[0] });
   });
-});
+};
 
-router.put('/:id', (req, res) => {
+exports.update = (req, res) => {
   const originalId = req.params.id;
   // TODO: update when edit id is supported
   const id = req.body.id || req.params.id;
@@ -47,11 +46,12 @@ router.put('/:id', (req, res) => {
 
   db.query(sql.users.queries.update_user, [id, name, password_digest, originalId], err => {
     if (err) {
-      console.error('Cannot update user');
-      return res.send({ error: err.message });
+      console.error('Failed up update user');
+      req.flash('error', err.message);
+      res.render('userEdit', { user: { id: originalId, name } });
+    } else {
+      req.flash('success', 'Profile successfully updated!');
+      res.redirect('/users');
     }
-    return res.send({ redirectUrl: '/users' });
   });
-});
-
-module.exports = router;
+};
