@@ -2,10 +2,14 @@ const bcrypt = require('bcrypt');
 const db = require('../db');
 const sql = require('../sql');
 
-exports.index = (req, res) => {
+exports.index = (req, res, next) => {
   db.query(sql.users.queries.get_users, (err, data) => {
-    if (err) console.error('Cannot get users');
-    res.render('users', { data: data.rows });
+    if (err) {
+      console.error('Failed to get users');
+      next(err);
+    } else {
+      res.render('users', { data: data.rows });
+    }
   });
 };
 
@@ -28,10 +32,14 @@ exports.delete = (req, res) => {
   });
 };
 
-exports.edit = (req, res) => {
+exports.edit = (req, res, next) => {
   db.query(sql.users.queries.find_user_by_id, [req.params.id], (err, data) => {
-    if (err) console.error('Cannot find user');
-    res.render('userEdit', { user: data.rows[0] });
+    if (err) {
+      console.error('Failed to find user');
+      next(err);
+    } else {
+      res.render('userEdit', { user: data.rows[0] });
+    }
   });
 };
 

@@ -2,14 +2,18 @@ const db = require('../db');
 const sql = require('../sql');
 const { formatDate } = require('../helpers/data');
 
-exports.index = (req, res) => {
+exports.index = (req, res, next) => {
   db.query(sql.semesters.queries.get_semesters, (err, data) => {
-    if (err) console.error('Cannot get semesters');
-    data.rows.forEach(sem => {
-      sem.start_time = formatDate(sem.start_time);
-      sem.end_time = formatDate(sem.end_time);
-    });
-    res.render('semesters', { data: data.rows });
+    if (err) {
+      console.error('Failed to get semesters');
+      next(err);
+    } else {
+      data.rows.forEach(sem => {
+        sem.start_time = formatDate(sem.start_time);
+        sem.end_time = formatDate(sem.end_time);
+      });
+      res.render('semesters', { data: data.rows });
+    }
   });
 };
 
@@ -48,17 +52,20 @@ exports.delete = (req, res) => {
   });
 };
 
-exports.edit = (req, res) => {
+exports.edit = (req, res, next) => {
   const { name } = req.params;
   db.query(sql.semesters.queries.find_semester, [name], (err, data) => {
-    if (err) console.error('Cannot find semester');
-    // TODO: refactor
-    const semester = {
-      name: data.rows[0].name,
-      start_time: formatDate(data.rows[0].start_time),
-      end_time: formatDate(data.rows[0].end_time)
-    };
-    res.render('semesterEdit', { semester });
+    if (err) {
+      console.error('Failed to find semester');
+      next(err);
+    } else {
+      const semester = {
+        name: data.rows[0].name,
+        start_time: formatDate(data.rows[0].start_time),
+        end_time: formatDate(data.rows[0].end_time)
+      };
+      res.render('semesterEdit', { semester });
+    }
   });
 };
 
