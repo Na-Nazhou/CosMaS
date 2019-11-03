@@ -32,11 +32,7 @@ exports.new = (req, res, next) => {
 };
 
 exports.create = (req, res) => {
-  const { semester_name } = req.body;
-  const { module_code } = req.body;
-  const { title } = req.body;
-  const { description } = req.body;
-  const { credits } = req.body;
+  const { semester_name, module_code, title, description, credits } = req.body;
 
   db.query(sql.courses.queries.create_course, [semester_name, module_code, title, description, credits], err => {
     if (err) {
@@ -45,29 +41,27 @@ exports.create = (req, res) => {
       req.flash('error', err.message);
       res.redirect('/courses/new');
     } else {
-      req.flash('info', 'Course successfully created!');
+      req.flash('success', `Course ${module_code} ${title} successfully created in ${semester_name}!`);
       res.redirect('/courses');
     }
   });
 };
 
 exports.delete = (req, res) => {
-  const { semester_name } = req.params;
-  const { module_code } = req.params;
+  const { semester_name, module_code } = req.params;
   db.query(sql.courses.queries.delete_course, [semester_name, module_code], err => {
     if (err) {
       log.error('Failed to delete course');
       req.flash('error', err.message);
     } else {
-      req.flash('success', 'Course successfully deleted!');
+      req.flash('success', `Course ${module_code} successfully deleted from ${semester_name}!`);
     }
     res.redirect('/courses');
   });
 };
 
 exports.edit = (req, res, next) => {
-  const { semester_name } = req.params;
-  const { module_code } = req.params;
+  const { semester_name, module_code } = req.params;
   db.query(sql.courses.queries.find_course, [semester_name, module_code], (err, data) => {
     if (err) {
       log.error('Failed to find course');
@@ -100,11 +94,7 @@ exports.edit = (req, res, next) => {
 exports.update = (req, res) => {
   const old_semester_name = req.params.semester_name;
   const old_module_code = req.params.module_code;
-  const { semester_name } = req.body;
-  const { module_code } = req.body;
-  const { title } = req.body;
-  const { description } = req.body;
-  const { credits } = req.body;
+  const { semester_name, module_code, title, description, credits } = req.body;
 
   db.query(
     sql.courses.queries.update_course,
@@ -115,7 +105,7 @@ exports.update = (req, res) => {
         req.flash('error', err.message);
         res.redirect(`/${encodeURIComponent(semester_name)}/${encodeURIComponent(module_code)}/edit`);
       } else {
-        req.flash('success', `Successfully updated course ${module_code} ${title} offered in ${semester_name}!`);
+        req.flash('success', `Course successfully updated!`);
         res.redirect('/courses');
       }
     }

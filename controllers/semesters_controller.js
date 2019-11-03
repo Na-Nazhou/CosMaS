@@ -23,9 +23,7 @@ exports.new = (req, res) => {
 };
 
 exports.create = (req, res) => {
-  const { name } = req.body;
-  const { start_time } = req.body;
-  const { end_time } = req.body;
+  const { name, start_time, end_time } = req.body;
 
   db.query(sql.semesters.queries.create_semester, [name, start_time, end_time], err => {
     if (err) {
@@ -34,7 +32,7 @@ exports.create = (req, res) => {
       req.flash('error', err.message);
       res.redirect('/semesters/new');
     } else {
-      req.flash('success', `Semester ${name} has been successfully created!`);
+      req.flash('success', `Semester ${name} successfully created!`);
       res.redirect('/semesters');
     }
   });
@@ -47,7 +45,7 @@ exports.delete = (req, res) => {
       log.error('Failed to delete semester');
       req.flash('error', err.message);
     } else {
-      req.flash('success', `Semester ${name} has been successfully deleted!`);
+      req.flash('success', `Semester ${name} successfully deleted!`);
     }
     res.redirect('/semesters');
   });
@@ -72,9 +70,7 @@ exports.edit = (req, res, next) => {
 
 exports.update = (req, res) => {
   const old_name = req.params.name;
-  const { name } = req.body;
-  const { start_time } = req.body;
-  const { end_time } = req.body;
+  const { name, start_time, end_time } = req.body;
 
   db.query(sql.semesters.queries.update_semester, [name, start_time, end_time, old_name], err => {
     if (err) {
@@ -82,7 +78,7 @@ exports.update = (req, res) => {
       req.flash('error', err.message);
       res.render('semesterEdit', { semester: { name: old_name, start_time, end_time } });
     } else {
-      req.flash('success', 'Semester has been successfully updated!');
+      req.flash('success', 'Semester successfully updated!');
       res.redirect('/semesters');
     }
   });

@@ -17,7 +17,6 @@ exports.create_session = passport.authenticate('local', {
 exports.delete_session = (req, res) => {
   req.session.destroy();
   req.logout();
-  req.flash('sucess', 'Successfully logged out!');
   res.redirect('/');
 };
 
@@ -26,8 +25,7 @@ exports.new_user = (req, res) => {
 };
 
 exports.create_user = (req, res, next) => {
-  const { id } = req.body;
-  const { name } = req.body;
+  const { id, name } = req.body;
   const raw_password = req.body.password;
   const salt = bcrypt.genSaltSync(10);
   const password_digest = bcrypt.hashSync(raw_password, salt);
@@ -40,12 +38,12 @@ exports.create_user = (req, res, next) => {
       res.render('signup');
     } else {
       req.login({ id, password: raw_password }, loginError => {
-        if (!loginError) {
-          req.flash('sucess', 'Account successfully created!');
-          res.redirect('/');
-        } else {
+        if (loginError) {
           log.error('Failed to login after creating account', { loginError });
           next(err);
+        } else {
+          req.flash('success', 'Account successfully created!');
+          res.redirect('/');
         }
       });
     }
