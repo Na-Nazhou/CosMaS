@@ -1,0 +1,5 @@
+<%- layout('layout') %>
+<div class="container">
+  <%-partial('./partials/messages', { messages: flash() })%> <%- partial('./partials/courseRequestsList', { data:
+  student, role: 'student' }) %> <%- partial('./partials/courseRequestsList', { data: professor, role: 'professor' }) %>
+</div>

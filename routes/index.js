@@ -5,6 +5,7 @@ const semesters = require('./semesters');
 const modules = require('./modules');
 const courses = require('./courses');
 const { ensureAuthenticated } = require('../auth/middleware');
+const course_requests = require('./course_requests');
 const log = require('../helpers/logging');
 const { ensureAuthorised } = require('../permissions');
 const { canAccessSemesters } = require('../permissions/semesters');
@@ -27,6 +28,7 @@ router.use('/users', ensureAuthenticated, users);
 router.use('/semesters', ensureAuthenticated, ensureAuthorised(req => canAccessSemesters(req.user)), semesters);
 router.use('/modules', ensureAuthenticated, ensureAuthorised(req => canAccessModules(req.user)), modules);
 router.use('/courses', ensureAuthenticated, courses);
+router.use('/course_requests', ensureAuthenticated, course_requests);
 
 // Render 404 page for unmatched routes
 router.use((req, res) => {
