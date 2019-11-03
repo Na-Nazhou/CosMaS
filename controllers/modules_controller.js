@@ -1,10 +1,14 @@
 const db = require('../db');
 const sql = require('../sql');
 
-exports.index = (req, res) => {
+exports.index = (req, res, next) => {
   db.query(sql.modules.queries.get_modules, (err, data) => {
-    if (err) console.error('Cannot get modules');
-    res.render('modules', { data: data.rows });
+    if (err) {
+      console.error('Failed to get modules');
+      next(err);
+    } else {
+      res.render('modules', { data: data.rows });
+    }
   });
 };
 
@@ -17,13 +21,14 @@ exports.create = (req, res) => {
 
   db.query(sql.modules.queries.create_module, [module_code], err => {
     if (err) {
-      console.error('Cannot create module');
+      console.error('Failed to create module');
       // TODO: refine error message
       req.flash('error', err.message);
-      return res.redirect('/modules/new');
+      res.render('moduleNew');
+    } else {
+      req.flash('success', `Module ${module_code} has been successfully created!`);
+      res.redirect('/modules');
     }
-    req.flash('success', 'Module successfully created!');
-    return res.redirect('/modules');
   });
 };
 
@@ -34,17 +39,21 @@ exports.delete = (req, res) => {
       console.error('Failed to delete module');
       req.flash('error', err.message);
     } else {
-      req.flash('success', `Module ${module_code} has been successfully deleted`);
+      req.flash('success', `Module ${module_code} has been successfully deleted!`);
     }
     res.redirect('/modules');
   });
 };
 
-exports.edit = (req, res) => {
+exports.edit = (req, res, next) => {
   const { module_code } = req.params;
   db.query(sql.modules.queries.find_module, [module_code], (err, data) => {
-    if (err) console.error('Cannot find module');
-    res.render('moduleEdit', { module: data.rows[0] });
+    if (err) {
+      console.error('Failed to find module');
+      next(err);
+    } else {
+      res.render('moduleEdit', { module: data.rows[0] });
+    }
   });
 };
 
@@ -58,7 +67,7 @@ exports.update = (req, res) => {
       req.flash('error', err.message);
       res.render('moduleEdit', { module: { module_code: old_module_code } });
     } else {
-      req.flash('success', 'Module successfully updated!');
+      req.flash('success', 'Module has been successfully updated!');
       res.redirect('/modules');
     }
   });

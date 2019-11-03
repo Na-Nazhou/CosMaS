@@ -10,6 +10,7 @@ const expressMessages = require('express-messages');
 const cors = require('cors');
 const methodOverride = require('method-override');
 require('dotenv').config();
+const chalk = require('chalk');
 const router = require('./routes');
 
 const app = express();
@@ -23,7 +24,7 @@ app.use(
     secret: process.env.SECRET,
     resave: true,
     saveUninitialized: true,
-    cookie: { maxAge: 60000 }
+    cookie: { maxAge: 604800000 }
   })
 );
 app.use(passport.initialize());
@@ -66,11 +67,16 @@ app.use((req, res, next) => {
 });
 
 // Router Setup
+app.use((req, res, next) => {
+  console.log('===================================================');
+  console.log(chalk.blue.bold(`Processing request ${req.method} ${req.path}`));
+  next();
+});
 app.use(router);
 
 // Error Handler
 app.use((err, req, res, next) => {
-  console.error('Fatal: Unhandled error');
+  console.error(chalk.red.bold('Fatal: Unhandled error'));
   next(err);
 });
 

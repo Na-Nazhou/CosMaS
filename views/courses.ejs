@@ -1,9 +1,14 @@
 <%- contentFor('content') %>
 <div class="container">
   <h1>Courses
-    <a href="/courses/new" class="btn btn-primary">
-      <i class="far fa-plus"></i>
-    </a>
+    <% if (user.is_admin) { %>
+      <div class="float-right" style="display: inline">
+      <a href="/courses/new" class="btn btn-outline-primary">
+        <i class="far fa-plus"></i>
+        New Course
+      </a>
+    </div>
+    <% } %>
   </h1>
   <%- messages() %>
   <table class="table table-hover">
@@ -28,10 +33,12 @@
             <i class="far fa-eye"></i>
           </a>
           <a href="/courses/<%=encodeURIComponent(data[i].semester_name)%>/<%=encodeURIComponent(data[i].module_code)%>/edit"
-            class="btn btn-success">
+              class="btn btn-success">
             <i class="fas fa-edit"></i>
           </a>
-          <%- include('./partials/deleteButton', { action: `/courses/${encodeURIComponent(data[i].semester_name)}/${encodeURIComponent(data[i].module_code)}` }); %>
+          <% if (user.is_admin) { %>
+            <%- include('./partials/deleteButton', { action: `/courses/${encodeURIComponent(data[i].semester_name)}/${encodeURIComponent(data[i].module_code)}` }); %>
+          <% } %>
         </td>
       </tr>
       <% } %>

@@ -16,6 +16,7 @@ exports.create_session = passport.authenticate('local', {
 exports.delete_session = (req, res) => {
   req.session.destroy();
   req.logout();
+  req.flash('sucess', 'Successfully logged out!');
   res.redirect('/');
 };
 
@@ -23,7 +24,7 @@ exports.new_user = (req, res) => {
   res.render('signup');
 };
 
-exports.create_user = (req, res) => {
+exports.create_user = (req, res, next) => {
   const { id } = req.body;
   const { name } = req.body;
   const raw_password = req.body.password;
@@ -32,16 +33,18 @@ exports.create_user = (req, res) => {
 
   db.query(sql.users.queries.create_user, [id, name, password_digest], err => {
     if (err) {
-      console.error('Cannot create user');
+      console.error('Failed to create user');
       // TODO: refine error message
       req.flash('error', err.message);
-      res.redirect('/signup');
+      res.render('signup');
     } else {
       req.login({ id, password: raw_password }, loginError => {
         if (!loginError) {
+          req.flash('sucess', 'Account successfully created!');
           res.redirect('/');
         } else {
-          console.error(loginError);
+          console.error('Failed to login after creating account', { loginError });
+          next(err);
         }
       });
     }

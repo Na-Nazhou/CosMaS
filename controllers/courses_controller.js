@@ -1,20 +1,32 @@
 const db = require('../db');
 const sql = require('../sql');
 
-exports.index = (req, res) => {
+exports.index = (req, res, next) => {
   db.query(sql.courses.queries.get_courses, (err, data) => {
-    if (err) console.error('Cannot get courses');
-    res.render('courses', { data: data.rows });
+    if (err) {
+      console.error('Failed to get courses');
+      next(err);
+    } else {
+      res.render('courses', { data: data.rows });
+    }
   });
 };
 
-exports.new = (req, res) => {
+exports.new = (req, res, next) => {
   db.query(sql.semesters.queries.get_semesters, (err1, semesters) => {
-    if (err1) console.error('Cannot get semesters');
-    db.query(sql.modules.queries.get_modules, (err2, modules) => {
-      if (err2) console.error('Cannot get modules');
-      res.render('courseNew', { semesters: semesters.rows, modules: modules.rows });
-    });
+    if (err1) {
+      console.error('Failed to get semesters');
+      next(err1);
+    } else {
+      db.query(sql.modules.queries.get_modules, (err2, modules) => {
+        if (err2) {
+          console.error('Failed to get modules');
+          next(err2);
+        } else {
+          res.render('courseNew', { semesters: semesters.rows, modules: modules.rows });
+        }
+      });
+    }
   });
 };
 
@@ -27,13 +39,14 @@ exports.create = (req, res) => {
 
   db.query(sql.courses.queries.create_course, [semester_name, module_code, title, description, credits], err => {
     if (err) {
-      console.error('Cannot create course!');
+      console.error('Failed to create course');
       // TODO: refine error message
       req.flash('error', err.message);
-      return res.redirect('/courses/new');
+      res.redirect('/courses/new');
+    } else {
+      req.flash('info', 'Course successfully created!');
+      res.redirect('/courses');
     }
-    req.flash('info', 'Course successfully created!');
-    return res.redirect('/courses');
   });
 };
 
@@ -45,7 +58,7 @@ exports.delete = (req, res) => {
       console.error('Failed to delete course');
       req.flash('error', err.message);
     } else {
-      req.flash('success', 'Successfully deleted course');
+      req.flash('success', 'Course successfully deleted!');
     }
     res.redirect('/courses');
   });
@@ -56,17 +69,10 @@ exports.edit = (req, res, next) => {
   const { module_code } = req.params;
   db.query(sql.courses.queries.find_course, [semester_name, module_code], (err, data) => {
     if (err) {
-      console.error('Cannot find course');
+      console.error('Failed to find course');
       next(err);
     } else {
-      // TODO: refactor
-      const course = {
-        semester_name: data.rows[0].semester_name,
-        module_code: data.rows[0].module_code,
-        title: data.rows[0].title,
-        description: data.rows[0].description,
-        credits: data.rows[0].credits
-      };
+      const course = data.rows[0];
       db.query(sql.semesters.queries.get_semesters, (err1, semesters) => {
         if (err1) {
           console.error('Failed to get semesters');
@@ -108,7 +114,7 @@ exports.update = (req, res) => {
         req.flash('error', err.message);
         res.redirect(`/${encodeURIComponent(semester_name)}/${encodeURIComponent(module_code)}/edit`);
       } else {
-        req.flash('success', `Successfully updated course ${module_code} ${title} offered in ${semester_name}`);
+        req.flash('success', `Successfully updated course ${module_code} ${title} offered in ${semester_name}!`);
         res.redirect('/courses');
       }
     }
