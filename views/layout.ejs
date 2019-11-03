@@ -1,24 +1,22 @@
 <!DOCTYPE html>
 <html>
+  <head>
+    <!-- TODO: CHANGE NAME -->
+    <title>Course Management System</title>
+    <% include ./partials/head %>
+  </head>
 
-<head>
-  <!-- TODO: CHANGE NAME -->
-  <title>Course Management System</title>
-  <% include ./partials/head %>
-</head>
-
-<body>
-  <header>
-    <% include ./partials/header %>
-  </header>
+  <body>
+    <header>
+      <% include ./partials/header %>
+    </header>
 
     <%- defineContent('content') %>
 
-  <footer>
-    <% include ./partials/footer %>
-  </footer>
-  
-    <%- defineContent('script') %>
-</body>
+    <footer>
+      <% include ./partials/footer %>
+    </footer>
 
+    <%- defineContent('script') %>
+  </body>
 </html>
