@@ -1,11 +1,12 @@
 const db = require('../db');
 const sql = require('../sql');
 const { formatDate } = require('../helpers/data');
+const log = require('../helpers/logging');
 
 exports.index = (req, res, next) => {
   db.query(sql.semesters.queries.get_semesters, (err, data) => {
     if (err) {
-      console.error('Failed to get semesters');
+      log.error('Failed to get semesters');
       next(err);
     } else {
       data.rows.forEach(sem => {
@@ -28,7 +29,7 @@ exports.create = (req, res) => {
 
   db.query(sql.semesters.queries.create_semester, [name, start_time, end_time], err => {
     if (err) {
-      console.error('Failed to create semester');
+      log.error('Failed to create semester');
       // TODO: refine error message
       req.flash('error', err.message);
       res.redirect('/semesters/new');
@@ -43,7 +44,7 @@ exports.delete = (req, res) => {
   const { name } = req.params;
   db.query(sql.semesters.queries.delete_semester, [name], err => {
     if (err) {
-      console.error('Failed to delete semester');
+      log.error('Failed to delete semester');
       req.flash('error', err.message);
     } else {
       req.flash('success', `Semester ${name} has been successfully deleted!`);
@@ -56,7 +57,7 @@ exports.edit = (req, res, next) => {
   const { name } = req.params;
   db.query(sql.semesters.queries.find_semester, [name], (err, data) => {
     if (err) {
-      console.error('Failed to find semester');
+      log.error('Failed to find semester');
       next(err);
     } else {
       const semester = {
@@ -77,7 +78,7 @@ exports.update = (req, res) => {
 
   db.query(sql.semesters.queries.update_semester, [name, start_time, end_time, old_name], err => {
     if (err) {
-      console.error('Failed to update semester');
+      log.error('Failed to update semester');
       req.flash('error', err.message);
       res.render('semesterEdit', { semester: { name: old_name, start_time, end_time } });
     } else {

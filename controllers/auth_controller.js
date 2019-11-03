@@ -2,6 +2,7 @@ const bcrypt = require('bcrypt');
 const passport = require('passport');
 const db = require('../db');
 const sql = require('../sql');
+const log = require('../helpers/logging');
 
 exports.new_session = (req, res) => {
   res.render('login');
@@ -33,7 +34,7 @@ exports.create_user = (req, res, next) => {
 
   db.query(sql.users.queries.create_user, [id, name, password_digest], err => {
     if (err) {
-      console.error('Failed to create user');
+      log.error('Failed to create user');
       // TODO: refine error message
       req.flash('error', err.message);
       res.render('signup');
@@ -43,7 +44,7 @@ exports.create_user = (req, res, next) => {
           req.flash('sucess', 'Account successfully created!');
           res.redirect('/');
         } else {
-          console.error('Failed to login after creating account', { loginError });
+          log.error('Failed to login after creating account', { loginError });
           next(err);
         }
       });

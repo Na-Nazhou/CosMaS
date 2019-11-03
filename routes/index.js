@@ -6,14 +6,15 @@ const semesters = require('./semesters');
 const modules = require('./modules');
 const courses = require('./courses');
 const { ensureAuthenticated, ensureIsAdmin } = require('../auth/middleware');
+const log = require('../helpers/logging');
 
 // Root redirect
 router.get('/', (req, res) => {
   if (req.user) {
-    console.log('Redirecting from /');
+    log.info('Redirecting from /');
     res.redirect('/courses');
   } else {
-    console.log('Unauthenticated user, redirecting to /login');
+    log.info('Unauthenticated user, redirecting to /login');
     res.redirect('/login');
   }
 });
@@ -27,7 +28,7 @@ router.use('/courses', ensureAuthenticated, courses);
 
 // Return 404 for unknown routes
 router.use((req, res, next) => {
-  console.error(`Unmatched route ${req.path}`);
+  log.error(`Unmatched route ${req.path}`);
   next(createError(404));
 });
 
