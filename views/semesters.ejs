@@ -2,24 +2,24 @@
 <div class="container">
   <h1>Semesters
     <div class="float-right" style="display: inline">
-        <a href="/semesters/new" class="btn btn-outline-primary">
-          <i class="far fa-plus"></i>
-          New Semester
-        </a>
+      <a href="/semesters/new" class="btn btn-outline-primary">
+        <i class="far fa-plus"></i>
+        New Semester
+      </a>
     </div>
   </h1>
   <%- messages() %>
   <table class="table table-hover">
     <thead>
-    <tr>
-      <th scope="col">Semester Name</th>
-      <th scope="col">Start Time</th>
-      <th scope="col">End Time</th>
-      <th scope="col">Actions</th>
-    </tr>
+      <tr>
+        <th scope="col">Semester Name</th>
+        <th scope="col">Start Time</th>
+        <th scope="col">End Time</th>
+        <th scope="col">Actions</th>
+      </tr>
     </thead>
     <tbody>
-    <% for(var i=0; i<data.length; i++) { %>
+      <% for(var i=0; i<data.length; i++) { %>
       <tr>
         <td><%= data[i].name%></td>
         <td><%= data[i].start_time%></td>
@@ -34,7 +34,7 @@
           <%- include('./partials/deleteButton', { action: `/semesters/${encodeURIComponent(data[i].name)}` }); %>
         </td>
       </tr>
-    <% } %>
+      <% } %>
     </tbody>
   </table>
 </div>

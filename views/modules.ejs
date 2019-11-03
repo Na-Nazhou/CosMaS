@@ -2,22 +2,22 @@
 <div class="container">
   <h1>Modules
     <div class="float-right" style="display: inline">
-        <a href="/modules/new" class="btn btn-outline-primary">
-          <i class="far fa-plus"></i>
-          New Module
-        </a>
+      <a href="/modules/new" class="btn btn-outline-primary">
+        <i class="far fa-plus"></i>
+        New Module
+      </a>
     </div>
   </h1>
   <%- messages() %>
   <table class="table table-hover">
     <thead>
-    <tr>
-      <th scope="col">Module Code</th>
-      <th scope="col">Actions</th>
-    </tr>
+      <tr>
+        <th scope="col">Module Code</th>
+        <th scope="col">Actions</th>
+      </tr>
     </thead>
     <tbody>
-    <% for(var i=0; i<data.length; i++) { %>
+      <% for(var i=0; i<data.length; i++) { %>
       <tr>
         <td><%= data[i].module_code%></td>
         <td>
@@ -30,7 +30,7 @@
           <%- include('./partials/deleteButton',  { action: `/modules/${encodeURIComponent(data[i].module_code)}` }); %>
         </td>
       </tr>
-    <% } %>
+      <% } %>
     </tbody>
   </table>
 </div>
