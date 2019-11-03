@@ -62,10 +62,10 @@ exports.edit = (req, res, next) => {
         semester_name: data.rows[0].semester_name,
         module_code: data.rows[0].module_code
       };
-      db.query(sql.courses.queries.get_courses, (err, semesters) => {
-        if (err) {
+      db.query(sql.courses.queries.get_courses, (err1, courses) => {
+        if (err1) {
           console.error('Failed to get courses');
-          next(err);
+          next(err1);
         } else {
           res.render('groupEdit', {
             group,
@@ -85,11 +85,11 @@ exports.update = (req, res) => {
   const { module_code } = req.body;
 
   db.query(
-    sql.groups.queries.update_group,[name, semester_name, module_code], err => {
+    sql.groups.queries.update_group,[name, semester_name, module_code, old_semester_name, old_module_code], err => {
       if (err) {
         console.error('Failed to update group');
         req.flash('error', err.message);
-        res.redirect(`/${encodeURIComponent(course)}/edit`);
+        res.redirect(`/${encodeURIComponent(semester_name)}/${encodeURIComponent(module_code)}/edit`);
       } else {
         req.flash('success', `Successfully updated group ${module_code} ${name} offered in ${semester_name}`);
         res.redirect('/groups');
