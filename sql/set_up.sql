@@ -32,8 +32,8 @@ CREATE TABLE Modules (
 );
 
 CREATE TABLE Courses (
-    semester_name   VARCHAR(50) REFERENCES Semesters(name),
-    module_code     VARCHAR(10) REFERENCES Modules(module_code),
+    semester_name   VARCHAR(50) REFERENCES Semesters(name) ON UPDATE CASCADE,
+    module_code     VARCHAR(10) REFERENCES Modules(module_code) ON UPDATE CASCADE,
     title           VARCHAR(100) NOT NULL,
     description     TEXT NOT NULL,
     credits         INTEGER NOT NULL,

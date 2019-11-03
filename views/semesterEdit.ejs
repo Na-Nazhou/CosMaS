@@ -6,7 +6,10 @@
     <input type="hidden" name="_method" value="PUT" />
     <div class="form-group">
       <label for="name">Semester Name</label>
-      <input type="text" class="form-control" id="name" name="name" required="required" value="<%=semester.name%>" />
+      <input type="text" class="form-control" id="name" name="name" aria-describedby="nameHelp" required="required" value="<%=semester.name%>" />
+      <small id="nameHelp" class="form-text text-muted">
+          Once updated, all existing courses (if any) offered in this semester will be updated.
+      </small>
     </div>
     <div class="form-group">
       <label for="start_time">Start Time</label>
