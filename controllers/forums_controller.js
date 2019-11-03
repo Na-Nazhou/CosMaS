@@ -43,7 +43,7 @@ exports.delete = (req, res) => {
       log.error('Failed to delete forum');
       req.flash('error', err.message);
     } else {
-      req.flash('success', 'Successfully deleted forum');
+      req.flash('success', `Successfully deleted forum ${title} from ${semester_name} ${module_code}!`);
     }
     res.redirect(coursePath(semester_name, module_code));
   });
