@@ -1,6 +1,12 @@
 const router = require('express').Router();
 const { ensureUnauthenticated, ensureAuthenticated } = require('../auth/middleware');
 const auth = require('../controllers/auth_controller');
+const log = require('../helpers/logging');
+
+router.use((req, res, next) => {
+  log.controller('Auth controller handling the request');
+  next();
+});
 
 // Login
 router.get('/login', ensureUnauthenticated, auth.new_session);

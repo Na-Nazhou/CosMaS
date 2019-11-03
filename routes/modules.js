@@ -1,5 +1,11 @@
 const router = require('express').Router();
 const modules = require('../controllers/modules_controller');
+const log = require('../helpers/logging');
+
+router.use((req, res, next) => {
+  log.controller('Modules controller handling the request');
+  next();
+});
 
 router.get('/', modules.index);
 router.get('/new', modules.new);

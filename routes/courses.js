@@ -1,6 +1,12 @@
 const router = require('express').Router();
 const courses = require('../controllers/courses_controller');
 const { ensureIsAdmin, authorisedToEditCourse } = require('../auth/middleware');
+const log = require('../helpers/logging');
+
+router.use((req, res, next) => {
+  log.controller('Courses controller handling the request');
+  next();
+});
 
 router.get('/', courses.index);
 router.get('/new', ensureIsAdmin, courses.new);
