@@ -28,10 +28,12 @@
             <i class="far fa-eye"></i>
           </a>
           <a href="/courses/<%=encodeURIComponent(data[i].semester_name)%>/<%=encodeURIComponent(data[i].module_code)%>/edit"
-            class="btn btn-success">
+              class="btn btn-success">
             <i class="fas fa-edit"></i>
           </a>
-          <%- include('./partials/deleteButton', { action: `/courses/${encodeURIComponent(data[i].semester_name)}/${encodeURIComponent(data[i].module_code)}` }); %>
+          <% if (user.is_admin) { %>
+            <%- include('./partials/deleteButton', { action: `/courses/${encodeURIComponent(data[i].semester_name)}/${encodeURIComponent(data[i].module_code)}` }); %>
+          <% } %>
         </td>
       </tr>
       <% } %>
