@@ -85,7 +85,9 @@ exports.update = (req, res) => {
   const { module_code } = req.body;
 
   db.query(
-    sql.groups.queries.update_group,[name, semester_name, module_code, old_semester_name, old_module_code], err => {
+    sql.groups.queries.update_group,
+    [name, semester_name, module_code, old_semester_name, old_module_code],
+    err => {
       if (err) {
         console.error('Failed to update group');
         req.flash('error', err.message);
