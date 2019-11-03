@@ -16,7 +16,7 @@ exports.create_session = passport.authenticate('local', {
 exports.delete_session = (req, res) => {
   req.session.destroy();
   req.logout();
-  req.flash('sucess', 'Logout success!');
+  req.flash('sucess', 'Successfully logged out!');
   res.redirect('/');
 };
 
