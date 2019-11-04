@@ -2,7 +2,7 @@ const router = require('express').Router();
 const courses = require('../controllers/courses_controller');
 const groups = require('./groups');
 const forums_routes = require('./forums');
-const { ensureIsAdmin, authorisedToEditCourse, ensureProfessor } = require('../auth/middleware');
+const { ensureIsAdmin, authorisedToEditCourse } = require('../auth/middleware');
 const log = require('../helpers/logging');
 
 router.use((req, res, next) => {
@@ -19,7 +19,7 @@ router.get('/:semester_name/:module_code/edit', authorisedToEditCourse, courses.
 router.put('/:semester_name/:module_code', authorisedToEditCourse, courses.update);
 
 // Nest group routes within courses
-router.use('/groups', ensureAuthenticated, ensureProfessor, groups);
+router.use('/groups', authorisedToEditCourse, groups);
 // Nest forum routes within courses
 router.use('/:semester_name/:module_code/forums', forums_routes);
 

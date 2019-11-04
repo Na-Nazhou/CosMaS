@@ -1,12 +1,17 @@
-const router = require('express').Router();
+const router = require('express').Router({mergeParams: true });
 const groups = require('../controllers/groups_controller');
-const { ensureProfessor } = require('../auth/middleware');
+const log = require('../helpers/logging');
 
-router.get('/', groups.index);
-router.get('/new', ensureProfessor, groups.new);
-router.post('/', ensureProfessor, groups.create);
-router.delete('/:name/:semester_name/:module_code', ensureProfessor, groups.delete);
-router.get('/:name/:semester_name/:module_code/edit', ensureProfessor, groups.edit);
-router.put('/:name/:semester_name/:module_code', ensureProfessor, groups.update);
+router.use((req, res, next) => {
+  log.controller('groups controller handling the request');
+  next();
+});
+
+router.get('/new', groups.new);
+router.get('/:name', groups.show);
+router.post('/', groups.create);
+router.delete('/:name', groups.delete);
+router.get('/:name/edit', groups.edit);
+router.put('/:name', groups.update);
 
 module.exports = router;

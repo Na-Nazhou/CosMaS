@@ -19,7 +19,7 @@ SECRET=keyboard cat
 
 2. Run `psql postgres` and then run `\i ./sql/set_up.sql;` to create the tables.
 
-3. Run `\i ./sql/functions.sql;` followed by `/i ./sql/triggers.sql;` to create the functions and triggers.
+3. Run `\i ./sql/functions.sql;` followed by `\i ./sql/triggers.sql;` to create the functions and triggers.
 
 Note: existing database tables might be dropped.
 
