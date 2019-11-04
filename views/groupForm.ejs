@@ -1,29 +1,42 @@
 <%- contentFor('content') %>
 <div class="container col-md-4 col-md-offset-4">
-    <h1 class="text-center"><%= group ? 'Edit' : 'New' %> Group</h1>
-    <%- messages() %>
-    <form id="group_form"
-          action="<%= group ? groupPath(semester_name, module_code, group.name) : groupsPath(semester_name, module_code) %>"
-          role="form"
-          method="POST">
-        <% if (group) { /* Editing form, send PUT */ %>
-            <input type="hidden" name="_method" value="PUT"/>
-        <% } %>
-        <div class="form-group">
-            <label for="semester_name">Semester Name</label>
-            <input type="text" class="form-control" id="semester_name" name="semester_name" value="<%= semester_name %>"
-                   readonly/>
-        </div>
-        <div class="form-group">
-            <label for="module_code">Module Code</label>
-            <input type="text" class="form-control" id="module_code" name="module_code" value="<%= module_code %>"
-                   readonly/>
-        </div>
-        <div class="form-group">
-            <label for="name">Name</label>
-            <input type="text" class="form-control" id="name" name="name" required="required"
-                   value="<%= group ? group.name : '' %>"/>
-        </div>
-        <button type="submit" class="btn btn-primary"><%= group ? 'Update' : 'Create' %></button>
-    </form>
+  <h1 class="text-center mt-3 mb-3"><%= group ? 'Edit' : 'New' %> Group</h1>
+  <%- messages() %>
+  <form
+    id="group_form"
+    action="<%= group ? groupPath(semester_name, module_code, group.name) : groupsPath(semester_name, module_code) %>"
+    role="form"
+    method="POST"
+  >
+    <% if (group) { /* Editing form, send PUT */ %>
+    <input type="hidden" name="_method" value="PUT" />
+    <% } %>
+    <div class="form-group">
+      <label for="semester_name">Semester Name</label>
+      <input
+        type="text"
+        class="form-control"
+        id="semester_name"
+        name="semester_name"
+        value="<%= semester_name %>"
+        readonly
+      />
+    </div>
+    <div class="form-group">
+      <label for="module_code">Module Code</label>
+      <input type="text" class="form-control" id="module_code" name="module_code" value="<%= module_code %>" readonly />
+    </div>
+    <div class="form-group">
+      <label for="name">Name</label>
+      <input
+        type="text"
+        class="form-control"
+        id="name"
+        name="name"
+        required="required"
+        value="<%= group ? group.name : '' %>"
+      />
+    </div>
+    <button type="submit" class="btn btn-primary"><%= group ? 'Update' : 'Create' %></button>
+  </form>
 </div>

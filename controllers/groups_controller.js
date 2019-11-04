@@ -4,16 +4,6 @@ const log = require('../helpers/logging');
 const { coursePath } = require('../routes/helpers/courses');
 const { groupPath } = require('../routes/helpers/groups');
 
-/* exports.index = (req, res, next) => {
-  db.query(sql.groups.queries.get_groups, (err, data) => {
-    if (err) {
-      log.error('Cannot get groups');
-      next(err);
-    }
-    res.render('groups', { data: data.rows });
-  });
-}; */
-
 exports.show = (req, res, next) => {
   const { semester_name, module_code, name } = req.params;
   db.query(sql.groups.queries.find_group, [semester_name, module_code, name], (err, data) => {
@@ -25,16 +15,6 @@ exports.show = (req, res, next) => {
     }
   });
 };
-
-/* exports.new = (req, res, next) => {
-  db.query(sql.courses.queries.get_courses, (err, courses) => {
-    if (err) {
-      log.error('Cannot get courses');
-      next(err);
-    }
-    res.render('groupNew', { courses: courses.rows });
-  });
-}; */
 
 exports.new = (req, res) => {
   const { semester_name, module_code } = req.params;

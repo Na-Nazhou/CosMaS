@@ -4,6 +4,6 @@ const groups = require('./groups');
 
 module.exports = {
   initViewHelpers: app => {
-    app.locals = Object.assign(app.locals, courses, forums, groups);
+    app.locals = Object.assign(app.locals, courses, groups, forums);
   }
 };
