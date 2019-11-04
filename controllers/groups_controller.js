@@ -1,24 +1,29 @@
 const db = require('../db');
 const sql = require('../sql');
+const log = require('../helpers/logging');
 
-exports.index = (req, res) => {
+exports.index = (req, res, next) => {
   db.query(sql.groups.queries.get_groups, (err, data) => {
-    if (err) console.error('Cannot get groups');
+    if (err) {
+      log.error('Cannot get groups');
+      next(err);
+    }
     res.render('groups', { data: data.rows });
   });
 };
 
-exports.new = (req, res) => {
+exports.new = (req, res, next) => {
   db.query(sql.courses.queries.get_courses, (err, courses) => {
-    if (err) console.error('Cannot get courses');
+    if (err) {
+      log.error('Cannot get courses');
+      next(err);
+    }
     res.render('groupNew', { courses: courses.rows });
   });
 };
 
 exports.create = (req, res) => {
-  const { name } = req.body;
-  const { semester_name } = req.body;
-  const { module_code } = req.body;
+  const { name, semester_name, module_code } = req.body;
 
   db.query(sql.groups.queries.create_group, [name, semester_name, module_code], err => {
     if (err) {
@@ -57,11 +62,7 @@ exports.edit = (req, res, next) => {
       next(err);
     } else {
       // TODO: refactor
-      const group = {
-        name: data.rows[0].name,
-        semester_name: data.rows[0].semester_name,
-        module_code: data.rows[0].module_code
-      };
+      const group = data.rows[0];
       db.query(sql.courses.queries.get_courses, (err1, courses) => {
         if (err1) {
           console.error('Failed to get courses');

@@ -1,6 +1,7 @@
 const router = require('express').Router();
 const courses = require('../controllers/courses_controller');
-const { ensureIsAdmin, authorisedToEditCourse } = require('../auth/middleware');
+const groups = require('./groups');
+const { ensureIsAdmin, authorisedToEditCourse, ensureProfessor } = require('../auth/middleware');
 const log = require('../helpers/logging');
 
 router.use((req, res, next) => {
@@ -14,5 +15,8 @@ router.post('/', ensureIsAdmin, courses.create);
 router.delete('/:semester_name/:module_code', ensureIsAdmin, courses.delete);
 router.get('/:semester_name/:module_code/edit', authorisedToEditCourse, courses.edit);
 router.put('/:semester_name/:module_code', authorisedToEditCourse, courses.update);
+
+// Nest group routes within courses
+router.use('/groups', ensureAuthenticated, ensureProfessor, groups);
 
 module.exports = router;
