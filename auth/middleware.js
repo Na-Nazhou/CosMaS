@@ -31,7 +31,7 @@ exports.ensureIsAdmin = (req, res, next) => {
   }
 };
 
-exports.authorisedToEditUser = (req, res, next) => {
+exports.ensureIsSameUser = (req, res, next) => {
   if (req.user.is_admin || req.params.id === req.user.id) {
     next();
   } else {
@@ -39,7 +39,28 @@ exports.authorisedToEditUser = (req, res, next) => {
   }
 };
 
-exports.authorisedToEditCourse = (req, res, next) => {
+exports.ensureIsInCourse = (req, res, next) => {
+  if (req.user.is_admin) {
+    next();
+  } else {
+    db.query(
+      course_memberships.queries.find_membership,
+      [req.params.semester_name, req.params.module_code, req.user.id],
+      (err, data) => {
+        if (err) {
+          req.flash('error', err.message);
+          res.redirect('back');
+        } else if (data.rows.length === 1) {
+          next();
+        } else {
+          handleAccessDenied(req, res, 'Only course member is authorised to access');
+        }
+      }
+    );
+  }
+};
+
+exports.ensureIsProfessorInCourse = (req, res, next) => {
   if (req.user.is_admin) {
     next();
   } else {
@@ -53,7 +74,7 @@ exports.authorisedToEditCourse = (req, res, next) => {
         } else if (data.rows[0].is_member_in_course) {
           next();
         } else {
-          handleAccessDenied(req, res, 'Unauthorised to edit this course');
+          handleAccessDenied(req, res, 'Only course professor is authorised to access');
         }
       }
     );
