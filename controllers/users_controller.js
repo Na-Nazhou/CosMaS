@@ -27,7 +27,7 @@ exports.delete = (req, res) => {
       req.flash('success', 'Your account has been successfully deleted. You have been logged out.');
       res.redirect('/');
     } else {
-      req.flash('success', `User ${id} has been successfully deleted!`);
+      req.flash('success', `User ${id} successfully deleted!`);
       res.redirect('/users');
     }
   });

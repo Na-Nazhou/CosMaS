@@ -29,7 +29,7 @@
 
       <li class="nav-item">
         <a class="nav-link" href="/groups">
-          <i class="fab fa-leanpub"></i>
+          <i class="fab fa-users-class"></i>
           Groups
         </a>
       </li>
@@ -41,7 +41,6 @@
         </a>
       </li>
       <% } %>
-
     </ul>
   </div>
   <div class="dropdown ml-auto">
@@ -57,7 +56,6 @@
       <%=user.id%> - <%=user.name%>
     </button>
     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-
       <% if (user.is_admin) { %>
       <a class="dropdown-item" href="/courses/new">
         <i class="fas fa-plus"></i>
