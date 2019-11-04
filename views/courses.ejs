@@ -1,7 +1,7 @@
 <% layout('layout') -%>
 <div class="container">
   <h1 class="mt-3 mb-3"><%= title %>
-    <% if (user.is_admin) { %>
+    <% if (canCreateCourse(user)) { %>
     <div class="float-right" style="display: inline">
       <a href="<%= courseNewPath()%>" class="btn btn-outline-primary">
         <i class="far fa-plus"></i>
@@ -29,15 +29,19 @@
         <td><%= data[i].title%></td>
         <td><%= data[i].credits%></td>
         <td>
-          <a href="<%= coursePath(data[i].semester_name, data[i].module_code)%>" class="btn btn-primary">
+          <% if (canShowCourse(user, data[i].semester_name, data[i].module_code)) { %>
+          <a href="<%= coursePath(data[i].semester_name, data[i].module_code) %>" class="btn btn-primary">
             <i class="far fa-eye"></i>
           </a>
-          <a href="<%= courseEditPath(data[i].semester_name, data[i].module_code)%>"
+          <% } %>
+          <% if (canUpdateCourse(user, data[i].semester_name, data[i].module_code)) { %>
+          <a href="/courses/<%=encodeURIComponent(data[i].semester_name)%>/<%=encodeURIComponent(data[i].module_code)%>/edit"
             class="btn btn-success">
             <i class="fas fa-edit"></i>
           </a>
-          <% if (user.is_admin) { %>
-            <%-partial('./partials/deleteButton',{ action: coursePath(data[i].semester_name, data[i].module_code) })%>
+          <% } %>
+          <% if (canDeleteCourse(user)) { %>
+          <%-partial('./partials/deleteButton',{ action: coursePath(data[i].semester_name, data[i].module_code) })%>
           <% } %>
         </td>
       </tr>

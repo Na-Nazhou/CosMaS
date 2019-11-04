@@ -1,11 +1,7 @@
 const semesters = require('./semesters');
 const modules = require('./modules');
 const courses = require('./courses');
-const forums = require('./forums');
 const groups = require('./groups');
+const forums = require('./forums');
 
-module.exports = {
-  initViewHelpers: app => {
-    app.locals = Object.assign(app.locals, semesters, modules, courses, groups, forums);
-  }
-};
+module.exports = { ...semesters, ...modules, ...courses, ...groups, ...forums };

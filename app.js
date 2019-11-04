@@ -37,7 +37,7 @@ app.use((req, res, next) => {
 app.engine('ejs', engine);
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
-require('./routes/helpers').initViewHelpers(app);
+require('./helpers/view').initViewHelpers(app);
 
 app.use(logger('dev'));
 app.use(express.json());

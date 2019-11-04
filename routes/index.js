@@ -4,8 +4,10 @@ const users = require('./users');
 const semesters = require('./semesters');
 const modules = require('./modules');
 const courses = require('./courses');
-const { ensureAuthenticated, ensureIsAdmin } = require('../auth/middleware');
+const { ensureAuthenticated } = require('../auth/middleware');
 const log = require('../helpers/logging');
+const { ensureAuthorised } = require('../permissions');
+const { canAccessSemesters, canAccessModules } = require('../permissions').helpers;
 
 // Root redirect
 router.get('/', (req, res) => {
@@ -21,8 +23,8 @@ router.get('/', (req, res) => {
 // Routes
 router.use('/', auth);
 router.use('/users', ensureAuthenticated, users);
-router.use('/semesters', ensureAuthenticated, ensureIsAdmin, semesters);
-router.use('/modules', ensureAuthenticated, ensureIsAdmin, modules);
+router.use('/semesters', ensureAuthenticated, ensureAuthorised(req => canAccessSemesters(req.user)), semesters);
+router.use('/modules', ensureAuthenticated, ensureAuthorised(req => canAccessModules(req.user)), modules);
 router.use('/courses', ensureAuthenticated, courses);
 
 // Render 404 page for unmatched routes
