@@ -1,6 +1,6 @@
 <%- contentFor('content') %>
 <div class="container col-md-4 col-md-offset-4">
-  <h1 class="text-center">Update Module</h1>
+  <h1 class="text-center mt-3 mb-3">Update Module</h1>
   <%- messages() %>
   <form id="module_form" action="/modules/<%=encodeURIComponent(module.module_code)%>" role="form" method="POST">
     <input type="hidden" name="_method" value="PUT" />
