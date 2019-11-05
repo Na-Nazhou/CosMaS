@@ -152,7 +152,7 @@ exports.update = (req, res) => {
       if (err) {
         log.error('Failed to update course');
         req.flash('error', err.message);
-        res.redirect(courseEditPath(old_semester_name, old_semester_name));
+        res.redirect(courseEditPath(old_semester_name, old_module_code));
       } else {
         req.flash('success', `Course successfully updated!`);
         res.redirect(coursesPath());
