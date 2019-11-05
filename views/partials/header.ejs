@@ -50,15 +50,15 @@
     </button>
     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
       <% if (user.is_admin) { %>
-      <a class="dropdown-item" href="/courses/new">
+      <a class="dropdown-item" href="<%= courseNewPath()%>">
         <i class="fas fa-plus"></i>
         New Course
       </a>
-      <a class="dropdown-item" href="/modules/new">
+      <a class="dropdown-item" href="<%= moduleNewPath()%>">
         <i class="fas fa-plus"></i>
         New Module
       </a>
-      <a class="dropdown-item" href="/semesters/new">
+      <a class="dropdown-item" href="<%= semesterNewPath()%>">
         <i class="fas fa-plus"></i>
         New Semester
       </a>

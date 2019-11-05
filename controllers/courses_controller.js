@@ -3,14 +3,35 @@ const sql = require('../sql');
 const log = require('../helpers/logging');
 
 exports.index = (req, res, next) => {
-  db.query(sql.courses.queries.get_courses, (err, data) => {
-    if (err) {
-      log.error('Failed to get courses');
-      next(err);
-    } else {
-      res.render('courses', { data: data.rows });
-    }
-  });
+  const { semester_name, module_code } = req.query;
+  if (semester_name) {
+    db.query(sql.courses.queries.get_courses_by_semester, [semester_name], (err, data) => {
+      if (err) {
+        log.error(`Failed to get courses offered in ${semester_name}`);
+        next(err);
+      } else {
+        res.render('courses', { data: data.rows, title: `Courses offered in ${semester_name}` });
+      }
+    });
+  } else if (module_code) {
+    db.query(sql.courses.queries.get_courses_by_module, [module_code], (err, data) => {
+      if (err) {
+        log.error(`Failed to get courses for ${module_code}`);
+        next(err);
+      } else {
+        res.render('courses', { data: data.rows, title: `Courses for module ${module_code}` });
+      }
+    });
+  } else {
+    db.query(sql.courses.queries.get_courses, (err, data) => {
+      if (err) {
+        log.error('Failed to get courses');
+        next(err);
+      } else {
+        res.render('courses', { data: data.rows, title: 'All courses' });
+      }
+    });
+  }
 };
 
 exports.show = (req, res, next) => {
