@@ -2,7 +2,7 @@
 <div class="container col-md-4 col-md-offset-4">
   <h1 class="text-center mt-3 mb-3">New Module</h1>
   <%- messages() %>
-  <form id="module_form" action="/modules" role="form" method="post">
+  <form id="module_form" action="<%= modulesPath()%>" role="form" method="post">
     <div class="form-group">
       <label for="module_code">Module Code</label>
       <input
