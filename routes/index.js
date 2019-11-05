@@ -7,7 +7,7 @@ const courses = require('./courses');
 const { ensureAuthenticated } = require('../auth/middleware');
 const log = require('../helpers/logging');
 const { ensureAuthorised } = require('../permissions');
-const { canAccessSemesters, canAccessModules } = require('../permissions').helpers;
+const { canAccessSemesters, canAccessModules } = require('../permissions').checkers;
 
 // Root redirect
 router.get('/', (req, res) => {

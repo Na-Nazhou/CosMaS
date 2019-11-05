@@ -20,4 +20,4 @@ const ensureAuthorised = funct => (req, res, next) => {
   }
 };
 
-module.exports = { helpers: { ...users, ...semesters, ...modules, ...courses, ...forums }, ensureAuthorised };
+module.exports = { checkers: { ...users, ...semesters, ...modules, ...courses, ...forums }, ensureAuthorised };

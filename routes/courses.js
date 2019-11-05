@@ -4,7 +4,7 @@ const groups_routes = require('./groups');
 const forums_routes = require('./forums');
 const log = require('../helpers/logging');
 const { ensureAuthorised } = require('../permissions');
-const { canCreateCourse, canShowCourse, canUpdateCourse, canDeleteCourse } = require('../permissions').helpers;
+const { canCreateCourse, canShowCourse, canUpdateCourse, canDeleteCourse } = require('../permissions').checkers;
 
 router.use((req, res, next) => {
   log.controller('Courses controller handling the request');
@@ -32,7 +32,7 @@ router.put(
 );
 
 // Nest group routes within courses
-router.use('/:semester_name/:module_code/groups', authorisedToEditCourse, groups_routes);
+router.use('/:semester_name/:module_code/groups', groups_routes);
 // Nest forum routes within courses
 router.use('/:semester_name/:module_code/forums', forums_routes);
 

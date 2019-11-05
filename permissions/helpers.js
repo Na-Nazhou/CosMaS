@@ -3,7 +3,7 @@ const course_memberships = require('../sql/course_memberships');
 
 exports.isAdmin = user => user.is_admin;
 
-exports.isSameUser = (user1, user2) => user1.id === user2.id;
+exports.isSameUserID = (userID1, userID2) => userID1 === userID2;
 
 exports.isInCourse = (user, semester_name, module_code) =>
   db.query(course_memberships.queries.find_membership, [semester_name, module_code, user.id], (err, data) => {

@@ -1,5 +1,5 @@
 const route_helpers = require('../routes/helpers');
-const permissions_helpers = require('../permissions').helpers;
+const permissions_helpers = require('../permissions').checkers;
 
 module.exports = {
   initViewHelpers: app => {

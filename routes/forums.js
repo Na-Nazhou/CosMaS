@@ -2,7 +2,7 @@ const router = require('express').Router({ mergeParams: true });
 const forums = require('../controllers/forums_controller');
 const log = require('../helpers/logging');
 const { ensureAuthorised } = require('../permissions');
-const { canShowForum, canCreateForum, canUpdateForum, canDeleteForum } = require('../permissions').helpers;
+const { canShowForum, canCreateForum, canUpdateForum, canDeleteForum } = require('../permissions').checkers;
 
 router.use((req, res, next) => {
   log.controller('Forums controller handling the request');
