@@ -51,10 +51,10 @@ router.get(
   ensureAuthorised(req => canEditAccess(req.user, req.params.semester_name, req.params.module_code)),
   accesses.edit
 );
-// router.post(
-//   '/:title/accesses',
-//   ensureAuthorised(req => canEditAccess(req.user, req.params.semester_name, req.params.module_code)),
-//   accesses.update
-// );
+router.post(
+  '/:title/accesses',
+  ensureAuthorised(req => canEditAccess(req.user, req.params.semester_name, req.params.module_code)),
+  accesses.update
+);
 
 module.exports = router;

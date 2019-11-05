@@ -5,11 +5,16 @@
   <h2><small class="text-muted"><%= semester_name %></small></h2>
   <p class="h6">Forum: <%= forum.title %></p>
   <p class="h6">
-    Accessible by groups: <% if (canEditAccess(user, semester_name, module_code)) { %>
+    Accessible by the following group(s): <% if (canEditAccess(user, semester_name, module_code)) { %>
     <a href="<%= accessesPath(semester_name, module_code, forum.title) %>">
       <i class="fa fa-pencil"></i>
     </a>
     <% } %>
   </p>
+  <div id="groups">
+    <% for (var i = 0; i < group_names.length; i++) { %>
+    <a href="#" class="badge-pill badge-primary"><%= group_names[i].group_name%></a>
+    <% } %>
+  </div>
   <hr class="mt-5 mb-5" />
 </div>

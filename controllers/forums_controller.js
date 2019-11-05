@@ -6,12 +6,19 @@ const { forumPath } = require('../routes/helpers/forums');
 
 exports.show = (req, res, next) => {
   const { semester_name, module_code, title } = req.params;
-  db.query(sql.forums.queries.find_forum, [semester_name, module_code, title], (err, data) => {
-    if (err) {
+  db.query(sql.forums.queries.find_forum, [semester_name, module_code, title], (err1, data1) => {
+    if (err1) {
       log.error(`Failed to get forum ${title} of ${semester_name} ${module_code}`);
-      next(err);
+      next(err1);
     } else {
-      res.render('forum', { semester_name, module_code, forum: data.rows[0] });
+      db.query(sql.accesses.queries.get_group_names_by_forum, [semester_name, module_code, title], (err2, data2) => {
+        if (err2) {
+          log.error(`Failed to get groups that access forum ${title} of ${module_code} ${semester_name}`);
+          next(err2);
+        } else {
+          res.render('forum', { semester_name, module_code, forum: data1.rows[0], group_names: data2.rows });
+        }
+      });
     }
   });
 };
