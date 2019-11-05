@@ -8,7 +8,7 @@
       </a>
     </div>
   </h1>
-  <%-partial('./partials/messages', messages)%>
+  <%-partial('./partials/messages', { messages: flash() })%>
   <table class="table table-hover">
     <thead>
       <tr>

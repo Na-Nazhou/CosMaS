@@ -151,7 +151,7 @@ exports.update = (req, res) => {
       if (err) {
         log.error('Failed to update course');
         req.flash('error', err.message);
-        res.redirect(`/${encodeURIComponent(semester_name)}/${encodeURIComponent(module_code)}/edit`);
+        res.redirect(`/courses/${encodeURIComponent(old_semester_name)}/${encodeURIComponent(old_module_code)}/edit`);
       } else {
         req.flash('success', `Course successfully updated!`);
         res.redirect('/courses');

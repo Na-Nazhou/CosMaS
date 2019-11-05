@@ -62,7 +62,7 @@ app.use(
 // Flash Messages Setup
 app.use(flash());
 app.use((req, res, next) => {
-  res.locals.messages = req.flash();
+  res.locals.flash = req.flash.bind(req);
   next();
 });
 
