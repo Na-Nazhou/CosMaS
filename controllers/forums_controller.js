@@ -23,7 +23,6 @@ exports.new = (req, res) => {
 
 exports.create = (req, res) => {
   const { semester_name, module_code, title } = req.body;
-  log.fatal('', { semester_name, module_code, title });
   db.query(sql.forums.queries.create_forum, [semester_name, module_code, title], err => {
     if (err) {
       log.error('Failed to create forum');

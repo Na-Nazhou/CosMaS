@@ -1,6 +1,7 @@
 const router = require('express').Router();
 const users = require('../controllers/users_controller');
-const { ensureIsAdmin, authorisedToEditUser } = require('../auth/middleware');
+const { ensureAuthorised } = require('../permissions');
+const { canIndexUsers, canDeleteUser, canUpdateUser } = require('../permissions').checkers;
 const log = require('../helpers/logging');
 
 router.use((req, res, next) => {
@@ -8,9 +9,9 @@ router.use((req, res, next) => {
   next();
 });
 
-router.get('/', ensureIsAdmin, users.index);
-router.delete('/:id', ensureIsAdmin, users.delete);
-router.get('/:id/edit', authorisedToEditUser, users.edit);
-router.put('/:id', authorisedToEditUser, users.update);
+router.get('/', ensureAuthorised(req => canIndexUsers(req.user)), users.index);
+router.delete('/:id', ensureAuthorised(req => canDeleteUser(req.user)), users.delete);
+router.get('/:id/edit', ensureAuthorised(req => canUpdateUser(req.user.id, req.params.id)), users.edit);
+router.put('/:id', ensureAuthorised(req => canUpdateUser(req.user.id, req.params.id)), users.update);
 
 module.exports = router;

@@ -6,13 +6,14 @@
   <p class="h6">Course Description: <%= course.description %></p>
   <hr class="mt-5 mb-5" />
   <h2>
-    Groups
+    Groups <% if (canCreateGroup(user, course.semester_name, course.module_code)) { %>
     <div class="float-right" style="display: inline">
       <a href="<%= groupNewPath(course.semester_name, course.module_code) %>" class="btn btn-outline-primary">
         <i class="far fa-plus"></i>
         New Group
       </a>
     </div>
+    <% } %>
   </h2>
   <table class="table table-hover">
     <thead>
@@ -26,17 +27,20 @@
       <tr>
         <td><%= groups[i].name%></td>
         <td>
+          <% if (canShowGroup(user, course.semester_name, course.module_code, groups[i].name)) { %>
           <a href="<%= groupPath(course.semester_name, course.module_code, groups[i].name) %>" class="btn btn-primary">
             <i class="far fa-eye"></i>
           </a>
+          <% } %> <% if (canUpdateGroup(user, course.semester_name, course.module_code)) { %>
           <a
             href="<%= groupEditPath(course.semester_name, course.module_code, groups[i].name) %>"
             class="btn btn-success"
           >
             <i class="fas fa-edit"></i>
           </a>
+          <% } %> <% if (canDeleteGroup(user, course.semester_name, course.module_code)) { %>
           <%-partial('./partials/deleteButton',{ action: groupPath(course.semester_name, course.module_code,
-          groups[i].name) })%>
+          groups[i].name) })%> <% } %>
         </td>
       </tr>
       <% } %>
@@ -44,13 +48,14 @@
   </table>
 
   <h2>
-    Forums
+    Forums <% if (canCreateForum(user, course.semester_name, course.module_code)) { %>
     <div class="float-right" style="display: inline">
       <a href="<%= forumNewPath(course.semester_name, course.module_code) %>" class="btn btn-outline-primary">
         <i class="far fa-plus"></i>
         New Forum
       </a>
     </div>
+    <% } %>
   </h2>
   <table class="table table-hover">
     <thead>
@@ -64,17 +69,20 @@
       <tr>
         <td><%= forums[i].title%></td>
         <td>
+          <% if (canShowForum(user, course.semester_name, course.module_code)) { %>
           <a href="<%= forumPath(course.semester_name, course.module_code, forums[i].title) %>" class="btn btn-primary">
             <i class="far fa-eye"></i>
           </a>
+          <% } %> <% if (canUpdateForum(user, course.semester_name, course.module_code)) { %>
           <a
             href="<%= forumEditPath(course.semester_name, course.module_code, forums[i].title) %>"
             class="btn btn-success"
           >
             <i class="fas fa-edit"></i>
           </a>
+          <% } %> <% if (canDeleteForum(user, course.semester_name, course.module_code)) { %>
           <%-partial('./partials/deleteButton',{ action: forumPath(course.semester_name, course.module_code,
-          forums[i].title) })%>
+          forums[i].title) })%> <% } %>
         </td>
       </tr>
       <% } %>
