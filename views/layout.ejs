@@ -3,7 +3,7 @@
   <head>
     <!-- TODO: CHANGE NAME -->
     <title>Course Management System</title>
-    <% include ./partials/head %>
+    <% include ./partials/head %> <%-scripts%>
   </head>
 
   <body>
@@ -11,12 +11,12 @@
       <% include ./partials/header %>
     </header>
 
-    <%- defineContent('content') %>
+    <section>
+      <%-body -%>
+    </section>
 
     <footer>
       <% include ./partials/footer %>
     </footer>
-
-    <%- defineContent('script') %>
   </body>
 </html>

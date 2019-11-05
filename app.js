@@ -5,8 +5,7 @@ const logger = require('morgan');
 const session = require('express-session');
 const passport = require('passport');
 const flash = require('connect-flash');
-const expressLayouts = require('express-ejs-layouts');
-const expressMessages = require('express-messages');
+const engine = require('ejs-locals');
 const cors = require('cors');
 const methodOverride = require('method-override');
 require('dotenv').config();
@@ -35,9 +34,9 @@ app.use((req, res, next) => {
 });
 
 // View Engine Setup
+app.engine('ejs', engine);
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
-app.use(expressLayouts);
 require('./routes/helpers').initViewHelpers(app);
 
 app.use(logger('dev'));
@@ -63,7 +62,7 @@ app.use(
 // Flash Messages Setup
 app.use(flash());
 app.use((req, res, next) => {
-  res.locals.messages = expressMessages(req, res);
+  res.locals.flash = req.flash.bind(req);
   next();
 });
 

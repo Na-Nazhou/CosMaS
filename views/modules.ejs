@@ -1,4 +1,4 @@
-<%- contentFor('content') %>
+<% layout('layout') -%>
 <div class="container">
   <h1 class="mt-3 mb-3">Modules
     <div class="float-right" style="display: inline">
@@ -8,7 +8,7 @@
       </a>
     </div>
   </h1>
-  <%- messages() %>
+  <%-partial('./partials/messages', { messages: flash() })%>
   <table class="table table-hover">
     <thead>
       <tr>
@@ -27,7 +27,7 @@
           <a href="<%= moduleEditPath(data[i].module_code)%>" class="btn btn-success">
             <i class="fas fa-edit"></i>
           </a>
-          <%- include('./partials/deleteButton',  { action: modulePath(data[i].module_code) }); %>
+          <%-partial('./partials/deleteButton',{ action: modulePath(data[i].module_code) })%>
         </td>
       </tr>
       <% } %>
