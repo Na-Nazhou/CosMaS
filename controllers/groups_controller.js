@@ -23,7 +23,6 @@ exports.new = (req, res) => {
 
 exports.create = (req, res) => {
   const { semester_name, module_code, name } = req.body;
-  log.fatal('', { semester_name, module_code, name });
   db.query(sql.groups.queries.create_group, [semester_name, module_code, name], err => {
     if (err) {
       log.error('Failed to create groups');
@@ -66,7 +65,7 @@ exports.update = (req, res) => {
 
   db.query(sql.groups.queries.update_group, [semester_name, module_code, old_name, new_name], err => {
     if (err) {
-      log.error('Failed to update course');
+      log.error('Failed to update group');
       req.flash('error', err.message);
       res.render('groupForm', { semester_name, module_code, group: { name: new_name } });
     } else {

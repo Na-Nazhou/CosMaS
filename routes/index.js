@@ -5,7 +5,7 @@ const semesters = require('./semesters');
 const modules = require('./modules');
 const courses = require('./courses');
 
-const { ensureAuthenticated, ensureIsAdmin, ensureProfessor } = require('../auth/middleware');
+const { ensureAuthenticated, ensureIsAdmin } = require('../auth/middleware');
 const log = require('../helpers/logging');
 
 // Root redirect
