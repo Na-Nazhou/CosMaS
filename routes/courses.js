@@ -1,5 +1,6 @@
 const router = require('express').Router();
 const courses = require('../controllers/courses_controller');
+const groups_routes = require('./groups');
 const forums_routes = require('./forums');
 const { ensureIsAdmin, authorisedToEditCourse } = require('../auth/middleware');
 const log = require('../helpers/logging');
@@ -17,6 +18,8 @@ router.delete('/:semester_name/:module_code', ensureIsAdmin, courses.delete);
 router.get('/:semester_name/:module_code/edit', authorisedToEditCourse, courses.edit);
 router.put('/:semester_name/:module_code', authorisedToEditCourse, courses.update);
 
+// Nest group routes within courses
+router.use('/:semester_name/:module_code/groups', authorisedToEditCourse, groups_routes);
 // Nest forum routes within courses
 router.use('/:semester_name/:module_code/forums', forums_routes);
 

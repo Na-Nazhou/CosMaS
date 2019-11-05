@@ -6,6 +6,44 @@
   <p class="h6">Course Description: <%= course.description %></p>
   <hr class="mt-5 mb-5" />
   <h2>
+    Groups
+    <div class="float-right" style="display: inline">
+      <a href="<%= groupNewPath(course.semester_name, course.module_code) %>" class="btn btn-outline-primary">
+        <i class="far fa-plus"></i>
+        New Group
+      </a>
+    </div>
+  </h2>
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th scope="col">Name</th>
+        <th scope="col">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% for (let i = 0; i < groups.length; i++) { %>
+      <tr>
+        <td><%= groups[i].name%></td>
+        <td>
+          <a href="<%= groupPath(course.semester_name, course.module_code, groups[i].name) %>" class="btn btn-primary">
+            <i class="far fa-eye"></i>
+          </a>
+          <a
+            href="<%= groupEditPath(course.semester_name, course.module_code, groups[i].name) %>"
+            class="btn btn-success"
+          >
+            <i class="fas fa-edit"></i>
+          </a>
+          <%- include('./partials/deleteButton', { action: groupPath(course.semester_name, course.module_code,
+          groups[i].name) }); %>
+        </td>
+      </tr>
+      <% } %>
+    </tbody>
+  </table>
+
+  <h2>
     Forums
     <div class="float-right" style="display: inline">
       <a href="<%= forumNewPath(course.semester_name, course.module_code) %>" class="btn btn-outline-primary">

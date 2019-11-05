@@ -21,12 +21,19 @@ exports.show = (req, res, next) => {
       next(err1);
     } else {
       const course = data1.rows[0];
-      db.query(sql.forums.queries.get_forums_by_course, [semester_name, module_code], (err2, data2) => {
+      db.query(sql.groups.queries.get_groups_by_course, [semester_name, module_code], (err2, data2) => {
         if (err2) {
-          log.error(`Failed to get forums of ${module_code} offered in ${semester_name}`);
+          log.error(`Failed to get groups of ${module_code} offered in ${semester_name}`);
           next(err2);
         } else {
-          res.render('course', { course, forums: data2.rows });
+          db.query(sql.forums.queries.get_forums_by_course, [semester_name, module_code], (err3, data3) => {
+            if (err3) {
+              log.error(`Failed to get forums of ${module_code} offered in ${semester_name}`);
+              next(err3);
+            } else {
+              res.render('course', { course, groups: data2.rows, forums: data3.rows });
+            }
+          });
         }
       });
     }
