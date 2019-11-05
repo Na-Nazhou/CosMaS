@@ -1,6 +1,7 @@
 const db = require('../db');
 const sql = require('../sql');
 const log = require('../helpers/logging');
+const { coursesPath, courseNewPath, courseEditPath } = require('../routes/helpers/courses');
 
 exports.index = (req, res, next) => {
   const { semester_name, module_code } = req.query;
@@ -87,10 +88,10 @@ exports.create = (req, res) => {
       log.error('Failed to create course');
       // TODO: refine error message
       req.flash('error', err.message);
-      res.redirect('/courses/new');
+      res.redirect(courseNewPath());
     } else {
       req.flash('success', `Course ${module_code} ${title} successfully created in ${semester_name}!`);
-      res.redirect('/courses');
+      res.redirect(coursesPath());
     }
   });
 };
@@ -104,7 +105,7 @@ exports.delete = (req, res) => {
     } else {
       req.flash('success', `Course ${module_code} successfully deleted from ${semester_name}!`);
     }
-    res.redirect('/courses');
+    res.redirect(coursesPath());
   });
 };
 
@@ -151,10 +152,10 @@ exports.update = (req, res) => {
       if (err) {
         log.error('Failed to update course');
         req.flash('error', err.message);
-        res.redirect(`/courses/${encodeURIComponent(old_semester_name)}/${encodeURIComponent(old_module_code)}/edit`);
+        res.redirect(courseEditPath(old_semester_name, old_semester_name));
       } else {
         req.flash('success', `Course successfully updated!`);
-        res.redirect('/courses');
+        res.redirect(coursesPath());
       }
     }
   );
