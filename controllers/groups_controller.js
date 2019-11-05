@@ -65,7 +65,7 @@ exports.update = (req, res) => {
 
   db.query(sql.groups.queries.update_group, [semester_name, module_code, old_name, new_name], err => {
     if (err) {
-      log.error('Failed to update course');
+      log.error('Failed to update group');
       req.flash('error', err.message);
       res.render('groupForm', { semester_name, module_code, group: { name: new_name } });
     } else {
