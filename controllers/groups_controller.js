@@ -25,7 +25,7 @@ exports.create = (req, res) => {
   const { semester_name, module_code, name } = req.body;
   db.query(sql.groups.queries.create_group, [semester_name, module_code, name], err => {
     if (err) {
-      log.error('Failed to create groups');
+      log.error('Failed to create group');
       req.flash('error', err.message);
       res.redirect(coursePath(semester_name, module_code));
     }
