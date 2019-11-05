@@ -35,7 +35,7 @@
           </a>
           <% } %>
           <% if (canUpdateCourse(user, data[i].semester_name, data[i].module_code)) { %>
-          <a href="/courses/<%=encodeURIComponent(data[i].semester_name)%>/<%=encodeURIComponent(data[i].module_code)%>/edit"
+          <a href="<%= courseEditPath(data[i].semester_name, data[i].module_code)%>"
             class="btn btn-success">
             <i class="fas fa-edit"></i>
           </a>

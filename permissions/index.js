@@ -2,6 +2,7 @@ const users = require('./users');
 const semesters = require('./semesters');
 const modules = require('./modules');
 const courses = require('./courses');
+const groups = require('./groups');
 const forums = require('./forums');
 const log = require('../helpers/logging');
 
@@ -20,4 +21,7 @@ const ensureAuthorised = funct => (req, res, next) => {
   }
 };
 
-module.exports = { checkers: { ...users, ...semesters, ...modules, ...courses, ...forums }, ensureAuthorised };
+module.exports = {
+  checkers: { ...users, ...semesters, ...modules, ...courses, ...groups, ...forums },
+  ensureAuthorised
+};
