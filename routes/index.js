@@ -4,7 +4,6 @@ const users = require('./users');
 const semesters = require('./semesters');
 const modules = require('./modules');
 const courses = require('./courses');
-
 const { ensureAuthenticated, ensureIsAdmin } = require('../auth/middleware');
 const log = require('../helpers/logging');
 
