@@ -16,7 +16,7 @@ router.get(
 );
 router.get(
   '/:title',
-  ensureAuthorised(req => canShowForum(req.user, req.params.semester_name, req.params.module_code)),
+  ensureAuthorised(req => canShowForum(req.user, req.params.semester_name, req.params.module_code, req.params.title)),
   forums.show
 );
 router.post(

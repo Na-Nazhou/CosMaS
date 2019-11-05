@@ -1,6 +1,7 @@
 const db = require('../db');
 const sql = require('../sql');
 const log = require('../helpers/logging');
+const { modulesPath } = require('../routes/helpers/modules');
 
 exports.index = (req, res, next) => {
   db.query(sql.modules.queries.get_modules, (err, data) => {
@@ -28,7 +29,7 @@ exports.create = (req, res) => {
       res.render('moduleNew');
     } else {
       req.flash('success', `Module ${module_code} has been successfully created!`);
-      res.redirect('/modules');
+      res.redirect(modulesPath());
     }
   });
 };
@@ -42,7 +43,7 @@ exports.delete = (req, res) => {
     } else {
       req.flash('success', `Module ${module_code} has been successfully deleted!`);
     }
-    res.redirect('/modules');
+    res.redirect(modulesPath());
   });
 };
 
@@ -69,7 +70,7 @@ exports.update = (req, res) => {
       res.render('moduleEdit', { module: { module_code: old_module_code } });
     } else {
       req.flash('success', 'Module has been successfully updated!');
-      res.redirect('/modules');
+      res.redirect(modulesPath());
     }
   });
 };

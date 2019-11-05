@@ -2,6 +2,7 @@ const db = require('../db');
 const sql = require('../sql');
 const { formatDate } = require('../helpers/data');
 const log = require('../helpers/logging');
+const { semestersPath } = require('../routes/helpers/semesters');
 
 exports.index = (req, res, next) => {
   db.query(sql.semesters.queries.get_semesters, (err, data) => {
@@ -10,8 +11,10 @@ exports.index = (req, res, next) => {
       next(err);
     } else {
       data.rows.forEach(sem => {
-        sem.start_time = formatDate(sem.start_time);
-        sem.end_time = formatDate(sem.end_time);
+        Object.assign(sem, {
+          start_time: formatDate(sem.start_time),
+          end_time: formatDate(sem.end_time)
+        });
       });
       res.render('semesters', { data: data.rows });
     }
@@ -30,10 +33,10 @@ exports.create = (req, res) => {
       log.error('Failed to create semester');
       // TODO: refine error message
       req.flash('error', err.message);
-      res.redirect('/semesters/new');
+      res.render('semesterNew');
     } else {
       req.flash('success', `Semester ${name} successfully created!`);
-      res.redirect('/semesters');
+      res.redirect(semestersPath());
     }
   });
 };
@@ -47,7 +50,7 @@ exports.delete = (req, res) => {
     } else {
       req.flash('success', `Semester ${name} successfully deleted!`);
     }
-    res.redirect('/semesters');
+    res.redirect(semestersPath());
   });
 };
 
@@ -79,7 +82,7 @@ exports.update = (req, res) => {
       res.render('semesterEdit', { semester: { name: old_name, start_time, end_time } });
     } else {
       req.flash('success', 'Semester successfully updated!');
-      res.redirect('/semesters');
+      res.redirect(semestersPath());
     }
   });
 };
