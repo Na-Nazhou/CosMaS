@@ -3,24 +3,37 @@ const sql = require('../sql');
 const log = require('../helpers/logging');
 const { coursePath } = require('../routes/helpers/courses');
 const { forumPath } = require('../routes/helpers/forums');
+const { findCourse, findForum } = require('./helpers/index');
 
-exports.show = (req, res, next) => {
-  const { semester_name, module_code, title } = req.params;
-  db.query(sql.forums.queries.find_forum, [semester_name, module_code, title], (err1, data1) => {
-    if (err1) {
-      log.error(`Failed to get forum ${title} of ${semester_name} ${module_code}`);
-      next(err1);
-    } else {
-      db.query(sql.accesses.queries.get_group_names_by_forum, [semester_name, module_code, title], (err2, data2) => {
-        if (err2) {
-          log.error(`Failed to get groups that access forum ${title} of ${module_code} ${semester_name}`);
-          next(err2);
-        } else {
-          res.render('forum', { semester_name, module_code, forum: data1.rows[0], group_names: data2.rows });
+exports.show = async (req, res, next) => {
+  const { semester_name, module_code, title: forum_title } = req.params;
+  try {
+    const course = await findCourse(req, semester_name, module_code);
+    const forum = await findForum(req, semester_name, module_code, forum_title);
+    const group_names = await db
+      .query(sql.accesses.queries.get_group_names_by_forum, [semester_name, module_code, forum_title])
+      .then(
+        data => data.rows,
+        err => {
+          log.error(`Failed to get groups that access forum ${forum_title} of ${module_code} ${semester_name}`);
+          throw err;
         }
-      });
-    }
-  });
+      );
+    const threads = await db
+      .query(sql.threads.queries.get_threads_info_by_forum, [semester_name, module_code, forum.title])
+      .then(
+        data => data.rows,
+        err => {
+          log.error(`Failed to get threads of forum ${forum.title} of ${semester_name} ${module_code}`);
+          throw err;
+        }
+      );
+
+    res.render('forum', { course, forum, threads, group_names });
+  } catch (err) {
+    req.flash('error', err.message);
+    next(err);
+  }
 };
 
 exports.new = (req, res) => {

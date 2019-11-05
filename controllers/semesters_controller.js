@@ -1,6 +1,6 @@
 const db = require('../db');
 const sql = require('../sql');
-const { formatDate } = require('../helpers/data');
+const { dateToDisplayedForm } = require('../helpers/date');
 const log = require('../helpers/logging');
 const { semestersPath } = require('../routes/helpers/semesters');
 
@@ -12,8 +12,8 @@ exports.index = (req, res, next) => {
     } else {
       data.rows.forEach(sem => {
         Object.assign(sem, {
-          start_time: formatDate(sem.start_time),
-          end_time: formatDate(sem.end_time)
+          start_time: dateToDisplayedForm(sem.start_time),
+          end_time: dateToDisplayedForm(sem.end_time)
         });
       });
       res.render('semesters', { data: data.rows });
@@ -63,8 +63,8 @@ exports.edit = (req, res, next) => {
     } else {
       const semester = {
         name: data.rows[0].name,
-        start_time: formatDate(data.rows[0].start_time),
-        end_time: formatDate(data.rows[0].end_time)
+        start_time: dateToDisplayedForm(data.rows[0].start_time),
+        end_time: dateToDisplayedForm(data.rows[0].end_time)
       };
       res.render('semesterEdit', { semester });
     }

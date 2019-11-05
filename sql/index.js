@@ -9,5 +9,7 @@ sql.forums = require('./forums');
 sql.course_memberships = require('./course_memberships');
 sql.group_memberships = require('./group_memberships');
 sql.accesses = require('./accesses');
+sql.threads = require('./threads');
+sql.replies = require('./replies');
 
 module.exports = sql;
