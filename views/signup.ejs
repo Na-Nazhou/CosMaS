@@ -1,7 +1,7 @@
-<%- contentFor('content') %>
+<% layout('layout') -%>
 <div class="container col-md-4 col-md-offset-4">
   <h1 class="text-center mt-3 mb-3">Sign up</h1>
-  <%- messages() %>
+  <%-partial('./partials/messages', messages)%>
   <form id="user_form" action="/signup" role="form" method="post">
     <div class="form-group">
       <label for="id">User ID</label>
@@ -38,8 +38,7 @@
   </form>
 </div>
 
-<%- contentFor('script') %>
-<script src="/javascripts/userForm.js"></script>
+<% script('javascripts/userForm.js') -%>
 <script>
   (function() {
     window.addEventListener(

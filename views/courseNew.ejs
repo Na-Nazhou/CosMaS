@@ -1,7 +1,7 @@
-<%- contentFor('content') %>
+<% layout('layout') -%>
 <div class="container col-md-4 col-md-offset-4">
   <h1 class="text-center mt-3 mb-3">New Course</h1>
-  <%- messages() %>
+  <%-partial('./partials/messages', messages)%>
   <form id="course_form" action="<%= coursesPath()%>" role="form" method="post">
     <div class="form-group">
       <label for="semester_name">Semester Name</label>

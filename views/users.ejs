@@ -1,7 +1,7 @@
-<%- contentFor('content') %>
+<% layout('layout') -%>
 <div class="container">
   <h1 class="mt-3 mb-3">Users</h1>
-  <%- messages() %>
+  <%-partial('./partials/messages', messages)%>
   <table class="table table-hover">
     <thead>
       <tr>
@@ -22,7 +22,7 @@
           <a href="/users/<%= data[i].id %>/edit" class="btn btn-success">
             <i class="fas fa-edit"></i>
           </a>
-          <%- include('./partials/deleteButton', { action: `/users/${data[i].id}` }); %>
+          <%-partial('./partials/deleteButton', { action: `/users/${data[i].id}` })%>
         </td>
       </tr>
       <% } %>

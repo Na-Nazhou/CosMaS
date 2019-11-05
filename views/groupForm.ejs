@@ -1,7 +1,7 @@
-<%- contentFor('content') %>
+<% layout('layout') -%>
 <div class="container col-md-4 col-md-offset-4">
   <h1 class="text-center mt-3 mb-3"><%= group ? 'Edit' : 'New' %> Group</h1>
-  <%- messages() %>
+  <%-partial('./partials/messages', messages)%>
   <form
     id="group_form"
     action="<%= group ? groupPath(semester_name, module_code, group.name) : groupsPath(semester_name, module_code) %>"
