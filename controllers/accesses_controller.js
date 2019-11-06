@@ -34,7 +34,6 @@ exports.edit = (req, res, next) => {
 
 exports.update = (req, res) => {
   const { semester_name, module_code, title } = req.params;
-  console.log(req.body.group_names);
   const { group_names } = req.body;
   let names = group_names;
   if (Array.isArray(group_names)) {
