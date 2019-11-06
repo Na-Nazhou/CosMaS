@@ -3,7 +3,8 @@
   <%-partial('./partials/messages', { messages: flash() })%>
   <h1 class="mt-3 mb-3"><%= course.module_code %> <%= course.title %></h1>
   <h2><small class="text-muted"><%= course.semester_name %></small></h2>
-  <p class="h6">Course Description: <%= course.description %></p>
+  <p class="h6">Course Description:</p>
+  <p><%= course.description %></p>
   <hr class="mt-5 mb-5" />
   <h2>
     Groups <% if (canCreateGroup(user, course.semester_name, course.module_code)) { %>
