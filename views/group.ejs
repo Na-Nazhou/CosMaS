@@ -1,5 +1,8 @@
 <% layout('layout') -%>
-<div class="container">
-  <h1 class="mt-3 mb-3"><%= group.name %> group for <%= semester_name %> <%= module_code %></h1>
+<div class="container mt-3">
   <%-partial('./partials/messages', { messages: flash() })%>
+  <h1 class="mt-3 mb-3"><%= module_code %></h1>
+  <h2><small class="text-muted"><%= semester_name %></small></h2>
+  <p class="h6">Group: <%= group.name %></p>
+  
 </div>
