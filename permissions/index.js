@@ -5,6 +5,7 @@ const courses = require('./courses');
 const groups = require('./groups');
 const forums = require('./forums');
 const accesses = require('./accesses');
+const threads = require('./threads');
 const log = require('../helpers/logging');
 
 const handleAccessDenied = (req, res) => {
@@ -23,6 +24,6 @@ const ensureAuthorised = funct => (req, res, next) => {
 };
 
 module.exports = {
-  checkers: { ...users, ...semesters, ...modules, ...courses, ...groups, ...forums, ...accesses },
+  checkers: { ...users, ...semesters, ...modules, ...courses, ...groups, ...forums, ...accesses, ...threads },
   ensureAuthorised
 };

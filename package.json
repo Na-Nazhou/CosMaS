@@ -4,10 +4,10 @@
   "private": true,
   "scripts": {
     "start": "nodemon ./bin/www",
-    "lint": "eslint app.js auth controllers db helpers public sql",
-    "lint:fix": "eslint --fix app.js auth controllers db helpers public sql",
-    "format": "prettier -c app.js {auth,controllers,db,helpers,public,sql,views,permissions}/**/*.{js,css}",
-    "format:fix": "prettier --write app.js {auth,controllers,db,helpers,public,sql,views,permissions}/**/*.{js,css}",
+    "lint": "eslint app.js auth controllers db helpers public sql routes permissions",
+    "lint:fix": "eslint --fix app.js auth controllers db helpers public sql routes permissions",
+    "format": "prettier -c app.js {auth,controllers,db,helpers,public,sql,routes,views,permissions}/**/*.{js,css}",
+    "format:fix": "prettier --write app.js {auth,controllers,db,helpers,public,sql,routes,views,permissions}/**/*.{js,css}",
     "check": "npm run lint && npm run format",
     "fix": "npm run lint:fix && npm run format:fix"
   },

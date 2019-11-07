@@ -1,6 +1,7 @@
 const router = require('express').Router({ mergeParams: true });
 const forums = require('../controllers/forums_controller');
 const accesses = require('../controllers/accesses_controller');
+const threads_routes = require('./threads');
 const log = require('../helpers/logging');
 const { ensureAuthorised } = require('../permissions');
 const {
@@ -56,5 +57,8 @@ router.post(
   ensureAuthorised(req => canEditAccess(req.user, req.params.semester_name, req.params.module_code)),
   accesses.update
 );
+
+// Nest thread routes within forums
+router.use('/:title/threads', threads_routes);
 
 module.exports = router;
