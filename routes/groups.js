@@ -1,5 +1,6 @@
 const router = require('express').Router({ mergeParams: true });
 const groups = require('../controllers/groups_controller');
+const groupmemberships_routes = require('./groupmemberships');
 const log = require('../helpers/logging');
 const { ensureAuthorised } = require('../permissions');
 const { canShowGroup, canCreateGroup, canUpdateGroup, canDeleteGroup } = require('../permissions/groups');
@@ -39,5 +40,8 @@ router.put(
   ensureAuthorised(req => canUpdateGroup(req.user, req.params.semester_name, req.params.module_code)),
   groups.update
 );
+
+// Nest member routes within groups
+router.use('/:name/students', groupmemberships_routes);
 
 module.exports = router;

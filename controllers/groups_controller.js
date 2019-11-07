@@ -6,12 +6,35 @@ const { groupPath } = require('../routes/helpers/groups');
 
 exports.show = (req, res, next) => {
   const { semester_name, module_code, name } = req.params;
-  db.query(sql.groups.queries.find_group, [semester_name, module_code, name], (err, data) => {
-    if (err) {
+  db.query(sql.groups.queries.find_group, [semester_name, module_code, name], (err1, data1) => {
+    if (err1) {
       log.error(`Failed to get group ${name} of ${semester_name} ${module_code}`);
-      next(err);
+      next(err1);
     } else {
-      res.render('group', { semester_name, module_code, group: data.rows[0] });
+      const group = data1.rows[0];
+      db.query(
+        sql.group_memberships.queries.get_members_by_group,
+        [semester_name, module_code, name, 'TA'],
+        (err2, data2) => {
+          if (err2) {
+            log.error(`Fail to get TAs of group ${name}`);
+            next(err2);
+          } else {
+            db.query(
+              sql.group_memberships.queries.get_members_by_group,
+              [semester_name, module_code, name, 'student'],
+              (err3, data3) => {
+                if (err3) {
+                  log.error(`Fail to get students of group ${name}`);
+                  next(err3);
+                } else {
+                  res.render('group', { group, TA_names: data2.rows, students: data3.rows });
+                }
+              }
+            );
+          }
+        }
+      );
     }
   });
 };

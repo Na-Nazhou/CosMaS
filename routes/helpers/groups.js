@@ -16,9 +16,14 @@ function groupEditPath(semester_name, module_code, group_name) {
   return `${groupPath(semester_name, module_code, group_name)}/edit`;
 }
 
+function groupmembershipPath(semester_name, module_code, group_name, user_id) {
+  return `${groupPath(semester_name, module_code, group_name)}/students/${encodeURIComponent(user_id)}`;
+}
+
 module.exports = {
   groupsPath,
   groupPath,
   groupNewPath,
-  groupEditPath
+  groupEditPath,
+  groupmembershipPath
 };
