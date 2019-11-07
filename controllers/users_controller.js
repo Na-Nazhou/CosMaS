@@ -22,7 +22,7 @@ exports.delete = (req, res) => {
       req.flash('error', err.message);
       res.redirect('/users');
     } else if (req.user.id === id) {
-      // Log out the user during self-deletion
+      // Log out the user after self-deletion
       req.logout();
       req.flash('success', 'Your account has been successfully deleted. You have been logged out.');
       res.redirect('/');
