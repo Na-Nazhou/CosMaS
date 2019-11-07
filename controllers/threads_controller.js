@@ -34,16 +34,17 @@ exports.create = async (req, res, next) => {
       content,
       author_id
     ])
-      .then(() => {
-        req.flash('success', `Successfully created thread ${title} in forum ${forum_title}`);
-        res.redirect(threadPath(semester_name, module_code, forum_title, created_at));
-      })
       .catch(err => {
         log.error(`Failed to create thread ${title} in ${forum_title} of ${semester_name} ${module_code}`);
         req.flash('error', err.message);
         res.render('threadForm', { course, forum, thread: { title, content } });
+      })
+      .then(() => {
+        req.flash('success', `Successfully created thread ${title} in forum ${forum_title}`);
+        res.redirect(threadPath(semester_name, module_code, forum_title, created_at));
       });
   } catch (err) {
+    req.flash(err.message);
     next(err);
   }
 };
@@ -86,7 +87,14 @@ exports.show = async (req, res, next) => {
         author_name: author.name
       });
     });
-    Promise.all(allRepliesProcessed).then(() => res.render('thread', { course, forum, thread, replies }));
+    Promise.all(allRepliesProcessed).then(() =>
+      res.render('thread', {
+        course,
+        forum,
+        thread,
+        replies
+      })
+    );
   } catch (err) {
     req.flash('error', err.message);
     next(err);

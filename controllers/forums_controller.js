@@ -5,14 +5,14 @@ const { coursePath } = require('../routes/helpers/courses');
 const { forumPath } = require('../routes/helpers/forums');
 const { findCourse, findForum } = require('./helpers/index');
 const { canEditAccess } = require('../permissions/accesses');
-const { canEditThread, canDeleteThreads } = require('../permissions/threads');
+const { canEditThread, canDeleteThread } = require('../permissions/threads');
 
 exports.show = async (req, res, next) => {
   const { semester_name, module_code, title: forum_title } = req.params;
   const permissions = {
     can_edit_access: await canEditAccess(req.user, semester_name, module_code),
     can_edit_thread: await canEditThread(req.user, semester_name, module_code),
-    can_delete_thread: await canDeleteThreads(req.user, semester_name, module_code)
+    can_delete_thread: await canDeleteThread(req.user, semester_name, module_code)
   };
   try {
     const course = await findCourse(req, semester_name, module_code);
