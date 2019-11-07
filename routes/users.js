@@ -1,8 +1,7 @@
 const router = require('express').Router();
 const users = require('../controllers/users_controller');
 const { ensureAuthorised } = require('../permissions');
-const { canIndexUsers, canDeleteUser, canUpdateUser } = require('../permissions/users');
-const { canIndexUsers, canDeleteUser, canUpdateUser, canViewDashboard } = require('../permissions').checkers;
+const { canIndexUsers, canDeleteUser, canUpdateUser, canViewDashboard } = require('../permissions/users');
 const course_requests_routes = require('./course_requests');
 const log = require('../helpers/logging');
 

@@ -1,4 +1,4 @@
-const { passedAny, isAdmin, isSameUserID } = require('./helpers');
+const { isAdmin, isSameUserID, passedAny } = require('./helpers');
 
 function canIndexUsers(user) {
   return isAdmin(user);
@@ -15,7 +15,7 @@ function canDeleteUser(user) {
 }
 
 function canViewDashboard(current_user, viewedUserID) {
-  return isAdmin(current_user) || isSameUserID(current_user.id, viewedUserID);
+  return passedAny(isAdmin(current_user), isSameUserID(current_user.id, viewedUserID));
 }
 
 module.exports = {

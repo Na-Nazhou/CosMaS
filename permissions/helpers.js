@@ -1,5 +1,6 @@
 const db = require('../db');
 const course_memberships = require('../sql/course_memberships');
+const course_requests = require('../sql/course_requests');
 const group_memberships = require('../sql/group_memberships');
 const accesses = require('../sql/accesses');
 
@@ -51,4 +52,10 @@ exports.isTaInCourse = (user, semester_name, module_code) => {
   return db
     .query(course_memberships.functions.is_member_in_course, [user.id, semester_name, module_code, 'TA'])
     .then(data => data.rows[0].is_member_in_course);
+};
+
+exports.isAllowedToRequest = (user, semester_name, module_code) => {
+  return db
+    .query(course_requests.functions.is_allowed_to_request, [user.id, semester_name, module_code])
+    .then(data => data.rows[0].is_allowed_to_request);
 };

@@ -21,11 +21,12 @@
           class="btn btn-primary">
           <i class="far fa-eye"></i>
         </a>
-        <% if (canUpdateCourse(user, data[i].semester_name, data[i].module_code)) { %>
         <a href="/courses/<%=encodeURIComponent(data[i].semester_name)%>/<%=encodeURIComponent(data[i].module_code)%>/edit"
           class="btn btn-success">
           <i class="fas fa-edit"></i>
         </a>
+        <% if (permissions.can_delete_course) { %>
+        <%-partial('./deleteButton',{ action: coursePath(data[i].semester_name, data[i].module_code)} )%>
         <% } %>
       </td>
     </tr>

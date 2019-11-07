@@ -2,6 +2,8 @@ const db = require('../db');
 const sql = require('../sql');
 const log = require('../helpers/logging');
 const { canCreateCourse, canDeleteCourse } = require('../permissions/courses');
+const { canAddMember, canAddTa, canViewMembers } = require('../permissions/course_memberships');
+const { canRequestCourse } = require('../permissions/course_requests');
 const { canCreateForum, canUpdateForum, canDeleteForum } = require('../permissions/forums');
 const { canCreateGroup, canUpdateGroup, canDeleteGroup } = require('../permissions/groups');
 const { coursesPath, courseNewPath, courseEditPath } = require('../routes/helpers/courses');
@@ -51,12 +53,16 @@ exports.show = async (req, res, next) => {
   const { semester_name, module_code } = req.params;
   try {
     const permissions = {
+      can_add_member: await canAddMember(req.user),
+      can_add_ta: await canAddTa(req.user, semester_name, module_code),
+      can_view_members: await canViewMembers(req.user, semester_name, module_code),
       can_create_group: await canCreateGroup(req.user, semester_name, module_code),
       can_update_group: await canUpdateGroup(req.user, semester_name, module_code),
       can_delete_group: await canDeleteGroup(req.user, semester_name, module_code),
       can_create_forum: await canCreateForum(req.user, semester_name, module_code),
       can_update_forum: await canUpdateForum(req.user, semester_name, module_code),
-      can_delete_forum: await canDeleteForum(req.user, semester_name, module_code)
+      can_delete_forum: await canDeleteForum(req.user, semester_name, module_code),
+      can_request_course: await canRequestCourse(req.user, semester_name, module_code)
     };
     const course = await db.query(sql.courses.queries.find_course, [semester_name, module_code]).then(
       data => data.rows[0],
