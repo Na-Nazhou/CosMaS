@@ -19,13 +19,15 @@
 
     <h2>
         Replies
-        <div class="float-right" style="display: inline">
-            <a href="<%= replyNewPath(course.semester_name, course.module_code, forum.title, thread.created_at) %>"
-               class="btn btn-outline-primary">
-                <i class="far fa-plus"></i>
-                New Reply
-            </a>
-        </div>
+        <% if (permissions.can_create_reply) { %>
+            <div class="float-right" style="display: inline">
+                <a href="<%= replyNewPath(course.semester_name, course.module_code, forum.title, thread.created_at) %>"
+                   class="btn btn-outline-primary">
+                    <i class="far fa-plus"></i>
+                    New Reply
+                </a>
+            </div>
+        <% } %>
     </h2>
     <% for (let i = 0; i < replies.length; i++) { %>
         <div class="card mt-5">
@@ -33,11 +35,15 @@
                 <p class="card-text"><%= replies[i].content %></p>
                 <p class="card-text text-right">Posted by <%= replies[i].author_name || '[deleted user]' %>
                     on <%= timestampToDisplayedForm(replies[i].created_at) %></p>
-                <a href="<%= replyEditPath(course.semester_name, course.module_code, forum.title, thread.created_at, replies[i].created_at) %>"
-                   class="btn btn-success">
-                    <i class="fa fa-edit"></i>
-                </a>
-                <%- partial('./partials/deleteButton', { action: replyPath(course.semester_name, course.module_code, forum.title, thread.created_at, replies[i].created_at) }) %>
+                <% if (permissions.can_update_reply) { %>
+                    <a href="<%= replyEditPath(course.semester_name, course.module_code, forum.title, thread.created_at, replies[i].created_at) %>"
+                       class="btn btn-success">
+                        <i class="fa fa-edit"></i>
+                    </a>
+                <% } %>
+                <% if (permissions.can_delete_reply) { %>
+                    <%- partial('./partials/deleteButton', { action: replyPath(course.semester_name, course.module_code, forum.title, thread.created_at, replies[i].created_at) }) %>
+                <% } %>
             </div>
         </div>
     <% } %>
