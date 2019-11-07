@@ -13,15 +13,18 @@
         </div>
     </div>
 
-    <h2 class="text-center mt-3 mb-3">New Reply</h2>
+    <h2 class="text-center mt-3 mb-3"><%= reply ? 'Edit' : 'New' %> Reply</h2>
     <%- partial('./partials/messages', { messages: flash() }) %>
     <form id="thread_form"
-          action="<%= repliesPath(course.semester_name, course.module_code, forum.title, thread.created_at) %>"
+          action="<%= reply ? replyPath(course.semester_name, course.module_code, forum.title, thread.created_at, reply.created_at) : repliesPath(course.semester_name, course.module_code, forum.title, thread.created_at) %>"
           role="form" method="POST">
+        <% if (reply) { %>
+            <input type="hidden" name="_method" value="PUT"/>
+        <% } %>
         <div class="form-group">
             <label for="content">Your reply</label>
-            <textarea class="form-control" id="content" name="content" required="required"></textarea>
+            <textarea class="form-control" id="content" name="content" required="required"><%= reply ? reply.content : '' %></textarea>
         </div>
-        <button type="submit" class="btn btn-primary">Reply</button>
+        <button type="submit" class="btn btn-primary"><%= reply ? 'Edit reply' : 'Reply' %></button>
     </form>
 </div>

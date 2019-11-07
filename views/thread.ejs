@@ -1,9 +1,12 @@
 <% layout('layout') -%>
 <div class="container mt-3">
     <%- partial('./partials/messages', { messages: flash() }) %>
-    <h1 class="mt-3 mb-3"><a href="<%= coursePath(course.semester_name, course.module_code) %>"><%= course.module_code %> <%= course.title %></a></h1>
+    <h1 class="mt-3 mb-3"><a
+                href="<%= coursePath(course.semester_name, course.module_code) %>"><%= course.module_code %> <%= course.title %></a>
+    </h1>
     <h2><small class="text-muted"><%= course.semester_name %></small></h2>
-    <h2>Forum: <a href="<%= forumPath(course.semester_name, course.module_code, forum.title) %>"><%= forum.title %></a></h2>
+    <h2>Forum: <a href="<%= forumPath(course.semester_name, course.module_code, forum.title) %>"><%= forum.title %></a>
+    </h2>
     <div class="card mt-5">
         <div class="card-body">
             <h3 class="card-title mb-4"><%= thread.title %></h3>
@@ -30,6 +33,11 @@
                 <p class="card-text"><%= replies[i].content %></p>
                 <p class="card-text text-right">Posted by <%= replies[i].author_name || '[deleted user]' %>
                     on <%= timestampToDisplayedForm(replies[i].created_at) %></p>
+                <a href="<%= replyEditPath(course.semester_name, course.module_code, forum.title, thread.created_at, replies[i].created_at) %>"
+                   class="btn btn-success">
+                    <i class="fa fa-edit"></i>
+                </a>
+                <%- partial('./partials/deleteButton', { action: replyPath(course.semester_name, course.module_code, forum.title, thread.created_at, replies[i].created_at) }) %>
             </div>
         </div>
     <% } %>

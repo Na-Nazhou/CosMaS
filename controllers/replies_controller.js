@@ -1,7 +1,7 @@
 const sql = require('../sql');
 const db = require('../db');
 const log = require('../helpers/logging');
-const { timestampToDbForm } = require('../helpers/date');
+const { parseDbFormTimestamp, timestampToDbForm } = require('../helpers/date');
 const { threadPath } = require('../routes/helpers/threads');
 const { findCourse, findForum, findThread } = require('./helpers');
 
@@ -11,15 +11,6 @@ exports.new = async (req, res, next) => {
     const course = await findCourse(req, semester_name, module_code);
     const forum = await findForum(req, semester_name, module_code, forum_title);
     const thread = await findThread(req, semester_name, module_code, forum_title, thread_created_at);
-    await db
-      .query(sql.users.queries.find_user_by_id, [thread.author_id])
-      .then(data => Object.assign(thread, { author_name: data.rows.length >= 1 ? data.rows[0].name : null }))
-      .catch(err => {
-        log.error(
-          `Failed to get author name for thread "${thread.title}" in forum "${forum.title} of ${semester_name} ${module_code}`
-        );
-        throw err;
-      });
     res.render('replyForm', { course, forum, thread, reply: null });
   } catch (err) {
     req.flash('error', err.message);
@@ -57,4 +48,72 @@ exports.create = async (req, res, next) => {
   } catch (err) {
     next(err);
   }
+};
+
+exports.edit = async (req, res, next) => {
+  const { semester_name, module_code, title: forum_title, created_at: thread_created_at, posted_at } = req.params;
+  try {
+    const course = await findCourse(req, semester_name, module_code);
+    const forum = await findForum(req, semester_name, module_code, forum_title);
+    const thread = await findThread(req, semester_name, module_code, forum_title, thread_created_at);
+    const reply = await db
+      .query(sql.replies.queries.find_reply, [semester_name, module_code, forum_title, thread_created_at, posted_at])
+      .then(
+        data => data.rows[0],
+        err => {
+          log.error(`Failed to find reply posted at ${posted_at} in thread ${thread.title}`);
+          throw err;
+        }
+      );
+    res.render('replyForm', { course, forum, thread, reply });
+  } catch (err) {
+    req.flash('error', err.message);
+    next(err);
+  }
+};
+
+exports.update = async (req, res, next) => {
+  const { semester_name, module_code, title: forum_title, created_at: thread_created_at, posted_at } = req.params;
+  const { content } = req.body;
+  try {
+    const course = await findCourse(req, semester_name, module_code);
+    const forum = await findForum(req, semester_name, module_code, forum_title);
+    const thread = await findThread(req, semester_name, module_code, forum_title, thread_created_at);
+    db.query(sql.replies.queries.update_reply, [
+      semester_name,
+      module_code,
+      forum_title,
+      thread_created_at,
+      posted_at,
+      content
+    ]).then(
+      () => {
+        req.flash('success', `Successfully updated reply posted at ${posted_at}`);
+        res.redirect(threadPath(semester_name, module_code, forum_title, parseDbFormTimestamp(thread_created_at)));
+      },
+      err => {
+        req.flash('error', err.message);
+        log.error(`Failed to update reply`);
+        res.render('replyForm', { course, forum, thread, reply: { content } });
+      }
+    );
+  } catch (err) {
+    res.flash(err.message);
+    next(err);
+  }
+};
+
+exports.delete = (req, res) => {
+  const { semester_name, module_code, title: forum_title, created_at: thread_created_at, posted_at } = req.params;
+  db.query(sql.replies.queries.delete_reply, [semester_name, module_code, forum_title, thread_created_at, posted_at])
+    .then(() => {
+      req.flash('success', `Successfully deleted reply posted at ${posted_at}!`);
+    })
+    .catch(err => {
+      log.error(`Failed to delete reply posted at ${posted_at}`);
+      req.flash('error', err.message);
+    })
+    .then(() => {
+      res.redirect(threadPath(semester_name, module_code, forum_title, parseDbFormTimestamp(thread_created_at)));
+    });
 };

@@ -9,5 +9,8 @@ router.use((req, res, next) => {
 
 router.get('/new', replies.new);
 router.post('/', replies.create);
+router.get('/:posted_at/edit', replies.edit);
+router.put('/:posted_at', replies.update);
+router.delete('/:posted_at', replies.delete);
 
 module.exports = router;
