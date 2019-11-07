@@ -66,16 +66,27 @@ CREATE OR REPLACE FUNCTION update_students(
     END
     $$ LANGUAGE plpgsql;
 
-/* Course request */
-CREATE OR REPLACE FUNCTION enrol_student()
-    RETURNS TRIGGER AS $$
+/* Course Requests */
+CREATE OR REPLACE FUNCTION is_allowed_to_request(
+    users.id%TYPE,
+    semesters.name%TYPE,
+    modules.module_code%TYPE)
+    RETURNS BOOLEAN AS
+    $$ DECLARE count_membership numeric; count_request numeric;
     BEGIN
-        INSERT INTO course_memberships values ('student', NEW.semester_name, NEW.module_code, NEW.requester_id);
-        RETURN NEW;
+    SELECT COUNT(user_id)
+    INTO count_membership
+    FROM course_memberships
+    WHERE user_id = $1 AND
+        semester_name = $2 AND
+        module_code = $3;
+    SELECT COUNT(requester_id)
+    INTO count_request
+    FROM course_requests
+    WHERE requester_id = $1 AND
+        semester_name = $2 AND
+        module_code = $3;
+    RETURN count_membership + count_request = 0;
+
     END
     $$ LANGUAGE plpgsql;
-
-CREATE TRIGGER enrol_on_request_approval
-AFTER UPDATE ON course_requests
-FOR EACH ROW WHEN (NEW.is_approved = true)
-EXECUTE PROCEDURE enrol_student();

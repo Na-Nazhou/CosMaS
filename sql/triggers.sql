@@ -32,3 +32,17 @@ CREATE TRIGGER validate_semester
 BEFORE INSERT OR UPDATE ON semesters
 FOR EACH ROW EXECUTE PROCEDURE
 validate_semester();
+
+/* Course request */
+CREATE OR REPLACE FUNCTION enrol_student()
+    RETURNS TRIGGER AS $$
+    BEGIN
+        INSERT INTO course_memberships values ('student', NEW.semester_name, NEW.module_code, NEW.requester_id);
+        RETURN NEW;
+    END
+    $$ LANGUAGE plpgsql;
+
+CREATE TRIGGER enrol_on_request_approval
+AFTER UPDATE ON course_requests
+FOR EACH ROW WHEN (NEW.is_approved = true)
+EXECUTE PROCEDURE enrol_student();

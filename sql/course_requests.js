@@ -22,11 +22,11 @@ course_requests.queries = {
     'UPDATE course_requests SET is_approved = $1, closed_at = current_timestamp(0) WHERE requester_id = $2 AND ' +
     'semester_name = $3 AND module_code=$4',
   delete_course_request:
-    'DELETE FROM course_requests WHERE requester_id = $1 AND semester_name = $2 AND module_code = $3',
-  is_allowed_to_request:
-    "select ((SELECT COUNT(user_id) FROM course_memberships WHERE role = 'professor' AND user_id = $1) +" +
-    '(SELECT count(requester_id) FROM course_requests WHERE requester_id = $1 AND semester_name = $2 AND ' +
-    'module_code = $3)) AS total'
+    'DELETE FROM course_requests WHERE requester_id = $1 AND semester_name = $2 AND module_code = $3'
+};
+
+course_requests.functions = {
+  is_allowed_to_request: 'SELECT is_allowed_to_request($1, $2, $3)'
 };
 
 module.exports = course_requests;

@@ -1,6 +1,6 @@
 const db = require('../db');
 const sql = require('../sql');
-const { formatDate } = require('../helpers/data');
+const { dateToDisplayedForm } = require('../helpers/date');
 const log = require('../helpers/logging');
 const { courseRequestsPath } = require('../routes/helpers/course_requests');
 const { coursePath } = require('../routes/helpers/courses');
@@ -17,8 +17,8 @@ exports.index = (req, res, next) => {
       } else {
         course_requests_professor.rows.forEach(request => {
           Object.assign(request, {
-            requested_at: formatDate(request.requested_at),
-            closed_at: formatDate(request.closed_at)
+            requested_at: dateToDisplayedForm(request.requested_at),
+            closed_at: dateToDisplayedForm(request.closed_at)
           });
         });
         db.query(
@@ -31,8 +31,8 @@ exports.index = (req, res, next) => {
             } else {
               course_requests_student.rows.forEach(request => {
                 Object.assign(request, {
-                  requested_at: formatDate(request.requested_at),
-                  closed_at: formatDate(request.closed_at)
+                  requested_at: dateToDisplayedForm(request.requested_at),
+                  closed_at: dateToDisplayedForm(request.closed_at)
                 });
               });
               res.render('courseRequests', {

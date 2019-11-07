@@ -2,6 +2,7 @@ const bcrypt = require('bcrypt');
 const db = require('../db');
 const sql = require('../sql');
 const log = require('../helpers/logging');
+const { canDeleteCourse } = require('../permissions/courses');
 
 exports.index = (req, res, next) => {
   db.query(sql.users.queries.get_users, (err, data) => {
@@ -65,14 +66,18 @@ exports.update = (req, res) => {
   });
 };
 
-exports.dashboard = (req, res, next) => {
+exports.dashboard = async (req, res, next) => {
   const user_id = req.params.id;
+  const permissions = {
+    can_delete_course: await canDeleteCourse(req.user)
+  };
   db.query(sql.users.queries.get_user_courses, [user_id], (err, data) => {
     if (err) {
       log.error('Failed to get user courses');
       next(err);
     } else {
       res.render('dashboard', {
+        permissions,
         data: data.rows
       });
     }

@@ -2,21 +2,46 @@
 <div class="container mt-3">
   <%-partial('./partials/messages', { messages: flash() })%>
   <h1 class="mt-3 mb-3">
-    <%= course.module_code %> <%= course.title %>
+    <%= course.module_code %> <%= course.title %> <% if (permissions.can_add_member) { %>
+    <div class="float-right" style="display: inline">
+      <a href="<%= courseMembershipNewPath(course.semester_name, course.module_code)%>" class="btn btn-outline-primary">
+        <i class="far fa-plus"></i> Add Member
+      </a>
+    </div>
+    <% } else if(permissions.can_add_ta) { %>
+    <div class="float-right" style="display: inline">
+      <a href="<%= courseMembershipNewPath(course.semester_name, course.module_code)%>" class="btn btn-outline-primary">
+        <i class="far fa-plus"></i> Add TA
+      </a>
+    </div>
+    <% } %>
   </h1>
   <h2><small class="text-muted"><%= course.semester_name %></small></h2>
   <p class="h6">Course Description: <%= course.description %></p>
-  <div class="float-left" style="display: inline">
-    <form id="course_request_form" action="<%=courseRequestsPath(user.id)%>" method="POST">
-      <input type="hidden" id="requester_id" name="requester_id" value="<%=user.id%>" />
-      <input type="hidden" id="semester_name" name="semester_name" value="<%=course.semester_name%>" />
-      <input type="hidden" id="module_code" name="module_code" value="<%=course.module_code%>" />
-      <button type="submit" class="btn btn-primary">
-        <i class="far fa-plus"></i>
-        Request
-      </button>
-    </form>
+  <% if (permissions.can_view_members) { %>
+  <div class="float-left" style="display: inline; margin-right:1.5em">
+    <a href="<%= courseMembershipsPath(course.semester_name, course.module_code) %>" class="btn btn-primary">
+      <i class="far fa-eye"></i>
+      Members
+    </a>
   </div>
+  <% } %> <% if (permissions.can_request_course) { %>
+  <form
+    class="float-left"
+    id="course_request_form"
+    action="<%=courseRequestsPath(user.id)%>"
+    method="POST"
+    style="display: inline"
+  >
+    <input type="hidden" id="requester_id" name="requester_id" value="<%=user.id%>" />
+    <input type="hidden" id="semester_name" name="semester_name" value="<%=course.semester_name%>" />
+    <input type="hidden" id="module_code" name="module_code" value="<%=course.module_code%>" />
+    <button type="submit" class="btn btn-outline-primary">
+      <i class="far fa-plus"></i>
+      Request
+    </button>
+  </form>
+  <% } %>
   <hr class="mt-5 mb-5" />
   <h2>
     Groups <% if (permissions.can_create_group) { %>
@@ -50,9 +75,8 @@
           >
             <i class="fas fa-edit"></i>
           </a>
-          <% } %> <% if (permissions.can_delete_group) { %>
-          <%-partial('./partials/deleteButton',{ action: groupPath(course.semester_name, course.module_code,
-          groups[i].name) })%> <% } %>
+          <% } %> <% if (permissions.can_delete_group) { %> <%-partial('./partials/deleteButton',{ action:
+          groupPath(course.semester_name, course.module_code, groups[i].name) })%> <% } %>
         </td>
       </tr>
       <% } %>
@@ -91,9 +115,8 @@
           >
             <i class="fas fa-edit"></i>
           </a>
-          <% } %> <% if (permissions.can_delete_forum) { %>
-          <%-partial('./partials/deleteButton',{ action: forumPath(course.semester_name, course.module_code,
-          forums[i].title) })%> <% } %>
+          <% } %> <% if (permissions.can_delete_forum) { %> <%-partial('./partials/deleteButton',{ action:
+          forumPath(course.semester_name, course.module_code, forums[i].title) })%> <% } %>
         </td>
       </tr>
       <% } %>

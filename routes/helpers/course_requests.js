@@ -1,5 +1,7 @@
+const { userPath } = require('./users');
+
 function courseRequestsPath(requester_id) {
-  return `/users/${encodeURIComponent(requester_id)}/course_requests`;
+  return `${userPath(requester_id)}/course_requests`;
 }
 
 function courseRequestPath(requester_id, semester_name, module_code) {
