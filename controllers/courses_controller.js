@@ -1,6 +1,9 @@
 const db = require('../db');
 const sql = require('../sql');
 const log = require('../helpers/logging');
+const { canShowCourse, canCreateCourse, canUpdateCourse, canDeleteCourse } = require('../permissions/courses');
+const { canCreateForum, canUpdateForum, canDeleteForum } = require('../permissions/forums');
+const { canCreateGroup, canUpdateGroup, canDeleteGroup } = require('../permissions/groups');
 const { coursesPath, courseNewPath, courseEditPath } = require('../routes/helpers/courses');
 
 exports.index = (req, res, next) => {

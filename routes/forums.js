@@ -9,8 +9,8 @@ const {
   canCreateForum,
   canUpdateForum,
   canDeleteForum,
-  canEditAccess
-} = require('../permissions').checkers;
+} = require('../permissions/forums');
+const { canEditAccess } = require('../permissions/accesses');
 
 router.use((req, res, next) => {
   log.controller('Forums controller handling the request');

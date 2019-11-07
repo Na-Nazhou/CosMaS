@@ -2,7 +2,7 @@ const router = require('express').Router({ mergeParams: true });
 const groups = require('../controllers/groups_controller');
 const log = require('../helpers/logging');
 const { ensureAuthorised } = require('../permissions');
-const { canShowGroup, canCreateGroup, canUpdateGroup, canDeleteGroup } = require('../permissions').checkers;
+const { canShowGroup, canCreateGroup, canUpdateGroup, canDeleteGroup } = require('../permissions/groups');
 
 router.use((req, res, next) => {
   log.controller('groups controller handling the request');

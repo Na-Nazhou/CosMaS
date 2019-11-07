@@ -3,7 +3,6 @@
     <%- partial('./partials/messages', { messages: flash() }) %>
     <h1 class="mt-3 mb-3"><a href="<%= coursePath(course.semester_name, course.module_code) %>"><%= course.module_code %> <%= course.title %></a></h1>
     <h2><small class="text-muted"><%= course.semester_name %></small></h2>
-    <h2><small class="text-muted"><%= course.semester_name %></small></h2>
     <h2>Forum: <a href="<%= forumPath(course.semester_name, course.module_code, forum.title) %>"><%= forum.title %></a></h2>
     <div class="card mt-5">
         <div class="card-body">
