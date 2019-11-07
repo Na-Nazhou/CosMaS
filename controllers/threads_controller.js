@@ -41,11 +41,11 @@ exports.create = async (req, res, next) => {
         res.render('threadForm', { course, forum, thread: { title, content } });
       })
       .then(() => {
-        req.flash('success', `Successfully created thread ${title} in forum ${forum_title}`);
+        req.flash('success', `Successfully created thread ${title} in forum ${forum_title}!`);
         res.redirect(threadPath(semester_name, module_code, forum_title, created_at));
       });
   } catch (err) {
-    req.flash(err.message);
+    req.flash('error', err.message);
     next(err);
   }
 };
@@ -70,7 +70,7 @@ exports.show = async (req, res, next) => {
         );
         throw err;
       });
-      res.render('thread', { course, forum, thread, replies, permissions });
+    res.render('thread', { course, forum, thread, replies, permissions });
   } catch (err) {
     req.flash('error', err.message);
     next(err);

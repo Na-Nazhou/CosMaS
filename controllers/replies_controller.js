@@ -88,7 +88,7 @@ exports.update = async (req, res, next) => {
       content
     ]).then(
       () => {
-        req.flash('success', `Successfully updated reply posted at ${posted_at}`);
+        req.flash('success', `Successfully updated reply posted at ${posted_at}!`);
         res.redirect(threadPath(semester_name, module_code, forum_title, parseDbFormTimestamp(thread_created_at)));
       },
       err => {
@@ -98,7 +98,7 @@ exports.update = async (req, res, next) => {
       }
     );
   } catch (err) {
-    res.flash(err.message);
+    req.flash('error', err.message);
     next(err);
   }
 };
@@ -106,13 +106,15 @@ exports.update = async (req, res, next) => {
 exports.delete = (req, res) => {
   const { semester_name, module_code, title: forum_title, created_at: thread_created_at, posted_at } = req.params;
   db.query(sql.replies.queries.delete_reply, [semester_name, module_code, forum_title, thread_created_at, posted_at])
-    .then(() => {
-      req.flash('success', `Successfully deleted reply posted at ${posted_at}!`);
-    })
-    .catch(err => {
-      log.error(`Failed to delete reply posted at ${posted_at}`);
-      req.flash('error', err.message);
-    })
+    .then(
+      () => {
+        req.flash('success', `Successfully deleted reply posted at ${posted_at}!`);
+      },
+      err => {
+        log.error(`Failed to delete reply posted at ${posted_at}`);
+        req.flash('error', err.message);
+      }
+    )
     .then(() => {
       res.redirect(threadPath(semester_name, module_code, forum_title, parseDbFormTimestamp(thread_created_at)));
     });

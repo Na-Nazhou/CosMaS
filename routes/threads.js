@@ -12,12 +12,16 @@ router.use((req, res, next) => {
 
 router.get(
   '/new',
-  ensureAuthorised(req => canCreateThread(req.user, req.params.semester_name, req.params.module_code, req.params.title)),
+  ensureAuthorised(req =>
+    canCreateThread(req.user, req.params.semester_name, req.params.module_code, req.params.title)
+  ),
   threads.new
 );
 router.post(
   '/',
-  ensureAuthorised(req => canCreateThread(req.user, req.params.semester_name, req.params.module_code, req.params.title)),
+  ensureAuthorised(req =>
+    canCreateThread(req.user, req.params.semester_name, req.params.module_code, req.params.title)
+  ),
   threads.create
 );
 router.get(

@@ -7,7 +7,7 @@ const { canCreateGroup, canUpdateGroup, canDeleteGroup } = require('../permissio
 const { coursesPath, courseNewPath, courseEditPath } = require('../routes/helpers/courses');
 
 exports.index = async (req, res, next) => {
-  const { semester_name, module_code } = req.params;
+  const { semester_name, module_code } = req.query;
   const permissions = {
     can_create_course: await canCreateCourse(req.user),
     can_delete_course: await canDeleteCourse(req.user)

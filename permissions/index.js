@@ -7,11 +7,16 @@ const handleAccessDenied = (req, res) => {
   res.redirect('back');
 };
 
-const ensureAuthorised = funct => async (req, res, next) => {
-  if (await funct(req)) {
-    next();
-  } else {
-    handleAccessDenied(req, res);
+const ensureAuthorised = checkPermissions => async (req, res, next) => {
+  try {
+    if (await checkPermissions(req)) {
+      next();
+    } else {
+      handleAccessDenied(req, res);
+    }
+  } catch (err) {
+    log.error('An error occurred while checking for permissions.');
+    next(err);
   }
 };
 

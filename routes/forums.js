@@ -4,12 +4,7 @@ const accesses = require('../controllers/accesses_controller');
 const threads_routes = require('./threads');
 const log = require('../helpers/logging');
 const { ensureAuthorised } = require('../permissions');
-const {
-  canShowForum,
-  canCreateForum,
-  canUpdateForum,
-  canDeleteForum,
-} = require('../permissions/forums');
+const { canShowForum, canCreateForum, canUpdateForum, canDeleteForum } = require('../permissions/forums');
 const { canEditAccess } = require('../permissions/accesses');
 
 router.use((req, res, next) => {
