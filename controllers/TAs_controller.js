@@ -7,29 +7,31 @@ const { groupPath } = require('../routes/helpers/groups');
 // Handles the CRUD of TAs in a group
 exports.edit = (req, res, next) => {
   const { semester_name, module_code, name: group_name } = req.params;
-  db.query(sql.course_memberships.queries.get_members_by_course,
-    [semester_name, module_code, 'TA'], (err1, data1) => {
+  db.query(sql.course_memberships.queries.get_members_by_course, [semester_name, module_code, 'TA'], (err1, data1) => {
     if (err1) {
       log.error(`Failed to get TAs of ${module_code} offered in ${semester_name}`);
       req.flash('error', err1.message);
       next(err1);
     } else {
-      db.query(sql.group_memberships.queries.get_members_by_group,
-        [semester_name, module_code, group_name, 'TA'], (err2, data2) => {
-        if (err2) {
-          log.error(`Failed to get TAs of group ${group_name}`);
-          req.flash('error', err2.message);
-          next(err2);
-        } else {
-          res.render('TAForm', {
-            semester_name,
-            module_code,
-            group_name,
-            selected: data2.rows,
-            options: data1.rows
-          });
+      db.query(
+        sql.group_memberships.queries.get_members_by_group,
+        [semester_name, module_code, group_name, 'TA'],
+        (err2, data2) => {
+          if (err2) {
+            log.error(`Failed to get TAs of group ${group_name}`);
+            req.flash('error', err2.message);
+            next(err2);
+          } else {
+            res.render('TAForm', {
+              semester_name,
+              module_code,
+              group_name,
+              selected: data2.rows,
+              options: data1.rows
+            });
+          }
         }
-      });
+      );
     }
   });
 };
