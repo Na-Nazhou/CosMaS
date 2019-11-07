@@ -5,7 +5,8 @@
   <h2><small class="text-muted"><%= course.semester_name %></small></h2>
   <h2>Forum: <%= forum.title %></h2>
   <p class="h6">
-    Accessible by the following group(s): <% if (canEditAccess(user, course.semester_name, course.module_code)) { %>
+    Accessible by the following group(s):
+    <% if (permissions.can_edit_access) { %>
       <a href="<%= accessesPath(course.semester_name, course.module_code, forum.title) %>">
         <i class="fa fa-pencil"></i>
       </a>
@@ -54,12 +55,12 @@
           <a href="<%= threadPath(course.semester_name, course.module_code, forum.title, threads[i].created_at) %>" class="btn btn-primary">
             <i class="far fa-eye"></i>
           </a>
-          <% if (canEditThreads(user, course.semester_name, course.module_code)) { %>
+          <% if (permissions.can_edit_thread) { %>
             <a href="<%= threadEditPath(course.semester_name, course.module_code, forum.title, threads[i].created_at) %>" class="btn btn-success">
               <i class="fas fa-edit"></i>
             </a>
           <% } %>
-          <% if (canDeleteThreads(user, course.semester_name, course.module_code)) { %>
+          <% if (permissions.can_delete_thread) { %>
             <%- partial('./partials/deleteButton', { action: threadPath(course.semester_name, course.module_code, forum.title, threads[i].created_at) })%>
           <% } %>
         </td>

@@ -22,15 +22,15 @@ router.get(
   ensureAuthorised(req => canCreateForum(req.user, req.params.semester_name, req.params.module_code)),
   forums.new
 );
-router.get(
-  '/:title',
-  ensureAuthorised(req => canShowForum(req.user, req.params.semester_name, req.params.module_code, req.params.title)),
-  forums.show
-);
 router.post(
   '/',
   ensureAuthorised(req => canCreateForum(req.user, req.params.semester_name, req.params.module_code)),
   forums.create
+);
+router.get(
+  '/:title',
+  ensureAuthorised(req => canShowForum(req.user, req.params.semester_name, req.params.module_code, req.params.title)),
+  forums.show
 );
 router.delete(
   '/:title',
@@ -47,6 +47,8 @@ router.put(
   ensureAuthorised(req => canUpdateForum(req.user, req.params.semester_name, req.params.module_code)),
   forums.update
 );
+
+// Accesses
 router.get(
   '/:title/accesses',
   ensureAuthorised(req => canEditAccess(req.user, req.params.semester_name, req.params.module_code)),
