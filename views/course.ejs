@@ -27,7 +27,7 @@
   <% } %>
 
   <hr class="mt-5 mb-5" />
-
+  <% if (permissions.can_show_course_details) { %>
   <h2>
     Groups (<%= groups.length %>) <% if (permissions.can_create_group) { %>
     <div class="float-right" style="display: inline">
@@ -107,4 +107,5 @@
       <% } %>
     </tbody>
   </table>
+  <% } %>
 </div>

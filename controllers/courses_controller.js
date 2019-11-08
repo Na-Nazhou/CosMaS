@@ -1,7 +1,7 @@
 const db = require('../db');
 const sql = require('../sql');
 const log = require('../helpers/logging');
-const { canCreateCourse, canDeleteCourse } = require('../permissions/courses');
+const { canCreateCourse, canDeleteCourse, canShowCourseDetails } = require('../permissions/courses');
 const { canIndexMembers } = require('../permissions/course_memberships');
 const { canRequestCourse } = require('../permissions/course_requests');
 const { canCreateForum, canUpdateForum, canDeleteForum } = require('../permissions/forums');
@@ -53,6 +53,7 @@ exports.show = async (req, res, next) => {
   const { semester_name, module_code } = req.params;
   try {
     const permissions = {
+      can_show_course_details: await canShowCourseDetails(req.user, semester_name, module_code),
       can_create_group: await canCreateGroup(req.user, semester_name, module_code),
       can_update_group: await canUpdateGroup(req.user, semester_name, module_code),
       can_delete_group: await canDeleteGroup(req.user, semester_name, module_code),
