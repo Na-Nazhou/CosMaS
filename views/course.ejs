@@ -14,13 +14,13 @@
       Members
     </a>
   </div>
-  <% } %> <% if (permissions.can_edit_prof) { %>
+  <% } %> <% if (permissions.can_add_professor) { %>
   <div style="display: inline">
     <a href="<%= courseMembershipNewPath(course.semester_name, course.module_code)%>" class="btn btn-outline-primary">
       <i class="fas fa-user-plus"></i> Add Member
     </a>
   </div>
-  <% } else if(!permissions.can_edit_prof && permissions.can_edit_non_prof) { %>
+  <% } else if(!permissions.can_add_professor && permissions.can_add_non_professor) { %>
   <div style="display: inline">
     <a href="<%= courseMembershipNewPath(course.semester_name, course.module_code)%>" class="btn btn-outline-primary">
       <i class="fas fa-user-plus"></i> Add Teaching Assistant

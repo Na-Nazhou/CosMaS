@@ -3,18 +3,26 @@ const sql = require('../sql');
 const log = require('../helpers/logging');
 const { courseMembershipsPath, courseMembershipNewPath } = require('../routes/helpers/course_memberships');
 const { findCourse } = require('./helpers/index');
+const { canDeleteSomeMember } = require('../permissions/course_memberships');
 
 exports.index = async (req, res, next) => {
   const { semester_name, module_code } = req.params;
-  const course = await findCourse(semester_name, module_code);
-  db.query(sql.course_memberships.queries.get_memberships, [semester_name, module_code], (err, data) => {
-    if (err) {
-      log.error(`Failed to get course memberships for course ${module_code} offered in ${semester_name}`);
-      next(err);
-    } else {
-      res.render('courseMemberships', { members: data.rows, course });
-    }
-  });
+  try {
+    const permissions = {
+      can_delete_some_member: await canDeleteSomeMember(req.user, semester_name, module_code)
+    };
+    const course = await findCourse(semester_name, module_code);
+    db.query(sql.course_memberships.queries.get_memberships, [semester_name, module_code], (err, data) => {
+      if (err) {
+        log.error(`Failed to get course memberships for course ${module_code} offered in ${semester_name}`);
+        throw err;
+      } else {
+        res.render('courseMemberships', { members: data.rows, course, permissions });
+      }
+    });
+  } catch (err) {
+    next(err);
+  }
 };
 
 exports.new = (req, res, next) => {
