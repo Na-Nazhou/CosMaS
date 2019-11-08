@@ -32,7 +32,7 @@ passport.deserializeUser((id, done) => {
   findUser(id, done);
 });
 
-function initPassport() {
+exports.initPassport = () => {
   passport.use(
     new LocalStrategy(
       {
@@ -71,6 +71,4 @@ function initPassport() {
       }
     )
   );
-}
-
-module.exports = initPassport;
+};

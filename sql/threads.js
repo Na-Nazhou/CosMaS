@@ -11,7 +11,8 @@ threads.queries = {
     'FROM threads t LEFT JOIN users u ON t.author_id=u.id ' +
     'LEFT JOIN replies r ON t.semester_name=r.semester_name AND t.module_code=r.module_code AND t.forum_title=r.forum_title AND t.created_at=r.thread_created_at ' +
     'WHERE t.semester_name=$1 AND t.module_code=$2 AND t.forum_title=$3 ' +
-    'GROUP BY(t.semester_name, t.module_code, t.forum_title, t.created_at, u.name)',
+    'GROUP BY(t.semester_name, t.module_code, t.forum_title, t.created_at, u.name) ' +
+    'ORDER BY GREATEST(MAX(r.created_at), t.created_at) DESC',
   create_thread:
     'INSERT INTO threads (semester_name, module_code, forum_title, created_at, title, content, author_id) VALUES ($1, $2, $3, $4, $5, $6, $7)',
   update_thread:

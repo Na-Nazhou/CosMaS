@@ -1,11 +1,10 @@
 const router = require('express').Router({ mergeParams: true });
 const forums = require('../controllers/forums_controller');
-const accesses = require('../controllers/accesses_controller');
 const threads_routes = require('./threads');
+const accesses_routes = require('./accesses');
 const log = require('../helpers/logging');
 const { ensureAuthorised } = require('../permissions');
 const { canShowForum, canCreateForum, canUpdateForum, canDeleteForum } = require('../permissions/forums');
-const { canEditAccess } = require('../permissions/accesses');
 
 router.use((req, res, next) => {
   log.controller('Forums controller handling the request');
@@ -43,19 +42,9 @@ router.put(
   forums.update
 );
 
-// Accesses
-router.get(
-  '/:title/accesses',
-  ensureAuthorised(req => canEditAccess(req.user, req.params.semester_name, req.params.module_code)),
-  accesses.edit
-);
-router.post(
-  '/:title/accesses',
-  ensureAuthorised(req => canEditAccess(req.user, req.params.semester_name, req.params.module_code)),
-  accesses.update
-);
-
 // Nest thread routes within forums
 router.use('/:title/threads', threads_routes);
+// Nest access routes within forums
+router.use('/:title/accesses', accesses_routes);
 
 module.exports = router;

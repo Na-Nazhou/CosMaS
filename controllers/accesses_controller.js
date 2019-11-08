@@ -10,13 +10,11 @@ exports.edit = (req, res, next) => {
   db.query(sql.groups.queries.get_groups_by_course, [semester_name, module_code], (err1, data1) => {
     if (err1) {
       log.error(`Failed to get groups of ${module_code} offered in ${semester_name}`);
-      req.flash('error', err1.message);
       next(err1);
     } else {
       db.query(sql.accesses.queries.get_group_names_by_forum, [semester_name, module_code, title], (err2, data2) => {
         if (err2) {
           log.error(`Failed to get groups that can access forum ${title} of ${module_code} ${semester_name}`);
-          req.flash('error', err2.message);
           next(err2);
         } else {
           res.render('accessForm', {
