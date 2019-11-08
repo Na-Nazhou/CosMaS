@@ -5,11 +5,10 @@
   <h2><small class="text-muted"><%= group.semester_name %></small></h2>
   <p class="h6">Group: <%= group.name %></p>
   <p class="h6">
-    The TA(s) of the group is/are: <% if (canEditAccess(user, group.semester_name, group.module_code)) { %>
+    The TA(s) of the group is/are:
     <a href="<%= TAsPath(group.semester_name, group.module_code, group.name) %>">
       <i class="fa fa-pencil"></i>
     </a>
-    <% } %>
   </p>
   <div id="TAs">
     <% if (TA_names.length === 0) { %>
@@ -21,9 +20,13 @@
     <% } %>
   </div>
 
-  <h2 class="mt-3 mb-3">Students
+  <h2 class="mt-3 mb-3">
+    Students
     <div class="float-right" style="display: inline">
-      <a href="<%= groupStudentsPath(group.semester_name, group.module_code, group.name) %>" class="btn btn-outline-primary">
+      <a
+        href="<%= groupStudentsPath(group.semester_name, group.module_code, group.name) %>"
+        class="btn btn-outline-primary"
+      >
         <i class="far fa-plus"></i>
         New Student
       </a>
@@ -46,9 +49,8 @@
           <a href="#" class="btn btn-primary">
             <i class="far fa-eye"></i>
           </a>
-          <%-partial('./partials/deleteButton', {
-            action: groupStudentPath(group.semester_name, group.module_code,
-            group.name, students[i].user_id) })%>
+          <%-partial('./partials/deleteButton', { action: groupStudentPath(group.semester_name, group.module_code,
+          group.name, students[i].user_id) })%>
         </td>
       </tr>
       <% } %>
