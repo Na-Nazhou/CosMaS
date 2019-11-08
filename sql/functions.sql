@@ -36,7 +36,7 @@ CREATE OR REPLACE FUNCTION update_accesses(
     $$ LANGUAGE plpgsql;
 
 /* TAs for group */
-CREATE OR REPLACE FUNCTION updateTAs(
+CREATE OR REPLACE FUNCTION update_TAs(
     character varying[],
     semesters.name%TYPE,
     modules.module_code%TYPE,
@@ -52,7 +52,7 @@ CREATE OR REPLACE FUNCTION updateTAs(
     $$ LANGUAGE plpgsql;
 
 /* Students for group */
-CREATE OR REPLACE FUNCTION updateStudents(
+CREATE OR REPLACE FUNCTION update_students(
     character varying[],
     semesters.name%TYPE,
     modules.module_code%TYPE,

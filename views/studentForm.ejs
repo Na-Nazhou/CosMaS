@@ -35,21 +35,18 @@
       <select
         multiple
         class="selectpicker form-control"
-        multiple data-selected-text-format="count > 3"
+        multiple
+        data-selected-text-format="count > 3"
         id="students"
         name="students"
         data-live-search="true"
         data-actions-box="true"
       >
-        <% for(let i = 0; i < options.length; i++) { %> <% if (selected.includes(options[i].user_id)) { %>
-        <option selected value="<%=options[i].user_id%>">
-          <%= options[i].user_id%>  <%= options[i].name%>
-        </option>
-        <% } else { %>
+        <% for(let i = 0; i < options.length; i++) { %>
         <option value="<%=options[i].user_id%>">
-          <%= options[i].user_id%>  <%= options[i].name%>
+          <%= options[i].user_id%> <%= options[i].name%>
         </option>
-        <% } %> <% } %>
+        <% } %>
       </select>
     </div>
     <button type="submit" class="btn btn-primary">Update</button>

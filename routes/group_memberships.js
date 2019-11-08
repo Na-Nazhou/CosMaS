@@ -5,7 +5,7 @@ const { ensureAuthorised } = require('../permissions');
 const { canUpdateGroup, canDeleteGroup } = require('../permissions/groups');
 
 router.use((req, res, next) => {
-  log.controller('group memberships controller handling the request');
+  log.controller('Group Memberships controller handling the request');
   next();
 });
 

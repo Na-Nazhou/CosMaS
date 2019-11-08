@@ -39,7 +39,7 @@ exports.editTAs = (req, res, next) => {
               semester_name,
               module_code,
               group_name,
-              selected: data2.rows,
+              selected: data2.rows.map(row => row.user_id),
               options: data1.rows
             });
           }

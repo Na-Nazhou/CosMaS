@@ -42,11 +42,11 @@
       >
         <% for(let i = 0; i < options.length; i++) { %> <% if (selected.includes(options[i].user_id)) { %>
         <option selected value="<%=options[i].user_id%>">
-          <%= options[i].user_id%>  <%= options[i].name%>
+          <%= options[i].user_id%> <%= options[i].name%>
         </option>
         <% } else { %>
         <option value="<%=options[i].user_id%>">
-          <%= options[i].user_id%>  <%= options[i].name%>
+          <%= options[i].user_id%> <%= options[i].name%>
         </option>
         <% } %> <% } %>
       </select>
