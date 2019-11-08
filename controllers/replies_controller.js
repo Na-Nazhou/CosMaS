@@ -8,9 +8,9 @@ const { findCourse, findForum, findThread } = require('./helpers');
 exports.new = async (req, res, next) => {
   const { semester_name, module_code, title: forum_title, created_at: thread_created_at } = req.params;
   try {
-    const course = await findCourse(req, semester_name, module_code);
-    const forum = await findForum(req, semester_name, module_code, forum_title);
-    const thread = await findThread(req, semester_name, module_code, forum_title, thread_created_at);
+    const course = await findCourse(semester_name, module_code);
+    const forum = await findForum(semester_name, module_code, forum_title);
+    const thread = await findThread(semester_name, module_code, forum_title, thread_created_at);
     res.render('replyForm', { course, forum, thread, reply: null });
   } catch (err) {
     next(err);
@@ -23,9 +23,9 @@ exports.create = async (req, res, next) => {
   const created_at = Date.now();
   const author_id = req.user.id;
   try {
-    const course = await findCourse(req, semester_name, module_code);
-    const forum = await findForum(req, semester_name, module_code, forum_title);
-    const thread = await findThread(req, semester_name, module_code, forum_title, thread_created_at);
+    const course = await findCourse(semester_name, module_code);
+    const forum = await findForum(semester_name, module_code, forum_title);
+    const thread = await findThread(semester_name, module_code, forum_title, thread_created_at);
     db.query(sql.replies.queries.create_reply, [
       semester_name,
       module_code,
@@ -52,16 +52,15 @@ exports.create = async (req, res, next) => {
 exports.edit = async (req, res, next) => {
   const { semester_name, module_code, title: forum_title, created_at: thread_created_at, posted_at } = req.params;
   try {
-    const course = await findCourse(req, semester_name, module_code);
-    const forum = await findForum(req, semester_name, module_code, forum_title);
-    const thread = await findThread(req, semester_name, module_code, forum_title, thread_created_at);
+    const course = await findCourse(semester_name, module_code);
+    const forum = await findForum(semester_name, module_code, forum_title);
+    const thread = await findThread(semester_name, module_code, forum_title, thread_created_at);
     const reply = await db
       .query(sql.replies.queries.find_reply, [semester_name, module_code, forum_title, thread_created_at, posted_at])
       .then(
         data => data.rows[0],
         err => {
           log.error(`Failed to find reply posted at ${posted_at} in thread ${thread.title}`);
-          req.flash('error', err.message);
           throw err;
         }
       );
@@ -75,9 +74,9 @@ exports.update = async (req, res, next) => {
   const { semester_name, module_code, title: forum_title, created_at: thread_created_at, posted_at } = req.params;
   const { content } = req.body;
   try {
-    const course = await findCourse(req, semester_name, module_code);
-    const forum = await findForum(req, semester_name, module_code, forum_title);
-    const thread = await findThread(req, semester_name, module_code, forum_title, thread_created_at);
+    const course = await findCourse(semester_name, module_code);
+    const forum = await findForum(semester_name, module_code, forum_title);
+    const thread = await findThread(semester_name, module_code, forum_title, thread_created_at);
     db.query(sql.replies.queries.update_reply, [
       semester_name,
       module_code,

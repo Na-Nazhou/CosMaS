@@ -15,8 +15,8 @@ exports.show = async (req, res, next) => {
       can_edit_thread: await canEditThread(req.user, semester_name, module_code),
       can_delete_thread: await canDeleteThread(req.user, semester_name, module_code)
     };
-    const course = await findCourse(req, semester_name, module_code);
-    const forum = await findForum(req, semester_name, module_code, forum_title);
+    const course = await findCourse(semester_name, module_code);
+    const forum = await findForum(semester_name, module_code, forum_title);
     const group_names = await db
       .query(sql.accesses.queries.get_group_names_by_forum, [semester_name, module_code, forum_title])
       .then(

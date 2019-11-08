@@ -10,8 +10,8 @@ const { canCreateReply, canUpdateReply, canDeleteReply } = require('../permissio
 exports.new = async (req, res, next) => {
   const { semester_name, module_code, title: forum_title } = req.params;
   try {
-    const course = await findCourse(req, semester_name, module_code);
-    const forum = await findForum(req, semester_name, module_code, forum_title);
+    const course = await findCourse(semester_name, module_code);
+    const forum = await findForum(semester_name, module_code, forum_title);
     res.render('threadForm', { course, forum, thread: null });
   } catch (err) {
     next(err);
@@ -24,8 +24,8 @@ exports.create = async (req, res, next) => {
   const created_at = Date.now();
   const author_id = req.user.id;
   try {
-    const course = await findCourse(req, semester_name, module_code);
-    const forum = await findForum(req, semester_name, module_code, forum_title);
+    const course = await findCourse(semester_name, module_code);
+    const forum = await findForum(semester_name, module_code, forum_title);
     db.query(sql.threads.queries.create_thread, [
       semester_name,
       module_code,
@@ -57,9 +57,9 @@ exports.show = async (req, res, next) => {
       can_update_reply: await canUpdateReply(req.user, semester_name, module_code),
       can_delete_reply: await canDeleteReply(req.user, semester_name, module_code)
     };
-    const course = await findCourse(req, semester_name, module_code);
-    const forum = await findForum(req, semester_name, module_code, forum_title);
-    const thread = await findThread(req, semester_name, module_code, forum_title, thread_created_at);
+    const course = await findCourse(semester_name, module_code);
+    const forum = await findForum(semester_name, module_code, forum_title);
+    const thread = await findThread(semester_name, module_code, forum_title, thread_created_at);
     const replies = await db
       .query(sql.replies.queries.get_replies_of_thread, [semester_name, module_code, forum_title, thread_created_at])
       .then(data => data.rows)
@@ -78,9 +78,9 @@ exports.show = async (req, res, next) => {
 exports.edit = async (req, res, next) => {
   const { semester_name, module_code, title: forum_title, created_at } = req.params;
   try {
-    const course = await findCourse(req, semester_name, module_code);
-    const forum = await findForum(req, semester_name, module_code, forum_title);
-    const thread = await findThread(req, semester_name, module_code, forum_title, created_at);
+    const course = await findCourse(semester_name, module_code);
+    const forum = await findForum(semester_name, module_code, forum_title);
+    const thread = await findThread(semester_name, module_code, forum_title, created_at);
     res.render('threadForm', { course, forum, thread });
   } catch (err) {
     next(err);
@@ -91,8 +91,8 @@ exports.update = async (req, res, next) => {
   const { semester_name, module_code, title: forum_title, created_at } = req.params;
   const { title, content } = req.body;
   try {
-    const course = await findCourse(req, semester_name, module_code);
-    const forum = await findForum(req, semester_name, module_code, forum_title);
+    const course = await findCourse(semester_name, module_code);
+    const forum = await findForum(semester_name, module_code, forum_title);
     db.query(sql.threads.queries.update_thread, [
       course.semester_name,
       course.module_code,
@@ -125,7 +125,7 @@ exports.update = async (req, res, next) => {
 exports.delete = async (req, res, next) => {
   const { semester_name, module_code, title: forum_title, created_at } = req.params;
   try {
-    const thread = await findThread(req, semester_name, module_code, forum_title, created_at);
+    const thread = await findThread(semester_name, module_code, forum_title, created_at);
     db.query(sql.threads.queries.delete_thread, [semester_name, module_code, forum_title, created_at])
       .then(
         () => {

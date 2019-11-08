@@ -1,22 +1,28 @@
 <% layout('layout') -%>
 <div class="container mt-3">
   <%-partial('./partials/messages', { messages: flash() })%>
-  <h1 class="mt-3 mb-3"><a href="<%= coursePath(course.semester_name, course.module_code) %>"><%= course.module_code %> <%= course.title %></a></h1>
+  <h1 class="mt-3 mb-3">
+    <a href="<%= coursePath(course.semester_name, course.module_code) %>"
+      ><%= course.module_code %> <%= course.title %></a
+    >
+  </h1>
   <h2><small class="text-muted"><%= course.semester_name %></small></h2>
   <h2>Forum: <%= forum.title %></h2>
   <p class="h6">
-    Accessible by the following group(s):
-    <% if (permissions.can_edit_access) { %>
-      <a href="<%= accessesPath(course.semester_name, course.module_code, forum.title) %>">
-        <i class="fa fa-pencil"></i>
-      </a>
+    Accessible by the following group(s): <% if (permissions.can_edit_access) { %>
+    <a href="<%= accessesPath(course.semester_name, course.module_code, forum.title) %>">
+      <i class="fa fa-pencil"></i>
+    </a>
     <% } %>
   </p>
   <div id="groups">
     <% if (group_names.length === 0) { %>
     <p><small class="text-muted">Currently no group can access this forum.</small></p>
     <% } %> <% for (var i = 0; i < group_names.length; i++) { %>
-    <a href="<%= groupPath(course.semester_name, course.module_code, group_names[i].group_name)%>" class="btn btn-info btn-sm">
+    <a
+      href="<%= groupPath(course.semester_name, course.module_code, group_names[i].group_name)%>"
+      class="btn btn-info btn-sm"
+    >
       <%= group_names[i].group_name%>
     </a>
     <% } %>
@@ -26,7 +32,10 @@
   <h2>
     Threads
     <div class="float-right" style="display: inline">
-      <a href="<%= threadNewPath(course.semester_name, course.module_code, forum.title) %>" class="btn btn-outline-primary">
+      <a
+        href="<%= threadNewPath(course.semester_name, course.module_code, forum.title) %>"
+        class="btn btn-outline-primary"
+      >
         <i class="far fa-plus"></i>
         New Thread
       </a>
@@ -34,38 +43,45 @@
   </h2>
   <table class="mb-5 table table-hover">
     <thead>
-    <tr>
-      <th scope="col">Title</th>
-      <th scope="col">Author</th>
-      <th scope="col">Created at</th>
-      <th scope="col">Replies</th>
-      <th scope="col">Lastest reply</th>
-      <th scope="col">Actions</th>
-    </tr>
+      <tr>
+        <th scope="col">Title</th>
+        <th scope="col">Author</th>
+        <th scope="col">Created at</th>
+        <th scope="col">Replies</th>
+        <th scope="col">Latest reply</th>
+        <th scope="col">Actions</th>
+      </tr>
     </thead>
     <tbody>
-    <% for (let i = 0; i < threads.length; i++) { %>
+      <% for (let i = 0; i < threads.length; i++) { %>
       <tr>
         <td><%= threads[i].title %></td>
         <td><%= threads[i].author_name || '[deleted user]' %></td>
         <td><%= timestampToDisplayedForm(threads[i].created_at) %></td>
         <td><%= threads[i].replies_count %></td>
-        <td><%= threads[i].latest_reply_time ? timestampToDisplayedForm(threads[i].latest_reply_time) : 'No replies yet' %></td>
         <td>
-          <a href="<%= threadPath(course.semester_name, course.module_code, forum.title, threads[i].created_at) %>" class="btn btn-primary">
+          <%= threads[i].latest_reply_time ? timestampToDisplayedForm(threads[i].latest_reply_time) : 'No replies yet'
+          %>
+        </td>
+        <td>
+          <a
+            href="<%= threadPath(course.semester_name, course.module_code, forum.title, threads[i].created_at) %>"
+            class="btn btn-primary"
+          >
             <i class="far fa-eye"></i>
           </a>
           <% if (permissions.can_edit_thread) { %>
-            <a href="<%= threadEditPath(course.semester_name, course.module_code, forum.title, threads[i].created_at) %>" class="btn btn-success">
-              <i class="fas fa-edit"></i>
-            </a>
-          <% } %>
-          <% if (permissions.can_delete_thread) { %>
-            <%- partial('./partials/deleteButton', { action: threadPath(course.semester_name, course.module_code, forum.title, threads[i].created_at) })%>
-          <% } %>
+          <a
+            href="<%= threadEditPath(course.semester_name, course.module_code, forum.title, threads[i].created_at) %>"
+            class="btn btn-success"
+          >
+            <i class="fas fa-edit"></i>
+          </a>
+          <% } %> <% if (permissions.can_delete_thread) { %> <%- partial('./partials/deleteButton', { action:
+          threadPath(course.semester_name, course.module_code, forum.title, threads[i].created_at) })%> <% } %>
         </td>
       </tr>
-    <% } %>
+      <% } %>
     </tbody>
   </table>
 </div>

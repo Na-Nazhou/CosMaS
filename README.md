@@ -24,7 +24,7 @@ Note: existing database tables might be dropped.
 4. Run `npm start`.
 
 5. Open your browser and go to `localhost:3000`, you should see
-   the login page. You can login with the accounts created in the seeds or sign up for the a new account.
+   the login page. You can login with the accounts created in the seeds or sign up for a new account.
 
 6. The seed data contains an admin account with User ID `A9999999A`, name `Admin` and password `admin`. For non-admin accounts,
    the passwords are `password` and you can refer to `sql/seeds.sql` for their user IDs and names.
