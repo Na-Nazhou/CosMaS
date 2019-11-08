@@ -2,7 +2,7 @@ const course_requests = {};
 
 course_requests.queries = {
   find_course_request:
-    'SELECT * FROM course_requests WHERE semester_name = $1 AND module_code=$2 AND requester_id = $3',
+    'SELECT * FROM course_requests WHERE semester_name=$1 AND module_code=$2 AND requester_id=$3',
   get_course_requests_professor:
     'SELECT CR.semester_name, CR.module_code, CR.requester_id, CR.is_approved, CR.requested_at, CR.closed_at, ' +
     'C.title FROM ' +
@@ -23,10 +23,6 @@ course_requests.queries = {
     'semester_name = $3 AND module_code=$4',
   delete_course_request:
     'DELETE FROM course_requests WHERE requester_id = $1 AND semester_name = $2 AND module_code = $3'
-};
-
-course_requests.functions = {
-  is_allowed_to_request: 'SELECT is_allowed_to_request($1, $2, $3)'
 };
 
 module.exports = course_requests;
