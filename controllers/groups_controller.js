@@ -3,6 +3,7 @@ const sql = require('../sql');
 const log = require('../helpers/logging');
 const { coursePath } = require('../routes/helpers/courses');
 const { groupPath } = require('../routes/helpers/groups');
+const { findCourse } = require('./helpers/index');
 const { canEditGroupMembership } = require('../permissions/group_memberships');
 
 exports.show = async (req, res, next) => {
@@ -11,6 +12,7 @@ exports.show = async (req, res, next) => {
     const permissions = {
       can_edit_group_membership: await canEditGroupMembership(req.user, semester_name, module_code)
     };
+    const course = await findCourse(semester_name, module_code);
     const group = await db.query(sql.groups.queries.find_group, [semester_name, module_code, name]).then(
       data => data.rows[0],
       err => {
@@ -36,7 +38,7 @@ exports.show = async (req, res, next) => {
           throw err;
         }
       );
-    res.render('group', { group, TAs, students, permissions });
+    res.render('group', { course, group, TAs, students, permissions });
   } catch (err) {
     next(err);
   }
