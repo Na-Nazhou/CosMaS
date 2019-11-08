@@ -50,3 +50,18 @@ CREATE OR REPLACE FUNCTION update_TAs(
 	    END LOOP;
     END
     $$ LANGUAGE plpgsql;
+
+/* Students for group */
+CREATE OR REPLACE FUNCTION update_students(
+    character varying[],
+    semesters.name%TYPE,
+    modules.module_code%TYPE,
+    groups.name%TYPE)
+    RETURNS void AS $$
+    BEGIN
+        FOR i in 1 .. COALESCE(array_length($1, 1), 0)
+	    LOOP
+		    INSERT INTO group_memberships (role, user_id, semester_name, module_code, group_name) VALUES('student', $1[i], $2, $3, $4);
+	    END LOOP;
+    END
+    $$ LANGUAGE plpgsql;

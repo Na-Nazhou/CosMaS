@@ -25,10 +25,6 @@ function groupStudentPath(semester_name, module_code, group_name, user_id) {
   return `${groupStudentsPath(semester_name, module_code, group_name)}/${encodeURIComponent(user_id)}`;
 }
 
-function groupStudentNewPath(semester_name, module_code, group_name) {
-  return `${groupStudentsPath(semester_name, module_code, group_name)}/new`;
-}
-
 
 module.exports = {
   groupsPath,
@@ -36,6 +32,5 @@ module.exports = {
   groupNewPath,
   groupEditPath,
   groupStudentsPath,
-  groupStudentPath,
-  groupStudentNewPath
+  groupStudentPath
 };

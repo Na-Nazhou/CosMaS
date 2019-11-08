@@ -43,10 +43,12 @@ router.put(
 );
 router.get(
   '/:name/TAs',
+  ensureAuthorised(req => canUpdateGroup(req.user, req.params.semester_name, req.params.module_code)),
   TAs.edit
 );
 router.post(
   '/:name/TAs',
+  ensureAuthorised(req => canUpdateGroup(req.user, req.params.semester_name, req.params.module_code)),
   TAs.update
 );
 
