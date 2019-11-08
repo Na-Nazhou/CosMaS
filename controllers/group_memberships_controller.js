@@ -2,9 +2,9 @@ const db = require('../db');
 const sql = require('../sql');
 const log = require('../helpers/logging');
 const { groupPath } = require('../routes/helpers/groups');
-const { groupStudentsPath, TAsPath } = require('../routes/helpers/group_memberships');
+const { groupStudentsPath, groupTAsPath } = require('../routes/helpers/group_memberships');
 
-exports.delete = (req, res) => {
+exports.deleteStudents = (req, res) => {
   const { semester_name, module_code, name: group_name, user_id } = req.params;
   db.query(sql.group_memberships.queries.delete_member, [semester_name, module_code, group_name, user_id], err => {
     if (err) {
@@ -67,7 +67,7 @@ exports.updateTAs = (req, res) => {
     if (err) {
       log.error(`Failed to update TAs for group ${group_name} of ${module_code} ${semester_name}`);
       req.flash('error', err.message);
-      res.redirect(TAsPath(semester_name, module_code, group_name));
+      res.redirect(groupTAsPath(semester_name, module_code, group_name));
     } else {
       req.flash('success', `Sucessfully updated TA for group ${group_name} of ${module_code} ${semester_name}`);
       res.redirect(groupPath(semester_name, module_code, group_name));

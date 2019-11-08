@@ -23,7 +23,7 @@ router.post(
 router.delete(
   '/students/:user_id',
   ensureAuthorised(req => canDeleteGroup(req.user, req.params.semester_name, req.params.module_code)),
-  group_memberships.delete
+  group_memberships.deleteStudents
 );
 
 router.get(
