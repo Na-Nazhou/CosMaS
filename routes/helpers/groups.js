@@ -25,7 +25,6 @@ function groupStudentPath(semester_name, module_code, group_name, user_id) {
   return `${groupStudentsPath(semester_name, module_code, group_name)}/${encodeURIComponent(user_id)}`;
 }
 
-
 module.exports = {
   groupsPath,
   groupPath,
