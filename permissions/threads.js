@@ -9,6 +9,7 @@ function canCreateThread(user, semester_name, module_code, forum_title) {
   return canShowForum(user, semester_name, module_code, forum_title);
 }
 
+// TODO: Can author edit thread?
 function canEditThread(user, semester_name, module_code) {
   return passedAny(
     isAdmin(user),

@@ -45,7 +45,6 @@ exports.create = async (req, res, next) => {
         res.redirect(threadPath(semester_name, module_code, forum_title, created_at));
       });
   } catch (err) {
-    req.flash('error', err.message);
     next(err);
   }
 };
@@ -72,7 +71,6 @@ exports.show = async (req, res, next) => {
       });
     res.render('thread', { course, forum, thread, replies, permissions });
   } catch (err) {
-    req.flash('error', err.message);
     next(err);
   }
 };
@@ -129,16 +127,22 @@ exports.delete = async (req, res, next) => {
   try {
     const thread = await findThread(req, semester_name, module_code, forum_title, created_at);
     db.query(sql.threads.queries.delete_thread, [semester_name, module_code, forum_title, created_at])
+      .then(
+        () => {
+          req.flash(
+            'success',
+            `Successfully deleted ${thread.title} thread in ${forum_title} forum of ${semester_name} ${module_code}`
+          );
+        },
+        err => {
+          log.error(
+            `Failed to delete ${thread.title} thread in ${forum_title} forum of ${semester_name} ${module_code}`
+          );
+          req.flash('error', err.message);
+        }
+      )
       .then(() => {
-        req.flash(
-          'success',
-          `Successfully deleted ${thread.title} thread in ${forum_title} forum of ${semester_name} ${module_code}`
-        );
         res.redirect(forumPath(semester_name, module_code, forum_title));
-      })
-      .catch(err => {
-        log.error(`Failed to delete ${thread.title} thread in ${forum_title} forum of ${semester_name} ${module_code}`);
-        next(err);
       });
   } catch (err) {
     next(err);

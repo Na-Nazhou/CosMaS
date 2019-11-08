@@ -7,7 +7,6 @@ function findCourse(req, semester_name, module_code) {
     data => data.rows[0],
     err => {
       log.error(`Failed to get course ${semester_name} ${module_code}`);
-      req.flash('error', err.message);
       throw err;
     }
   );
@@ -18,7 +17,6 @@ function findForum(req, semester_name, module_code, forum_title) {
     data => data.rows[0],
     err => {
       log.error(`Failed to get forum ${forum_title} of ${semester_name} ${module_code}`);
-      req.flash('error', err.message);
       throw err;
     }
   );
@@ -31,7 +29,6 @@ function findThread(req, semester_name, module_code, forum_title, created_at) {
       data => data.rows[0],
       err => {
         log.error(`Failed to get thread created at ${created_at} for ${semester_name} ${module_code}`);
-        req.flash('error', err.message);
         throw err;
       }
     );

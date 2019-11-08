@@ -5,6 +5,7 @@ function canCreateReply(user, semester_name, module_code, forum_title) {
   return canShowThread(user, semester_name, module_code, forum_title);
 }
 
+// TODO: can author update reply?
 function canUpdateReply(user, semester_name, module_code) {
   return passedAny(
     isAdmin(user),

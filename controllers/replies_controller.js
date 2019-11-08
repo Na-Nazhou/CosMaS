@@ -13,7 +13,6 @@ exports.new = async (req, res, next) => {
     const thread = await findThread(req, semester_name, module_code, forum_title, thread_created_at);
     res.render('replyForm', { course, forum, thread, reply: null });
   } catch (err) {
-    req.flash('error', err.message);
     next(err);
   }
 };
@@ -62,12 +61,12 @@ exports.edit = async (req, res, next) => {
         data => data.rows[0],
         err => {
           log.error(`Failed to find reply posted at ${posted_at} in thread ${thread.title}`);
+          req.flash('error', err.message);
           throw err;
         }
       );
     res.render('replyForm', { course, forum, thread, reply });
   } catch (err) {
-    req.flash('error', err.message);
     next(err);
   }
 };
@@ -98,7 +97,6 @@ exports.update = async (req, res, next) => {
       }
     );
   } catch (err) {
-    req.flash('error', err.message);
     next(err);
   }
 };

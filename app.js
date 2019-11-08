@@ -15,7 +15,7 @@ const log = require('./helpers/logging');
 const app = express();
 
 // Session & Auth Setup
-require('./auth').init(app);
+require('./auth/initAuth').initPassport();
 
 app.use(cookieParser());
 app.use(

@@ -9,12 +9,12 @@ const { canEditThread, canDeleteThread } = require('../permissions/threads');
 
 exports.show = async (req, res, next) => {
   const { semester_name, module_code, title: forum_title } = req.params;
-  const permissions = {
-    can_edit_access: await canEditAccess(req.user, semester_name, module_code),
-    can_edit_thread: await canEditThread(req.user, semester_name, module_code),
-    can_delete_thread: await canDeleteThread(req.user, semester_name, module_code)
-  };
   try {
+    const permissions = {
+      can_edit_access: await canEditAccess(req.user, semester_name, module_code),
+      can_edit_thread: await canEditThread(req.user, semester_name, module_code),
+      can_delete_thread: await canDeleteThread(req.user, semester_name, module_code)
+    };
     const course = await findCourse(req, semester_name, module_code);
     const forum = await findForum(req, semester_name, module_code, forum_title);
     const group_names = await db
@@ -38,7 +38,6 @@ exports.show = async (req, res, next) => {
 
     res.render('forum', { course, forum, threads, group_names, permissions });
   } catch (err) {
-    req.flash('error', err.message);
     next(err);
   }
 };
