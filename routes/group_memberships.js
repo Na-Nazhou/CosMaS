@@ -3,7 +3,7 @@ const group_memberships = require('../controllers/group_memberships_controller')
 const students = require('../controllers/students_controller');
 const log = require('../helpers/logging');
 const { ensureAuthorised } = require('../permissions');
-const { canShowGroup, canCreateGroup, canUpdateGroup, canDeleteGroup } = require('../permissions').checkers;
+const { canUpdateGroup, canDeleteGroup } = require('../permissions').checkers;
 
 router.use((req, res, next) => {
   log.controller('group memberships controller handling the request');
