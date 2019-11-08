@@ -1,4 +1,4 @@
-const { isAdmin, isSameUserID } = require('./helpers');
+const { passedAny, isAdmin, isSameUserID } = require('./helpers');
 
 function canIndexUsers(user) {
   return isAdmin(user);
@@ -6,8 +6,8 @@ function canIndexUsers(user) {
 
 // everyone can create user
 
-function canUpdateUser(userID1, userID2) {
-  return isSameUserID(userID1, userID2);
+function canUpdateUser(user, userID2) {
+  return passedAny(isAdmin(user), isSameUserID(user.id, userID2));
 }
 
 function canDeleteUser(user) {

@@ -1,6 +1,7 @@
 <% layout('layout') -%>
 <div class="container">
-  <h1 class="mt-3 mb-3">Semesters
+  <h1 class="mt-3 mb-3">
+    Semesters (<%= data.length %>)
     <div class="float-right" style="display: inline">
       <a href="<%= semesterNewPath()%>" class="btn btn-outline-primary">
         <i class="far fa-plus"></i>
@@ -19,7 +20,7 @@
       </tr>
     </thead>
     <tbody>
-      <% for(var i=0; i<data.length; i++) { %>
+      <% for(let i = 0; i < data.length; i++) { %>
       <tr>
         <td><%= data[i].name%></td>
         <td><%= data[i].start_time%></td>

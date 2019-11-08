@@ -39,13 +39,13 @@ exports.edit = (req, res, next) => {
       log.error('Failed to find user');
       next(err);
     } else {
-      res.render('userEdit', { user: data.rows[0] });
+      res.render('userEdit', { targetUser: data.rows[0] });
     }
   });
 };
 
 exports.update = (req, res) => {
-  const originalId = req.params.id;
+  const old_id = req.params.id;
   // TODO: update when edit id is supported
   const id = req.body.id || req.params.id;
   const { name } = req.body;
@@ -53,11 +53,11 @@ exports.update = (req, res) => {
   const salt = bcrypt.genSaltSync(10);
   const password_digest = bcrypt.hashSync(raw_password, salt);
 
-  db.query(sql.users.queries.update_user, [id, name, password_digest, originalId], err => {
+  db.query(sql.users.queries.update_user, [id, name, password_digest, old_id], err => {
     if (err) {
       log.error('Failed up update user');
       req.flash('error', err.message);
-      res.render('userEdit', { user: { id: originalId, name } });
+      res.render('userEdit', { targetUser: { id: old_id, name } });
     } else {
       req.flash('success', 'Profile successfully updated!');
       res.redirect('back');

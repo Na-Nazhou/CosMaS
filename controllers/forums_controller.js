@@ -94,7 +94,7 @@ exports.update = (req, res) => {
     if (err) {
       log.error('Failed to update course');
       req.flash('error', err.message);
-      res.render('forumForm', { semester_name, module_code, forum: { title: new_title } });
+      res.render('forumForm', { semester_name, module_code, forum: { title: old_title } });
     } else {
       req.flash('success', `Successfully updated forum`);
       res.redirect(forumPath(semester_name, module_code, new_title));

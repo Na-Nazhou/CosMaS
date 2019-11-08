@@ -15,7 +15,7 @@ exports.index = (req, res, next) => {
 };
 
 exports.new = (req, res) => {
-  res.render('moduleNew');
+  res.render('moduleNew', { module: null });
 };
 
 exports.create = (req, res) => {
@@ -26,7 +26,7 @@ exports.create = (req, res) => {
       log.error('Failed to create module');
       // TODO: refine error message
       req.flash('error', err.message);
-      res.render('moduleNew');
+      res.render('moduleNew', { module: { module_code } });
     } else {
       req.flash('success', `Module ${module_code} has been successfully created!`);
       res.redirect(modulesPath());

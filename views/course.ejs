@@ -7,7 +7,7 @@
   <p><%= course.description %></p>
   <hr class="mt-5 mb-5" />
   <h2>
-    Groups <% if (permissions.can_create_group) { %>
+    Groups (<%= groups.length %>) <% if (permissions.can_create_group) { %>
     <div class="float-right" style="display: inline">
       <a href="<%= groupNewPath(course.semester_name, course.module_code) %>" class="btn btn-outline-primary">
         <i class="far fa-plus"></i>
@@ -38,9 +38,8 @@
           >
             <i class="fas fa-edit"></i>
           </a>
-          <% } %> <% if (permissions.can_delete_group) { %>
-          <%-partial('./partials/deleteButton',{ action: groupPath(course.semester_name, course.module_code,
-          groups[i].name) })%> <% } %>
+          <% } %> <% if (permissions.can_delete_group) { %> <%-partial('./partials/deleteButton',{ action:
+          groupPath(course.semester_name, course.module_code, groups[i].name) })%> <% } %>
         </td>
       </tr>
       <% } %>
@@ -48,7 +47,7 @@
   </table>
 
   <h2>
-    Forums <% if (permissions.can_create_forum) { %>
+    Forums (<%= forums.length %>)<% if (permissions.can_create_forum) { %>
     <div class="float-right" style="display: inline">
       <a href="<%= forumNewPath(course.semester_name, course.module_code) %>" class="btn btn-outline-primary">
         <i class="far fa-plus"></i>
@@ -79,9 +78,8 @@
           >
             <i class="fas fa-edit"></i>
           </a>
-          <% } %> <% if (permissions.can_delete_forum) { %>
-          <%-partial('./partials/deleteButton',{ action: forumPath(course.semester_name, course.module_code,
-          forums[i].title) })%> <% } %>
+          <% } %> <% if (permissions.can_delete_forum) { %> <%-partial('./partials/deleteButton',{ action:
+          forumPath(course.semester_name, course.module_code, forums[i].title) })%> <% } %>
         </td>
       </tr>
       <% } %>

@@ -3,40 +3,45 @@ const sql = require('../sql');
 const log = require('../helpers/logging');
 const { coursePath } = require('../routes/helpers/courses');
 const { groupPath } = require('../routes/helpers/groups');
+const { findCourse } = require('./helpers/index');
+const { canEditGroupMembership } = require('../permissions/group_memberships');
 
-exports.show = (req, res, next) => {
+exports.show = async (req, res, next) => {
   const { semester_name, module_code, name } = req.params;
-  db.query(sql.groups.queries.find_group, [semester_name, module_code, name], (err1, data1) => {
-    if (err1) {
-      log.error(`Failed to get group ${name} of ${semester_name} ${module_code}`);
-      next(err1);
-    } else {
-      const group = data1.rows[0];
-      db.query(
-        sql.group_memberships.queries.get_members_by_group,
-        [semester_name, module_code, name, 'TA'],
-        (err2, data2) => {
-          if (err2) {
-            log.error(`Fail to get TAs of group ${name}`);
-            next(err2);
-          } else {
-            db.query(
-              sql.group_memberships.queries.get_members_by_group,
-              [semester_name, module_code, name, 'student'],
-              (err3, data3) => {
-                if (err3) {
-                  log.error(`Fail to get students of group ${name}`);
-                  next(err3);
-                } else {
-                  res.render('group', { group, TAs: data2.rows, students: data3.rows });
-                }
-              }
-            );
-          }
+  try {
+    const permissions = {
+      can_edit_group_membership: await canEditGroupMembership(req.user, semester_name, module_code)
+    };
+    const course = await findCourse(semester_name, module_code);
+    const group = await db.query(sql.groups.queries.find_group, [semester_name, module_code, name]).then(
+      data => data.rows[0],
+      err => {
+        log.error(`Failed to get group ${name} of ${semester_name} ${module_code}`);
+        throw err;
+      }
+    );
+    const TAs = await db
+      .query(sql.group_memberships.queries.get_members_by_group, [semester_name, module_code, name, 'TA'])
+      .then(
+        data => data.rows,
+        err => {
+          log.error(`Fail to get TAs of group ${name}`);
+          throw err;
         }
       );
-    }
-  });
+    const students = await db
+      .query(sql.group_memberships.queries.get_members_by_group, [semester_name, module_code, name, 'student'])
+      .then(
+        data => data.rows,
+        err => {
+          log.error(`Fail to get students of group ${name}`);
+          throw err;
+        }
+      );
+    res.render('group', { course, group, TAs, students, permissions });
+  } catch (err) {
+    next(err);
+  }
 };
 
 exports.new = (req, res) => {
@@ -90,7 +95,7 @@ exports.update = (req, res) => {
     if (err) {
       log.error('Failed to update group');
       req.flash('error', err.message);
-      res.render('groupForm', { semester_name, module_code, group: { name: new_name } });
+      res.render('groupForm', { semester_name, module_code, group: { name: old_name } });
     } else {
       req.flash('success', `Successfully updated group`);
       res.redirect(groupPath(semester_name, module_code, new_name));

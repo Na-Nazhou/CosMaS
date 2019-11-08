@@ -13,6 +13,7 @@
         aria-describedby="idHelp"
         placeholder="Enter your user ID"
         required="required"
+        value="<%=targetUser? targetUser.id : ''%>"
       />
       <small id="idHelp" class="form-text text-muted">
         Your ID must contain exactly 9 characters, where the first and the last characters must be capital letters and
@@ -21,7 +22,15 @@
     </div>
     <div class="form-group">
       <label for="name">Name</label>
-      <input type="text" class="form-control" id="name" name="name" placeholder="Enter your name" required="required" />
+      <input
+        type="text"
+        class="form-control"
+        id="name"
+        name="name"
+        placeholder="Enter your name"
+        required="required"
+        value="<%=targetUser? targetUser.name : ''%>"
+      />
     </div>
     <div class="form-group">
       <label for="password">Password</label>

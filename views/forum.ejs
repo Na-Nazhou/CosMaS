@@ -3,8 +3,8 @@
   <%-partial('./partials/messages', { messages: flash() })%>
   <h1 class="mt-3 mb-3">
     <a href="<%= coursePath(course.semester_name, course.module_code) %>"
-      ><%= course.module_code %> <%= course.title %></a
-    >
+      ><%= course.module_code %> <%= course.title %>
+    </a>
   </h1>
   <h2><small class="text-muted"><%= course.semester_name %></small></h2>
   <h2>Forum: <%= forum.title %></h2>
@@ -30,7 +30,7 @@
   <hr class="mt-5 mb-5" />
 
   <h2>
-    Threads
+    Threads (<%= threads.length %>)
     <div class="float-right" style="display: inline">
       <a
         href="<%= threadNewPath(course.semester_name, course.module_code, forum.title) %>"
