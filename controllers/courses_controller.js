@@ -2,7 +2,7 @@ const db = require('../db');
 const sql = require('../sql');
 const log = require('../helpers/logging');
 const { canCreateCourse, canDeleteCourse } = require('../permissions/courses');
-const { canIndexMembers, canAddProfessor, canAddNonProfessor } = require('../permissions/course_memberships');
+const { canIndexMembers } = require('../permissions/course_memberships');
 const { canRequestCourse } = require('../permissions/course_requests');
 const { canCreateForum, canUpdateForum, canDeleteForum } = require('../permissions/forums');
 const { canCreateGroup, canUpdateGroup, canDeleteGroup } = require('../permissions/groups');
@@ -40,7 +40,7 @@ exports.index = async (req, res, next) => {
           log.error('Failed to get courses');
           next(err);
         } else {
-          res.render('courses', { data: data.rows, title: 'All courses', permissions });
+          res.render('courses', { data: data.rows, title: 'All Courses', permissions });
         }
       });
     }
@@ -60,8 +60,6 @@ exports.show = async (req, res, next) => {
       can_update_forum: await canUpdateForum(req.user, semester_name, module_code),
       can_delete_forum: await canDeleteForum(req.user, semester_name, module_code),
       can_index_members: await canIndexMembers(req.user, semester_name, module_code),
-      can_add_professor: await canAddProfessor(req.user),
-      can_add_non_professor: await canAddNonProfessor(req.user, semester_name, module_code),
       can_request_course: await canRequestCourse(req.user, semester_name, module_code)
     };
     const course = await db.query(sql.courses.queries.find_course, [semester_name, module_code]).then(

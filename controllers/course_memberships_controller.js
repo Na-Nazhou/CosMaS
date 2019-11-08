@@ -3,12 +3,13 @@ const sql = require('../sql');
 const log = require('../helpers/logging');
 const { courseMembershipsPath, courseMembershipNewPath } = require('../routes/helpers/course_memberships');
 const { findCourse } = require('./helpers/index');
-const { canDeleteSomeMember } = require('../permissions/course_memberships');
+const { canDeleteSomeMember, canAddSomeMember, canAddProfessor } = require('../permissions/course_memberships');
 
 exports.index = async (req, res, next) => {
   const { semester_name, module_code } = req.params;
   try {
     const permissions = {
+      can_add_some_member: await canAddSomeMember(req.user, semester_name, module_code),
       can_delete_some_member: await canDeleteSomeMember(req.user, semester_name, module_code)
     };
     const course = await findCourse(semester_name, module_code);
@@ -25,16 +26,23 @@ exports.index = async (req, res, next) => {
   }
 };
 
-exports.new = (req, res, next) => {
+exports.new = async (req, res, next) => {
   const { semester_name, module_code } = req.params;
-  db.query(sql.course_memberships.queries.get_users_not_in_course, [semester_name, module_code], (err, data) => {
-    if (err) {
-      log.error(`Failed to get users not in course ${module_code} offered in ${semester_name}`);
-      next(err);
-    } else {
-      res.render('courseMembershipNew', { semester_name, module_code, options: data.rows });
-    }
-  });
+  try {
+    const permissions = {
+      can_add_professor: await canAddProfessor(req.user)
+    };
+    db.query(sql.course_memberships.queries.get_users_not_in_course, [semester_name, module_code], (err, data) => {
+      if (err) {
+        log.error(`Failed to get users not in course ${module_code} offered in ${semester_name}`);
+        throw err;
+      } else {
+        res.render('courseMembershipNew', { semester_name, module_code, options: data.rows, permissions });
+      }
+    });
+  } catch (err) {
+    next(err);
+  }
 };
 
 exports.create = (req, res) => {

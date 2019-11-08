@@ -9,28 +9,18 @@
     </tr>
   </thead>
   <tbody>
-    <% for(var i=0; i<data.length; i++) { %>
-    <% if (role === data[i].role) { %>
+    <% for(let i = 0; i < data.length; i++) { %> <% if (role === data[i].role) { %>
     <tr>
       <td><%= data[i].semester_name%></td>
       <td><%= data[i].module_code%></td>
       <td><%= data[i].title%></td>
       <td><%= data[i].credits%></td>
       <td>
-        <a href="/courses/<%=encodeURIComponent(data[i].semester_name)%>/<%=encodeURIComponent(data[i].module_code)%>"
-          class="btn btn-primary">
+        <a href="<%= coursePath(data[i].semester_name, data[i].module_code)%>" class="btn btn-primary">
           <i class="far fa-eye"></i>
         </a>
-        <a href="/courses/<%=encodeURIComponent(data[i].semester_name)%>/<%=encodeURIComponent(data[i].module_code)%>/edit"
-          class="btn btn-success">
-          <i class="fas fa-edit"></i>
-        </a>
-        <% if (permissions.can_delete_course) { %>
-        <%-partial('./deleteButton',{ action: coursePath(data[i].semester_name, data[i].module_code)} )%>
-        <% } %>
       </td>
     </tr>
-    <% } %>
-    <% } %>
+    <% } %> <% } %>
   </tbody>
 </table>
