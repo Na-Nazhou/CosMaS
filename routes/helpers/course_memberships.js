@@ -1,7 +1,7 @@
-const courses = require('./courses');
+const { coursePath } = require('./courses');
 
 function courseMembershipsPath(semester_name, module_code) {
-  return `${courses.coursePath(semester_name, module_code)}/members`;
+  return `${coursePath(semester_name, module_code)}/members`;
 }
 
 function courseMembershipNewPath(semester_name, module_code) {

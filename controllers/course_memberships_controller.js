@@ -1,46 +1,57 @@
 const db = require('../db');
 const sql = require('../sql');
 const log = require('../helpers/logging');
-const { courseMembershipsPath } = require('../routes/helpers/course_memberships');
-const { canDeleteUser } = require('../permissions/users');
-const { canViewDashboard } = require('../permissions/users');
+const { courseMembershipsPath, courseMembershipNewPath } = require('../routes/helpers/course_memberships');
 const { findCourse } = require('./helpers/index');
 
 exports.index = async (req, res, next) => {
   const { semester_name, module_code } = req.params;
-  const permissions = {
-    can_delete_user: await canDeleteUser(req.user),
-    can_view_dashboard: await canViewDashboard(req.user)
-  };
   const course = await findCourse(semester_name, module_code);
   db.query(sql.course_memberships.queries.get_memberships, [semester_name, module_code], (err, data) => {
     if (err) {
-      log.error(`Failed to get course memberships for module ${module_code}`);
+      log.error(`Failed to get course memberships for course ${module_code} offered in ${semester_name}`);
       next(err);
     } else {
-      res.render('courseMemberships', { data: data.rows, course, permissions });
+      res.render('courseMemberships', { members: data.rows, course });
     }
   });
 };
 
-exports.new = (req, res) => {
+exports.new = (req, res, next) => {
   const { semester_name, module_code } = req.params;
-  res.render('courseMembershipNew', { semester_name, module_code });
+  db.query(sql.course_memberships.queries.get_users_not_in_course, [semester_name, module_code], (err, data) => {
+    if (err) {
+      log.error(`Failed to get users not in course ${module_code} offered in ${semester_name}`);
+      next(err);
+    } else {
+      res.render('courseMembershipNew', { semester_name, module_code, options: data.rows });
+    }
+  });
 };
 
 exports.create = (req, res) => {
   const { semester_name, module_code } = req.params;
-  const { role, user_id } = req.body;
-
-  db.query(sql.course_memberships.queries.create_membership, [role, semester_name, module_code, user_id], err => {
+  const { role, user_ids } = req.body;
+  let ids = user_ids;
+  if (user_ids === undefined) {
+    // empty selection
+    ids = '{}';
+  } else if (Array.isArray(user_ids)) {
+    // multiple selections
+    ids = `{${user_ids.join(', ')}}`;
+  } else {
+    // single selection
+    ids = `{${user_ids}}`;
+  }
+  db.query(sql.course_memberships.functions.add_course_members, [ids, role, semester_name, module_code], err => {
     if (err) {
-      log.error(`Failed to add ${user_id} to course ${module_code}!`);
-      // TODO: refine error message
+      log.error(`Failed to add members to course ${module_code} ${semester_name}`);
       req.flash('error', err.message);
+      res.redirect(courseMembershipNewPath(semester_name, module_code));
     } else {
-      req.flash('success', `Successfully added ${user_id} to course ${module_code}!`);
+      req.flash('success', `Sucessfully added members to course ${module_code} ${semester_name}`);
+      res.redirect(courseMembershipsPath(semester_name, module_code));
     }
-    res.redirect(courseMembershipsPath(semester_name, module_code));
   });
 };
 

@@ -7,20 +7,20 @@
   <h2><small class="text-muted"><%= course.semester_name %></small></h2>
   <p class="h6">Course Description:</p>
   <p><%= course.description %></p>
-  <% if (permissions.can_view_members) { %>
+  <% if (permissions.can_index_members) { %>
   <div style="display: inline; margin-right:1.5em">
     <a href="<%= courseMembershipsPath(course.semester_name, course.module_code) %>" class="btn btn-primary">
       <i class="far fa-eye"></i>
       Members
     </a>
   </div>
-  <% } %> <% if (permissions.can_add_member) { %>
+  <% } %> <% if (permissions.can_edit_prof) { %>
   <div style="display: inline">
     <a href="<%= courseMembershipNewPath(course.semester_name, course.module_code)%>" class="btn btn-outline-primary">
       <i class="fas fa-user-plus"></i> Add Member
     </a>
   </div>
-  <% } else if(permissions.can_add_ta) { %>
+  <% } else if(!permissions.can_edit_prof && permissions.can_edit_non_prof) { %>
   <div style="display: inline">
     <a href="<%= courseMembershipNewPath(course.semester_name, course.module_code)%>" class="btn btn-outline-primary">
       <i class="fas fa-user-plus"></i> Add Teaching Assistant

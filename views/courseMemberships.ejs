@@ -7,7 +7,7 @@
     </a>
   </h1>
   <h2><small class="text-muted"><%= course.semester_name %></small></h2>
-  <h2>Members (<%= data.length%>)</h2>
+  <h2>Members (<%= members.length%>)</h2>
   <table class="table table-hover">
     <thead>
       <tr>
@@ -20,20 +20,19 @@
       </tr>
     </thead>
     <tbody>
-      <% for (let i = 0; i < data.length; i++) { %>
+      <% for (let i = 0; i < members.length; i++) { %>
       <tr>
-        <td><%= data[i].name%></td>
+        <td><%= members[i].name%></td>
         <% if (user.is_admin) { %>
-        <td><%= data[i].id%></td>
+        <td><%= members[i].id%></td>
         <% } %>
-        <td><%= data[i].role%></td>
+        <td><%= members[i].role%></td>
         <td>
-          <% if (permissions.can_view_dashboard) { %>
-          <a href="<%= userDashboardPath(data[i].id) %>" class="btn btn-primary">
+          <a href="<%= userDashboardPath(members[i].id) %>" class="btn btn-primary">
             <i class="far fa-eye"></i>
           </a>
-          <% } %> <% if (permissions.can_delete_user) { %> <%-partial('./partials/deleteButton',{ action:
-          courseMembershipDeletePath(course.semester_name, course.module_code, data[i].id) })%> <% } %>
+          <%-partial('./partials/deleteButton',{ action: courseMembershipDeletePath(course.semester_name,
+          course.module_code, members[i].id) })%>
         </td>
       </tr>
       <% } %>

@@ -9,9 +9,9 @@ router.use((req, res, next) => {
   next();
 });
 
-router.post('/', course_memberships.create);
 router.get('/', course_memberships.index);
 router.get('/new', course_memberships.new);
+router.post('/', course_memberships.create);
 router.delete('/:user_id', course_memberships.delete);
 
 module.exports = router;

@@ -35,6 +35,21 @@ CREATE OR REPLACE FUNCTION update_accesses(
     END
     $$ LANGUAGE plpgsql;
 
+/* Members for group */
+CREATE OR REPLACE FUNCTION add_course_members(
+    character varying[],
+    course_memberships.role%TYPE,
+    semesters.name%TYPE,
+    modules.module_code%TYPE)
+    RETURNS void AS $$
+    BEGIN
+        FOR i in 1 .. COALESCE(array_length($1, 1), 0)
+	    LOOP
+		    INSERT INTO course_memberships (user_id, role, semester_name, module_code) VALUES($1[i], $2, $3, $4);
+	    END LOOP;
+    END
+    $$ LANGUAGE plpgsql;
+
 /* TAs for group */
 CREATE OR REPLACE FUNCTION update_TAs(
     character varying[],
