@@ -1,4 +1,4 @@
-const { isAdmin, isInCourse, isProfessorInCourse } = require('./helpers');
+const { passedAny, isAdmin, isInCourse, isProfessorInCourse } = require('./helpers');
 
 // Everyone can index courses
 
@@ -7,11 +7,11 @@ function canCreateCourse(user) {
 }
 
 function canShowCourse(user, semester_name, module_code) {
-  return isAdmin(user) || isInCourse(user, semester_name, module_code);
+  return passedAny(isAdmin(user), isInCourse(user, semester_name, module_code));
 }
 
 function canUpdateCourse(user, semester_name, module_code) {
-  return isAdmin(user) || isProfessorInCourse(user, semester_name, module_code);
+  return passedAny(isAdmin(user), isProfessorInCourse(user, semester_name, module_code));
 }
 
 function canDeleteCourse(user) {

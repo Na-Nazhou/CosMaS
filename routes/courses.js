@@ -4,7 +4,7 @@ const groups_routes = require('./groups');
 const forums_routes = require('./forums');
 const log = require('../helpers/logging');
 const { ensureAuthorised } = require('../permissions');
-const { canCreateCourse, canShowCourse, canUpdateCourse, canDeleteCourse } = require('../permissions').checkers;
+const { canCreateCourse, canShowCourse, canUpdateCourse, canDeleteCourse } = require('../permissions/courses');
 
 router.use((req, res, next) => {
   log.controller('Courses controller handling the request');

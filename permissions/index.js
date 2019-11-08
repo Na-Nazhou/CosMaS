@@ -1,11 +1,3 @@
-const users = require('./users');
-const semesters = require('./semesters');
-const modules = require('./modules');
-const courses = require('./courses');
-const groups = require('./groups');
-const forums = require('./forums');
-const accesses = require('./accesses');
-const threads = require('./threads');
 const log = require('../helpers/logging');
 
 const handleAccessDenied = (req, res) => {
@@ -15,15 +7,19 @@ const handleAccessDenied = (req, res) => {
   res.redirect('back');
 };
 
-const ensureAuthorised = funct => (req, res, next) => {
-  if (funct(req)) {
-    next();
-  } else {
-    handleAccessDenied(req, res);
+const ensureAuthorised = checkPermissions => async (req, res, next) => {
+  try {
+    if (await checkPermissions(req)) {
+      next();
+    } else {
+      handleAccessDenied(req, res);
+    }
+  } catch (err) {
+    log.error('An error occurred while checking for permissions.');
+    next(err);
   }
 };
 
 module.exports = {
-  checkers: { ...users, ...semesters, ...modules, ...courses, ...groups, ...forums, ...accesses, ...threads },
   ensureAuthorised
 };

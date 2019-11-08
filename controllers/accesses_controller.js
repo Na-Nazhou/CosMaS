@@ -4,7 +4,7 @@ const log = require('../helpers/logging');
 const { accessesPath } = require('../routes/helpers/accesses');
 const { forumPath } = require('../routes/helpers/forums');
 
-// Handles the CRUD of group accesss with a forum
+// Handles the CRUD of group accesses for a forum
 exports.edit = (req, res, next) => {
   const { semester_name, module_code, title } = req.params;
   db.query(sql.groups.queries.get_groups_by_course, [semester_name, module_code], (err1, data1) => {
