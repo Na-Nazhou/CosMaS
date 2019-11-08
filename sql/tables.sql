@@ -41,7 +41,7 @@ CREATE TABLE Courses (
 );
 
 CREATE TABLE Course_Requests (
-    requester_id    CHAR(9) REFERENCES Users(id) NOT NULL ON DELETE CASCADE,
+    requester_id    CHAR(9) REFERENCES Users(id) ON DELETE CASCADE NOT NULL,
     requested_at    TIMESTAMP NOT NULL,
     semester_name   VARCHAR(50),
     module_code     VARCHAR(10),
@@ -56,7 +56,7 @@ CREATE TABLE Course_Memberships (
     role            COURSE_ROLE NOT NULL DEFAULT 'student',
     semester_name   VARCHAR(50),
     module_code     VARCHAR(10),
-    user_id         CHAR(9) REFERENCES Users(id) NOT NULL ON DELETE CASCADE,
+    user_id         CHAR(9) REFERENCES Users(id) ON DELETE CASCADE NOT NULL,
     FOREIGN KEY(semester_name, module_code) REFERENCES Courses ON DELETE CASCADE,
     PRIMARY KEY(semester_name, module_code, user_id)
 );
@@ -75,7 +75,7 @@ CREATE TABLE Group_Memberships (
     semester_name   VARCHAR(50),
     module_code     VARCHAR(10),
     group_name      VARCHAR(100),
-    user_id         CHAR(9) REFERENCES Users(id) NOT NULL ON DELETE CASCADE,  
+    user_id         CHAR(9) REFERENCES Users(id) ON DELETE CASCADE NOT NULL,  
     FOREIGN KEY(semester_name, module_code, group_name) REFERENCES Groups ON DELETE CASCADE,
     PRIMARY KEY(semester_name, module_code, group_name, user_id)
 ); 
@@ -102,7 +102,7 @@ CREATE TABLE Threads (
     created_at      TIMESTAMP,
     title           VARCHAR(255) NOT NULL,
     content         TEXT NOT NULL,
-    author_id       CHAR(9) NOT NULL REFERENCES Users(id) ON DELETE SET NULL,
+    author_id       CHAR(9) REFERENCES Users(id) ON DELETE SET NULL,
     semester_name   VARCHAR(50),
     module_code     VARCHAR(10),
     forum_title     VARCHAR(255),
@@ -113,7 +113,7 @@ CREATE TABLE Threads (
 CREATE TABLE Replies (
     created_at        TIMESTAMP,
     content           TEXT NOT NULL,
-    author_id         CHAR(9) NOT NULL REFERENCES Users(id) ON DELETE SET NULL,
+    author_id         CHAR(9) REFERENCES Users(id) ON DELETE SET NULL,
     semester_name     VARCHAR(50),
     module_code       VARCHAR(10),
     forum_title       VARCHAR(255),
