@@ -21,7 +21,7 @@ exports.delete_session = (req, res) => {
 };
 
 exports.new_user = (req, res) => {
-  res.render('signup');
+  res.render('signup', { targetUser: null });
 };
 
 exports.create_user = (req, res, next) => {
@@ -35,7 +35,7 @@ exports.create_user = (req, res, next) => {
       log.error('Failed to create user');
       // TODO: refine error message
       req.flash('error', err.message);
-      res.render('signup');
+      res.render('signup', { targetUser: { id, name } });
     } else {
       req.login({ id, password: raw_password }, loginError => {
         if (loginError) {

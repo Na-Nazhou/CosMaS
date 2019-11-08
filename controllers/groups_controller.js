@@ -93,7 +93,7 @@ exports.update = (req, res) => {
     if (err) {
       log.error('Failed to update group');
       req.flash('error', err.message);
-      res.render('groupForm', { semester_name, module_code, group: { name: new_name } });
+      res.render('groupForm', { semester_name, module_code, group: { name: old_name } });
     } else {
       req.flash('success', `Successfully updated group`);
       res.redirect(groupPath(semester_name, module_code, new_name));
