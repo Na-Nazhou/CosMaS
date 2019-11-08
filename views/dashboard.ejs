@@ -1,10 +1,11 @@
 <% layout('layout') -%>
-<div class="container mt-3">
-  <%-partial('./partials/messages', { messages: flash() })%>
-  <h2 class="mt-3 mb-3">Teaching Courses</h2>
-  <%-partial('./partials/coursesList', { data: data, role: 'professor'})%>
-  <h2 class="mt-3 mb-3">Enrolled Courses</h2>
-  <%-partial('./partials/coursesList', { data: data, role: 'student' })%>
-  <h2 class="mt-3 mb-3">Tutoring Courses</h2>
-  <%-partial('./partials/coursesList', { data: data, role: 'TA' })%>
+<div class="container">
+  <h1 class="mt-3 mb-3">Dashboard</h1>
+  <%-partial('./partials/messages', { messages: flash() })%> <% if (teaching.length > 0) { %>
+  <h3 class="mt-3 mb-3">Teaching Courses (<%= teaching.length %>)</h3>
+  <%-partial('./partials/coursesList', { data: teaching })%> <% } %> <% if (enrolled.length > 0) { %>
+  <h3 class="mt-3 mb-3">Enrolled Courses (<%= enrolled.length %>)</h3>
+  <%-partial('./partials/coursesList', { data: enrolled })%> <% } %> <% if (tutoring.length > 0) { %>
+  <h3 class="mt-3 mb-3">Tutoring Courses (<%= tutoring.length %>)</h3>
+  <%-partial('./partials/coursesList', { data: tutoring })%> <% } %>
 </div>

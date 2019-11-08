@@ -72,7 +72,22 @@ exports.dashboard = async (req, res, next) => {
       log.error('Failed to get user courses');
       next(err);
     } else {
-      res.render('dashboard', { data: data.rows });
+      const [enrolled, teaching, tutoring] = data.rows.reduce(
+        (result, row) => {
+          let i;
+          if (row.role === 'student') {
+            i = 0;
+          } else if (row.role === 'professor') {
+            i = 1;
+          } else {
+            i = 2;
+          }
+          result[i].push(row);
+          return result;
+        },
+        [[], [], []]
+      );
+      res.render('dashboard', { enrolled, teaching, tutoring });
     }
   });
 };
