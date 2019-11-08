@@ -1,6 +1,6 @@
 <% layout('layout') -%>
 <div class="container">
-  <h1 class="mt-3 mb-3">Users</h1>
+  <h1 class="mt-3 mb-3">Users (<%= data.length %>)</h1>
   <%-partial('./partials/messages', { messages: flash() })%>
   <table class="table table-hover">
     <thead>
@@ -11,7 +11,7 @@
       </tr>
     </thead>
     <tbody>
-      <% for(var i = 0; i < data.length; i++) { %>
+      <% for(let i = 0; i < data.length; i++) { %>
       <tr>
         <td><%= data[i].id %></td>
         <td><%= data[i].name %></td>

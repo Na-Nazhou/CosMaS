@@ -27,7 +27,7 @@
   <hr class="mt-5 mb-5" />
 
   <h2>
-    Students <% if (permissions.can_edit_group_membership) { %>
+    Students (<%= students.length %>) <% if (permissions.can_edit_group_membership) { %>
     <div class="float-right" style="display: inline">
       <a
         href="<%= groupStudentsPath(group.semester_name, group.module_code, group.name) %>"
