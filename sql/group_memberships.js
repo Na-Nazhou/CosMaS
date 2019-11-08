@@ -16,8 +16,8 @@ group_memberships.queries = {
 };
 
 group_memberships.functions = {
-  update_TAs: 'SELECT update_TAs($1, $2, $3, $4)',
-  update_students: 'SELECT update_students($1, $2, $3, $4)'
+  updateTAs: 'SELECT update_TAs($1, $2, $3, $4)',
+  updateStudents: 'SELECT update_students($1, $2, $3, $4)'
 };
 
 module.exports = group_memberships;

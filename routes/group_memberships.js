@@ -1,6 +1,5 @@
 const router = require('express').Router({ mergeParams: true });
 const group_memberships = require('../controllers/group_memberships_controller');
-const students = require('../controllers/students_controller');
 const log = require('../helpers/logging');
 const { ensureAuthorised } = require('../permissions');
 const { canUpdateGroup, canDeleteGroup } = require('../permissions').checkers;
@@ -10,21 +9,32 @@ router.use((req, res, next) => {
   next();
 });
 
+router.get(
+  '/TAs',
+  ensureAuthorised(req => canUpdateGroup(req.user, req.params.semester_name, req.params.module_code)),
+  group_memberships.editTAs
+);
+router.post(
+  '/TAs',
+  ensureAuthorised(req => canUpdateGroup(req.user, req.params.semester_name, req.params.module_code)),
+  group_memberships.updateTAs
+);
+
 router.delete(
-  '/:user_id',
+  '/students/:user_id',
   ensureAuthorised(req => canDeleteGroup(req.user, req.params.semester_name, req.params.module_code)),
   group_memberships.delete
 );
 
 router.get(
-  '/',
+  '/students',
   ensureAuthorised(req => canUpdateGroup(req.user, req.params.semester_name, req.params.module_code)),
-  students.edit
+  group_memberships.editStudents
 );
 router.post(
-  '/',
+  '/students',
   ensureAuthorised(req => canUpdateGroup(req.user, req.params.semester_name, req.params.module_code)),
-  students.update
+  group_memberships.updateStudents
 );
 
 module.exports = router;
