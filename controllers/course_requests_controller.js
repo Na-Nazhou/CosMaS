@@ -1,101 +1,99 @@
 const db = require('../db');
 const sql = require('../sql');
-const { dateToDisplayedForm } = require('../helpers/date');
 const log = require('../helpers/logging');
-const { courseRequestsPath } = require('../routes/helpers/course_requests');
-const { coursePath } = require('../routes/helpers/courses');
+const { findCourse } = require('./helpers');
+const { handleAccessDenied } = require('../permissions');
+const { canShowCourseRequestsOfCourse } = require('../permissions/course_requests');
 
-exports.index = (req, res, next) => {
-  const user_id = req.user.id;
-  db.query(
-    sql.course_requests.queries.get_course_requests_professor,
-    [user_id],
-    (err_professor, course_requests_professor) => {
-      if (err_professor) {
-        log.error('Failed to get courses requests for professor');
-        next(err_professor);
-      } else {
-        course_requests_professor.rows.forEach(request => {
-          Object.assign(request, {
-            requested_at: dateToDisplayedForm(request.requested_at),
-            closed_at: dateToDisplayedForm(request.closed_at)
-          });
-        });
-        db.query(
-          sql.course_requests.queries.get_course_requests_student,
-          [user_id],
-          (err_student, course_requests_student) => {
-            if (err_student) {
-              log.error('Failed to get courses requests for student');
-              next(err_student);
-            } else {
-              course_requests_student.rows.forEach(request => {
-                Object.assign(request, {
-                  requested_at: dateToDisplayedForm(request.requested_at),
-                  closed_at: dateToDisplayedForm(request.closed_at)
-                });
-              });
-              res.render('courseRequests', {
-                professor: course_requests_professor.rows,
-                student: course_requests_student.rows
-              });
-            }
+exports.index = async (req, res, next) => {
+  const { user_id, semester_name, module_code } = req.query;
+  try {
+    if (user_id) {
+      // Showing course requests for individual user
+      if (req.user.id !== user_id) {
+        handleAccessDenied(req, res);
+      }
+      const requests = await db.query(sql.course_requests.queries.get_course_requests_of_student, [user_id]).then(
+        data => data.rows,
+        err => {
+          log.error(`Failed to get course requests submitted by ${req.user.name}`);
+          next(err);
+        }
+      );
+      res.render('courseRequests', {
+        title: `Course requests submitted by ${req.user.name}`,
+        requests
+      });
+    } else if (semester_name && module_code) {
+      // Showing course requests for course
+      if (!(await canShowCourseRequestsOfCourse(req.user, semester_name, module_code))) {
+        handleAccessDenied(req, res);
+      }
+      const course = await findCourse(semester_name, module_code);
+      const requests = await db
+        .query(sql.course_requests.queries.get_course_requests_of_course, [semester_name, module_code])
+        .then(
+          data => data.rows,
+          err => {
+            log.error(`Failed to get course requests of course ${semester_name} ${module_code} ${course.title}`);
+            next(err);
           }
         );
-      }
+      res.render('courseRequests', {
+        title: `Course requests of ${semester_name} ${module_code} ${course.title}`,
+        course,
+        requests
+      });
+    } else {
+      // 404
+      next();
     }
-  );
+  } catch (err) {
+    next(err);
+  }
 };
 
 exports.create = (req, res) => {
-  const { requester_id } = req.body;
-  const { semester_name } = req.body;
-  const { module_code } = req.body;
-
-  db.query(sql.course_requests.queries.create_course_request, [requester_id, semester_name, module_code], err => {
-    if (err) {
-      log.error('Cannot create course request!');
-      // TODO: refine error message
-      req.flash('error', err.message);
-      res.redirect(coursePath(semester_name, module_code));
-    } else {
-      req.flash('success', 'Course request successfully created!');
-      res.redirect(courseRequestsPath(requester_id));
-    }
-  });
+  const { semester_name, module_code, requester_id } = req.params;
+  db.query(sql.course_requests.queries.create_course_request, [semester_name, module_code, requester_id])
+    .then(
+      () => {
+        req.flash('success', 'Course request successfully created!');
+      },
+      err => {
+        log.error('Failed to create course request.');
+        req.flash('error', err.message);
+      }
+    )
+    .then(() => res.redirect('back'));
 };
 
 exports.delete = (req, res) => {
-  const { id } = req.params;
-  const { semester_name } = req.params;
-  const { module_code } = req.params;
-
-  db.query(sql.course_requests.queries.delete_course_request, [id, semester_name, module_code], err => {
-    if (err) {
-      log.error('Failed to delete course request');
-      req.flash('error', err.message);
-    } else {
-      req.flash('success', 'Successfully deleted course request');
-    }
-    res.redirect(courseRequestsPath(id));
-  });
+  const { semester_name, module_code, requester_id } = req.params;
+  db.query(sql.course_requests.queries.delete_course_request, [semester_name, module_code, requester_id])
+    .then(
+      () => req.flash('success', 'Successfully deleted course request'),
+      err => {
+        log.error('Failed to delete course request');
+        req.flash('error', err.message);
+      }
+    )
+    .then(() => res.redirect('back'));
 };
 
 exports.update = (req, res) => {
-  const { semester_name, module_code, requester_id, is_approved } = req.body;
-
-  db.query(
-    sql.course_requests.queries.update_course_request,
-    [is_approved, requester_id, semester_name, module_code],
-    err => {
-      if (err) {
-        log.error('Failed to update course request');
+  const { semester_name, module_code, requester_id } = req.params;
+  const { is_approved } = req.body;
+  const action = is_approved ? 'approved' : 'rejected';
+  db.query(sql.course_requests.queries.update_course_request, [semester_name, module_code, requester_id, is_approved])
+    .then(
+      () => {
+        req.flash('success', `Successfully ${action} course request`);
+      },
+      err => {
+        log.error(`Failed to ${action} course request`);
         req.flash('error', err.message);
-      } else {
-        const message = is_approved ? 'approved' : 'rejected';
-        req.flash('success', `Successfully ${message} course request`);
       }
-      res.redirect(courseRequestsPath(req.user.id));
-    }
-  );
+    )
+    .then(() => res.redirect('back'));
 };

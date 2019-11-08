@@ -1,9 +1,36 @@
-const { passedAll, isNotAdmin, hasNoRequestsToCourse } = require('./helpers');
+const {
+  passedAll,
+  passedAny,
+  isAdmin,
+  isNotAdmin,
+  isSameUserID,
+  hasNoRequestsToCourse,
+  isProfessorInCourse
+} = require('./helpers');
 
-function canRequestCourse(user, semester_name, module_code) {
-  return passedAll(isNotAdmin(user), hasNoRequestsToCourse(user, semester_name, module_code));
+function canCreateCourseRequest(user, semester_name, module_code, requester_id) {
+  return passedAll(
+    isNotAdmin(user),
+    isSameUserID(user.id, requester_id),
+    hasNoRequestsToCourse(user, semester_name, module_code)
+  );
+}
+
+function canShowCourseRequestsOfCourse(user, semester_name, module_code) {
+  return passedAny(isAdmin(user), isProfessorInCourse(user, semester_name, module_code));
+}
+
+function canProcessCourseRequest(processer, semester_name, module_code) {
+  return passedAny(isAdmin(processer), isProfessorInCourse(processer, semester_name, module_code));
+}
+
+function canCancelCourseRequest(user, requester_id) {
+  return isSameUserID(user.id, requester_id);
 }
 
 module.exports = {
-  canRequestCourse,
+  canCreateCourseRequest,
+  canShowCourseRequestsOfCourse,
+  canProcessCourseRequest,
+  canCancelCourseRequest
 };

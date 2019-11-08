@@ -1,11 +1,9 @@
-const { userPath } = require('./users');
-
-function courseRequestsPath(requester_id) {
-  return `${userPath(requester_id)}/course_requests`;
+function courseRequestsPath() {
+  return `/course_requests`;
 }
 
-function courseRequestPath(requester_id, semester_name, module_code) {
-  return `${courseRequestsPath(requester_id)}/${encodeURIComponent(semester_name)}/${encodeURIComponent(module_code)}`;
+function courseRequestPath(semester_name, module_code, requester_id) {
+  return `${courseRequestsPath()}/${encodeURIComponent(semester_name)}/${encodeURIComponent(module_code)}/${requester_id}`;
 }
 
 module.exports = {

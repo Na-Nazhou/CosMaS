@@ -21,5 +21,6 @@ const ensureAuthorised = checkPermissions => async (req, res, next) => {
 };
 
 module.exports = {
+  handleAccessDenied,
   ensureAuthorised
 };
