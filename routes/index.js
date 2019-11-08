@@ -18,8 +18,11 @@ const { userDashboardPath } = require('../routes/helpers/users');
 router.get('/', (req, res) => {
   if (req.user) {
     log.info('Redirecting from /');
-    const rootRedirect = req.user.is_admin ? coursesPath() : userDashboardPath(req.user.id);
-    res.redirect(rootRedirect);
+    if (req.user.is_admin) {
+      res.redirect(coursesPath());
+    } else {
+      res.redirect(userDashboardPath(req.user.id));
+    }
   } else {
     log.info('Unauthenticated user, redirecting to /login');
     res.redirect('/login');

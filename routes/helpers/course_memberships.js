@@ -1,9 +1,7 @@
-function courseMembershipsPath(semester_name, module_code) {
-  return `/course_memberships/${encodeURIComponent(semester_name)}/${encodeURIComponent(module_code)}`;
-}
+const courses = require('./courses');
 
-function courseMembershipCreatePath(semester_name, module_code) {
-  return `${courseMembershipsPath(semester_name, module_code)}`;
+function courseMembershipsPath(semester_name, module_code) {
+  return `${courses.coursePath(semester_name, module_code)}/members`;
 }
 
 function courseMembershipNewPath(semester_name, module_code) {
@@ -11,11 +9,10 @@ function courseMembershipNewPath(semester_name, module_code) {
 }
 
 function courseMembershipDeletePath(semester_name, module_code, user_id) {
-  return `${courseMembershipsPath(semester_name, module_code)}/${encodeURIComponent(user_id)}`;
+  return `${courseMembershipsPath(semester_name, module_code)}/${user_id}`;
 }
 
 module.exports = {
-  courseMembershipCreatePath,
   courseMembershipsPath,
   courseMembershipNewPath,
   courseMembershipDeletePath

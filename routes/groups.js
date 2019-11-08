@@ -6,6 +6,8 @@ const { ensureAuthorised } = require('../permissions');
 const { canShowGroup, canCreateGroup, canUpdateGroup, canDeleteGroup } = require('../permissions/groups');
 const { canEditGroupMembership } = require('../permissions/group_memberships');
 
+// courses/:semester_name/:module_code/groups
+
 router.use((req, res, next) => {
   log.controller('Groups controller handling the request');
   next();

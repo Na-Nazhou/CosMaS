@@ -2,6 +2,7 @@ const router = require('express').Router();
 const courses = require('../controllers/courses_controller');
 const groups_routes = require('./groups');
 const forums_routes = require('./forums');
+const course_membership_routes = require('./course_memberships');
 const log = require('../helpers/logging');
 const { ensureAuthorised } = require('../permissions');
 const { canCreateCourse, canUpdateCourse, canDeleteCourse } = require('../permissions/courses');
@@ -31,5 +32,7 @@ router.put(
 router.use('/:semester_name/:module_code/groups', groups_routes);
 // Nest forum routes within courses
 router.use('/:semester_name/:module_code/forums', forums_routes);
+// Nest course member routes within courses
+router.use('/:semester_name/:module_code/members', course_membership_routes);
 
 module.exports = router;

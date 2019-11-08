@@ -6,6 +6,8 @@ const log = require('../helpers/logging');
 const { ensureAuthorised } = require('../permissions');
 const { canShowForum, canCreateForum, canUpdateForum, canDeleteForum } = require('../permissions/forums');
 
+// courses/:semester_name/:module_code/forums
+
 router.use((req, res, next) => {
   log.controller('Forums controller handling the request');
   next();

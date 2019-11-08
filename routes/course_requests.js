@@ -2,6 +2,8 @@ const router = require('express').Router({ mergeParams: true });
 const course_requests = require('../controllers/course_requests_controller');
 const log = require('../helpers/logging');
 
+// users/:id/course_requests
+
 router.use((req, res, next) => {
   log.controller('Course Requests controller handling the request');
   next();

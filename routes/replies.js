@@ -4,6 +4,8 @@ const replies = require('../controllers/replies_controller');
 const { ensureAuthorised } = require('../permissions');
 const { canCreateReply, canDeleteReply, canUpdateReply } = require('../permissions/replies');
 
+// /courses/:semester_name/:module_code/forums/:title/threads/:created_at/replies
+
 router.use((req, res, next) => {
   log.controller('Replies controller handling the request');
   next();

@@ -1,6 +1,8 @@
-const router = require('express').Router();
+const router = require('express').Router({ mergeParams: true });
 const course_memberships = require('../controllers/course_memberships_controller');
 const log = require('../helpers/logging');
+
+// courses/:semester_name/:module_code/members
 
 router.use((req, res, next) => {
   log.controller('Course Memberships controller handling the request');
@@ -8,8 +10,8 @@ router.use((req, res, next) => {
 });
 
 router.post('/', course_memberships.create);
-router.get('/:semester_name/:module_code', course_memberships.index);
-router.get('/:semester_name/:module_code/new', course_memberships.new);
-router.delete('/:semester_name/:module_code/:user_id', course_memberships.delete);
+router.get('/', course_memberships.index);
+router.get('/new', course_memberships.new);
+router.delete('/:user_id', course_memberships.delete);
 
 module.exports = router;

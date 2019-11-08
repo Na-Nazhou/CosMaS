@@ -10,6 +10,7 @@
       <% } %>
       <th scope="col">Status</th>
       <th scope="col">Requested At</th>
+      <th scope="col">Actions</th>
     </tr>
   </thead>
   <tbody>
@@ -35,7 +36,7 @@
         </a>
         <% if (role === 'professor' && data[i].closed_at === null) { %>
         <form id="course_request_form" style="display:inline;"
-          action="<%=courseRequestUpdatePath(data[i].requester_id, data[i].semester_name, data[i].module_code)%>"
+          action="<%=courseRequestPath(data[i].requester_id, data[i].semester_name, data[i].module_code)%>"
           method="POST">
           <input type="hidden" name="_method" value="PUT" />
           <input type="hidden" id="is_approved" name="is_approved" value="true" />
@@ -47,7 +48,7 @@
           </button>
         </form>
         <form id="course_request_form" style="display:inline;"
-          action="<%=courseRequestUpdatePath(data[i].requester_id, data[i].semester_name, data[i].module_code)%>"
+          action="<%=courseRequestPath(data[i].requester_id, data[i].semester_name, data[i].module_code)%>"
           method="POST">
           <input type="hidden" name="_method" value="PUT" />
           <input type="hidden" id="is_approved" name="is_approved" value="false" />

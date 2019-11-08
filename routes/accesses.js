@@ -4,6 +4,8 @@ const { canEditAccess } = require('../permissions/accesses');
 const accesses = require('../controllers/accesses_controller');
 const log = require('../helpers/logging');
 
+// courses/:semester_name/:module_code/forums/:title/accesses
+
 router.use((req, res, next) => {
   log.controller('Accesses controller handling the request');
   next();

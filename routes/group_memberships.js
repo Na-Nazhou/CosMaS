@@ -2,6 +2,8 @@ const router = require('express').Router({ mergeParams: true });
 const group_memberships = require('../controllers/group_memberships_controller');
 const log = require('../helpers/logging');
 
+// courses/:semester_name/:module_code/groups/:name
+
 router.use((req, res, next) => {
   log.controller('Group Memberships controller handling the request');
   next();

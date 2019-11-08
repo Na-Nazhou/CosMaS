@@ -57,11 +57,11 @@ exports.create = (req, res) => {
       log.error('Cannot create course request!');
       // TODO: refine error message
       req.flash('error', err.message);
-      return res.redirect(coursePath(semester_name, module_code));
+      res.redirect(coursePath(semester_name, module_code));
+    } else {
+      req.flash('success', 'Course request successfully created!');
+      res.redirect(courseRequestsPath(requester_id));
     }
-
-    req.flash('success', 'Course request successfully created!');
-    return res.redirect(courseRequestsPath(requester_id));
   });
 };
 
@@ -82,10 +82,7 @@ exports.delete = (req, res) => {
 };
 
 exports.update = (req, res) => {
-  const { is_approved } = req.body;
-  const { requester_id } = req.body;
-  const { semester_name } = req.body;
-  const { module_code } = req.body;
+  const { semester_name, module_code, requester_id, is_approved } = req.body;
 
   db.query(
     sql.course_requests.queries.update_course_request,
@@ -94,12 +91,11 @@ exports.update = (req, res) => {
       if (err) {
         log.error('Failed to update course request');
         req.flash('error', err.message);
-        res.redirect(courseRequestsPath(req.user.id));
       } else {
         const message = is_approved ? 'approved' : 'rejected';
         req.flash('success', `Successfully ${message} course request`);
-        res.redirect(courseRequestsPath(req.user.id));
       }
+      res.redirect(courseRequestsPath(req.user.id));
     }
   );
 };
