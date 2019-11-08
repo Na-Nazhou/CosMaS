@@ -14,16 +14,11 @@ router.get(
   ensureAuthorised(req => canUpdateGroup(req.user, req.params.semester_name, req.params.module_code)),
   group_memberships.editTAs
 );
+
 router.post(
   '/TAs',
   ensureAuthorised(req => canUpdateGroup(req.user, req.params.semester_name, req.params.module_code)),
   group_memberships.updateTAs
-);
-
-router.delete(
-  '/students/:user_id',
-  ensureAuthorised(req => canDeleteGroup(req.user, req.params.semester_name, req.params.module_code)),
-  group_memberships.deleteStudents
 );
 
 router.get(
@@ -31,10 +26,17 @@ router.get(
   ensureAuthorised(req => canUpdateGroup(req.user, req.params.semester_name, req.params.module_code)),
   group_memberships.editStudents
 );
+
 router.post(
   '/students',
   ensureAuthorised(req => canUpdateGroup(req.user, req.params.semester_name, req.params.module_code)),
   group_memberships.updateStudents
+);
+
+router.delete(
+  '/students/:user_id',
+  ensureAuthorised(req => canDeleteGroup(req.user, req.params.semester_name, req.params.module_code)),
+  group_memberships.deleteStudent
 );
 
 module.exports = router;

@@ -1,6 +1,5 @@
 const groups = require('./groups');
 
-// students as group members
 function groupStudentsPath(semester_name, module_code, group_name) {
   return `${groups.groupPath(semester_name, module_code, group_name)}/students`;
 }

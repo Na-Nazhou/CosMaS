@@ -1,6 +1,6 @@
 <% layout('layout') -%>
 <div class="container col-md-4 col-md-offset-4">
-  <h1 class="text-center mt-3 mb-3">Update Students</h1>
+  <h1 class="text-center mt-3 mb-3">Add Students to Group <%= group_name %></h1>
   <%-partial('./partials/messages', { messages: flash() })%>
   <form id="TA_form" action="<%=groupStudentsPath(semester_name, module_code, group_name)%>" role="form" method="POST">
     <div class="form-group">
@@ -37,8 +37,8 @@
         class="selectpicker form-control"
         multiple
         data-selected-text-format="count > 3"
-        id="students"
-        name="students"
+        id="student_ids"
+        name="student_ids"
         data-live-search="true"
         data-actions-box="true"
       >
@@ -49,6 +49,6 @@
         <% } %>
       </select>
     </div>
-    <button type="submit" class="btn btn-primary">Update</button>
+    <button type="submit" class="btn btn-primary">Submit</button>
   </form>
 </div>

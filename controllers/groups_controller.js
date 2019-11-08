@@ -28,7 +28,7 @@ exports.show = (req, res, next) => {
                   log.error(`Fail to get students of group ${name}`);
                   next(err3);
                 } else {
-                  res.render('group', { group, TA_names: data2.rows, students: data3.rows });
+                  res.render('group', { group, TAs: data2.rows, students: data3.rows });
                 }
               }
             );

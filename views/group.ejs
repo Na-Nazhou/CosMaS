@@ -11,11 +11,11 @@
     </a>
   </p>
   <div id="TAs">
-    <% if (TA_names.length === 0) { %>
+    <% if (TAs.length === 0) { %>
     <p><small class="text-muted">Currently no TA is in charge of this group.</small></p>
-    <% } %> <% for (var i = 0; i < TA_names.length; i++) { %>
+    <% } %> <% for (var i = 0; i < TAs.length; i++) { %>
     <a href="#" class="btn btn-info btn-sm">
-      <%= TA_names[i].name%>
+      <%= TAs[i].name%>
     </a>
     <% } %>
   </div>

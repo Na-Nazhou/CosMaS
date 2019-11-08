@@ -41,7 +41,7 @@ router.put(
   groups.update
 );
 
-// Nest member routes within groups
+// Nest group membership routes within groups
 router.use('/:name', group_memberships_routes);
 
 module.exports = router;

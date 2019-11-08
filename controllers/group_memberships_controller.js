@@ -4,7 +4,7 @@ const log = require('../helpers/logging');
 const { groupPath } = require('../routes/helpers/groups');
 const { groupStudentsPath, groupTAsPath } = require('../routes/helpers/group_memberships');
 
-exports.deleteStudents = (req, res) => {
+exports.deleteStudent = (req, res) => {
   const { semester_name, module_code, name: group_name, user_id } = req.params;
   db.query(sql.group_memberships.queries.delete_member, [semester_name, module_code, group_name, user_id], err => {
     if (err) {
@@ -23,7 +23,6 @@ exports.editTAs = (req, res, next) => {
   db.query(sql.course_memberships.queries.get_members_by_course, [semester_name, module_code, 'TA'], (err1, data1) => {
     if (err1) {
       log.error(`Failed to get TAs of ${module_code} offered in ${semester_name}`);
-      req.flash('error', err1.message);
       next(err1);
     } else {
       db.query(
@@ -32,10 +31,9 @@ exports.editTAs = (req, res, next) => {
         (err2, data2) => {
           if (err2) {
             log.error(`Failed to get TAs of group ${group_name}`);
-            req.flash('error', err2.message);
             next(err2);
           } else {
-            res.render('TAForm', {
+            res.render('groupTAForm', {
               semester_name,
               module_code,
               group_name,
@@ -51,19 +49,19 @@ exports.editTAs = (req, res, next) => {
 
 exports.updateTAs = (req, res) => {
   const { semester_name, module_code, name: group_name } = req.params;
-  const { TA_names } = req.body;
-  let names = TA_names;
-  if (TA_names === undefined) {
+  const { TA_ids } = req.body;
+  let ids = TA_ids;
+  if (TA_ids === undefined) {
     // empty selection
-    names = '{}';
-  } else if (Array.isArray(TA_names)) {
+    ids = '{}';
+  } else if (Array.isArray(TA_ids)) {
     // multiple selections
-    names = `{${TA_names.join(', ')}}`;
+    ids = `{${TA_ids.join(', ')}}`;
   } else {
     // single selection
-    names = `{${TA_names}}`;
+    ids = `{${TA_ids}}`;
   }
-  db.query(sql.group_memberships.functions.updateTAs, [names, semester_name, module_code, group_name], err => {
+  db.query(sql.group_memberships.functions.updateTAs, [ids, semester_name, module_code, group_name], err => {
     if (err) {
       log.error(`Failed to update TAs for group ${group_name} of ${module_code} ${semester_name}`);
       req.flash('error', err.message);
@@ -75,37 +73,23 @@ exports.updateTAs = (req, res) => {
   });
 };
 
-// Handles the CRUD of students in a group
+// Handles the addition of students to a group
 exports.editStudents = (req, res, next) => {
   const { semester_name, module_code, name: group_name } = req.params;
   db.query(
     sql.group_memberships.queries.get_members_not_in_group,
     [semester_name, module_code, group_name, 'student'],
-    (err1, data1) => {
-      if (err1) {
+    (err, data) => {
+      if (err) {
         log.error(`Failed to get students of ${module_code} offered in ${semester_name}`);
-        req.flash('error', err1.message);
-        next(err1);
+        next(err);
       } else {
-        db.query(
-          sql.group_memberships.queries.get_members_by_group,
-          [semester_name, module_code, group_name, 'student'],
-          (err2, data2) => {
-            if (err2) {
-              log.error(`Failed to get students of group ${group_name}`);
-              req.flash('error', err2.message);
-              next(err2);
-            } else {
-              res.render('studentForm', {
-                semester_name,
-                module_code,
-                group_name,
-                selected: data2.rows,
-                options: data1.rows
-              });
-            }
-          }
-        );
+        res.render('groupStudentForm', {
+          semester_name,
+          module_code,
+          group_name,
+          options: data.rows
+        });
       }
     }
   );
@@ -113,25 +97,25 @@ exports.editStudents = (req, res, next) => {
 
 exports.updateStudents = (req, res) => {
   const { semester_name, module_code, name: group_name } = req.params;
-  const { students } = req.body;
-  let names = students;
-  if (students === undefined) {
+  const { student_ids } = req.body;
+  let ids = student_ids;
+  if (student_ids === undefined) {
     // empty selection
-    names = '{}';
-  } else if (Array.isArray(students)) {
+    ids = '{}';
+  } else if (Array.isArray(student_ids)) {
     // multiple selections
-    names = `{${students.join(', ')}}`;
+    ids = `{${student_ids.join(', ')}}`;
   } else {
     // single selection
-    names = `{${students}}`;
+    ids = `{${student_ids}}`;
   }
-  db.query(sql.group_memberships.functions.updateStudents, [names, semester_name, module_code, group_name], err => {
+  db.query(sql.group_memberships.functions.updateStudents, [ids, semester_name, module_code, group_name], err => {
     if (err) {
       log.error(`Failed to update TAs for group ${group_name} of ${module_code} ${semester_name}`);
       req.flash('error', err.message);
       res.redirect(groupStudentsPath(semester_name, module_code, group_name));
     } else {
-      req.flash('success', `Sucessfully updated students for group ${group_name} of ${module_code} ${semester_name}`);
+      req.flash('success', `Sucessfully added students for group ${group_name} of ${module_code} ${semester_name}`);
       res.redirect(groupPath(semester_name, module_code, group_name));
     }
   });
