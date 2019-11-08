@@ -4,6 +4,7 @@ const group_memberships_routes = require('./group_memberships');
 const log = require('../helpers/logging');
 const { ensureAuthorised } = require('../permissions');
 const { canShowGroup, canCreateGroup, canUpdateGroup, canDeleteGroup } = require('../permissions/groups');
+const { canEditGroupMembership } = require('../permissions/group_memberships');
 
 router.use((req, res, next) => {
   log.controller('Groups controller handling the request');
@@ -42,6 +43,10 @@ router.put(
 );
 
 // Nest group membership routes within groups
-router.use('/:name', group_memberships_routes);
+router.use(
+  '/:name',
+  ensureAuthorised(req => canEditGroupMembership(req.user, req.params.semester_name, req.params.module_code)),
+  group_memberships_routes
+);
 
 module.exports = router;

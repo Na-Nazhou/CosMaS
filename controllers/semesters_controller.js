@@ -22,18 +22,17 @@ exports.index = (req, res, next) => {
 };
 
 exports.new = (req, res) => {
-  res.render('semesterNew');
+  res.render('semesterNew', { semester: null });
 };
 
 exports.create = (req, res) => {
   const { name, start_time, end_time } = req.body;
-
   db.query(sql.semesters.queries.create_semester, [name, start_time, end_time], err => {
     if (err) {
       log.error('Failed to create semester');
       // TODO: refine error message
       req.flash('error', err.message);
-      res.render('semesterNew');
+      res.render('semesterNew', { semester: { name, start_time, end_time } });
     } else {
       req.flash('success', `Semester ${name} successfully created!`);
       res.redirect(semestersPath());

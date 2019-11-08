@@ -39,7 +39,7 @@ exports.edit = (req, res, next) => {
       log.error('Failed to find user');
       next(err);
     } else {
-      res.render('userEdit', { user: data.rows[0] });
+      res.render('userEdit', { targetUser: data.rows[0] });
     }
   });
 };
@@ -57,7 +57,7 @@ exports.update = (req, res) => {
     if (err) {
       log.error('Failed up update user');
       req.flash('error', err.message);
-      res.render('userEdit', { user: { id: originalId, name } });
+      res.render('userEdit', { targetUser: { id: originalId, name } });
     } else {
       req.flash('success', 'Profile successfully updated!');
       res.redirect('back');

@@ -8,73 +8,81 @@ const { coursesPath, courseNewPath, courseEditPath } = require('../routes/helper
 
 exports.index = async (req, res, next) => {
   const { semester_name, module_code } = req.query;
-  const permissions = {
-    can_create_course: await canCreateCourse(req.user),
-    can_delete_course: await canDeleteCourse(req.user)
-  };
-  if (semester_name) {
-    db.query(sql.courses.queries.get_courses_by_semester, [semester_name], (err, data) => {
-      if (err) {
-        log.error(`Failed to get courses offered in ${semester_name}`);
-        next(err);
-      } else {
-        res.render('courses', { data: data.rows, title: `Courses offered in ${semester_name}`, permissions });
-      }
-    });
-  } else if (module_code) {
-    db.query(sql.courses.queries.get_courses_by_module, [module_code], (err, data) => {
-      if (err) {
-        log.error(`Failed to get courses for ${module_code}`);
-        next(err);
-      } else {
-        res.render('courses', { data: data.rows, title: `Courses for module ${module_code}`, permissions });
-      }
-    });
-  } else {
-    db.query(sql.courses.queries.get_courses, (err, data) => {
-      if (err) {
-        log.error('Failed to get courses');
-        next(err);
-      } else {
-        res.render('courses', { data: data.rows, title: 'All courses', permissions });
-      }
-    });
+  try {
+    const permissions = {
+      can_create_course: await canCreateCourse(req.user),
+      can_delete_course: await canDeleteCourse(req.user)
+    };
+
+    if (semester_name) {
+      db.query(sql.courses.queries.get_courses_by_semester, [semester_name], (err, data) => {
+        if (err) {
+          log.error(`Failed to get courses offered in ${semester_name}`);
+          next(err);
+        } else {
+          res.render('courses', { data: data.rows, title: `Courses offered in ${semester_name}`, permissions });
+        }
+      });
+    } else if (module_code) {
+      db.query(sql.courses.queries.get_courses_by_module, [module_code], (err, data) => {
+        if (err) {
+          log.error(`Failed to get courses for ${module_code}`);
+          next(err);
+        } else {
+          res.render('courses', { data: data.rows, title: `Courses for module ${module_code}`, permissions });
+        }
+      });
+    } else {
+      db.query(sql.courses.queries.get_courses, (err, data) => {
+        if (err) {
+          log.error('Failed to get courses');
+          next(err);
+        } else {
+          res.render('courses', { data: data.rows, title: 'All courses', permissions });
+        }
+      });
+    }
+  } catch (err) {
+    next(err);
   }
 };
 
 exports.show = async (req, res, next) => {
   const { semester_name, module_code } = req.params;
-  const permissions = {
-    can_create_group: await canCreateGroup(req.user, semester_name, module_code),
-    can_update_group: await canUpdateGroup(req.user, semester_name, module_code),
-    can_delete_group: await canDeleteGroup(req.user, semester_name, module_code),
-    can_create_forum: await canCreateForum(req.user, semester_name, module_code),
-    can_update_forum: await canUpdateForum(req.user, semester_name, module_code),
-    can_delete_forum: await canDeleteForum(req.user, semester_name, module_code)
-  };
-  db.query(sql.courses.queries.find_course, [semester_name, module_code], (err1, data1) => {
-    if (err1) {
-      log.error(`Failed to get course ${module_code} offered in ${semester_name}`);
-      next(err1);
-    } else {
-      const course = data1.rows[0];
-      db.query(sql.groups.queries.get_groups_by_course, [semester_name, module_code], (err2, data2) => {
-        if (err2) {
-          log.error(`Failed to get groups of ${module_code} offered in ${semester_name}`);
-          next(err2);
-        } else {
-          db.query(sql.forums.queries.get_forums_by_course, [semester_name, module_code], (err3, data3) => {
-            if (err3) {
-              log.error(`Failed to get forums of ${module_code} offered in ${semester_name}`);
-              next(err3);
-            } else {
-              res.render('course', { course, groups: data2.rows, forums: data3.rows, permissions });
-            }
-          });
-        }
-      });
-    }
-  });
+  try {
+    const permissions = {
+      can_create_group: await canCreateGroup(req.user, semester_name, module_code),
+      can_update_group: await canUpdateGroup(req.user, semester_name, module_code),
+      can_delete_group: await canDeleteGroup(req.user, semester_name, module_code),
+      can_create_forum: await canCreateForum(req.user, semester_name, module_code),
+      can_update_forum: await canUpdateForum(req.user, semester_name, module_code),
+      can_delete_forum: await canDeleteForum(req.user, semester_name, module_code)
+    };
+    const course = await db.query(sql.courses.queries.find_course, [semester_name, module_code]).then(
+      data => data.rows[0],
+      err => {
+        log.error(`Failed to get course ${module_code} offered in ${semester_name}`);
+        throw err;
+      }
+    );
+    const groups = await db.query(sql.groups.queries.get_groups_by_course, [semester_name, module_code]).then(
+      data => data.rows,
+      err => {
+        log.error(`Failed to get groups of ${module_code} offered in ${semester_name}`);
+        throw err;
+      }
+    );
+    const forums = await db.query(sql.forums.queries.get_forums_by_course, [semester_name, module_code]).then(
+      data => data.rows,
+      err => {
+        log.error(`Failed to get forums of ${module_code} offered in ${semester_name}`);
+        throw err;
+      }
+    );
+    res.render('course', { course, groups, forums, permissions });
+  } catch (err) {
+    next(err);
+  }
 };
 
 exports.new = (req, res, next) => {
