@@ -4,12 +4,27 @@ const sql = require('../sql');
 const log = require('../helpers/logging');
 
 exports.index = (req, res, next) => {
-  db.query(sql.users.queries.get_users, (err, data) => {
-    if (err) {
+  db.query(sql.users.queries.get_users, (err1, users) => {
+    if (err1) {
       log.error('Failed to get users');
-      next(err);
+      next(err1);
     } else {
-      res.render('users', { data: data.rows });
+      db.query(sql.semesters.queries.get_current_semester, (err2, semesters) => {
+        const semester_name = semesters.rows[0].name;
+        if (err2) {
+          log.error('Failed to get current_semester');
+          next(err2);
+        } else {
+          db.query(sql.users.queries.find_most_diligent_students, [semester_name], (err3, insights) => {
+            if (err3) {
+              log.error('Failed to get insights');
+              next(err3);
+            } else {
+              res.render('users', { data: users.rows, insights: insights.rows, semester_name });
+            }
+          });
+        }
+      });
     }
   });
 };
