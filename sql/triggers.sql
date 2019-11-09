@@ -15,17 +15,17 @@ CREATE OR REPLACE FUNCTION validate_semester() RETURNS TRIGGER AS $$
     IF TG_OP = 'UPDATE' THEN
         IF EXISTS (
             SELECT 1
-            FROM semesters 
-            WHERE start_time != OLD.start_time 
-                AND end_time != OLD.end_time 
-                AND start_time <= NEW.end_time 
+            FROM semesters
+            WHERE start_time != OLD.start_time
+                AND end_time != OLD.end_time
+                AND start_time <= NEW.end_time
                 AND end_time >= NEW.start_time) THEN
             RAISE EXCEPTION 'Semesters cannot have overlapped time intervals';
         END IF;
     END IF;
 
     RETURN NEW;
-    END; 
+    END;
 $$ LANGUAGE plpgsql;
 
 DROP TRIGGER IF EXISTS validate_semester ON semesters;
@@ -105,3 +105,27 @@ CREATE TRIGGER reject_illegible_requests
 BEFORE INSERT ON course_requests
 FOR EACH ROW EXECUTE PROCEDURE
 check_eligibility_to_request();
+
+CREATE OR REPLACE FUNCTION validate_group_membership() RETURNS TRIGGER AS $$
+  BEGIN
+  IF TG_OP = 'INSERT' THEN
+    IF NOT EXISTS (
+      SELECT 1
+      FROM course_memberships
+      WHERE semester_name = NEW.semester_name
+        AND module_code = NEW.module_code
+        AND user_id = NEW.user_id
+        AND role::text = NEW.role::text) THEN
+      RAISE EXCEPTION 'This user does not have the corresponding role in this course';
+    END IF;
+  END IF;
+
+  RETURN NEW;
+  END;
+$$ LANGUAGE plpgsql;
+
+DROP TRIGGER IF EXISTS validate_group_membership ON group_memberships;
+CREATE TRIGGER validate_group_membership
+BEFORE INSERT ON group_memberships
+FOR EACH ROW EXECUTE PROCEDURE
+validate_group_membership();
