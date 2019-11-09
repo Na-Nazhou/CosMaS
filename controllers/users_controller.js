@@ -67,7 +67,7 @@ exports.update = (req, res) => {
 
 exports.dashboard = async (req, res, next) => {
   const user_id = req.params.id;
-  db.query(sql.users.queries.get_user_courses, [user_id], (err, data) => {
+  db.query(sql.course_memberships.queries.get_courses_by_user, [user_id], (err, data) => {
     if (err) {
       log.error('Failed to get user courses');
       next(err);

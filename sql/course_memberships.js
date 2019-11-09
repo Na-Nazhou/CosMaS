@@ -8,7 +8,11 @@ course_memberships.queries = {
   delete_membership: 'DELETE FROM course_memberships WHERE semester_name = $1 AND module_code = $2 AND user_id = $3',
   get_users_not_in_course:
     'SELECT * FROM users WHERE NOT is_admin AND id NOT IN ' +
-    '(SELECT user_id FROM course_memberships WHERE semester_name=$1 AND module_code=$2)'
+    '(SELECT user_id FROM course_memberships WHERE semester_name=$1 AND module_code=$2)',
+  get_courses_by_user:
+    'SELECT DISTINCT C.semester_name, C.module_code, C.title, C.description, C.credits, CM.role FROM courses C, ' +
+    'course_memberships CM WHERE C.semester_name = CM.semester_name AND C.module_code = CM.module_code AND ' +
+    'CM.user_id = $1 ORDER BY semester_name, module_code'
 };
 
 course_memberships.functions = {

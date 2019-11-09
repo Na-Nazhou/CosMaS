@@ -35,12 +35,33 @@ exports.index = async (req, res, next) => {
         }
       });
     } else {
-      db.query(sql.courses.queries.get_courses, (err, data) => {
-        if (err) {
+      db.query(sql.courses.queries.get_courses, (err1, data1) => {
+        if (err1) {
           log.error('Failed to get courses');
-          next(err);
+          next(err1);
         } else {
-          res.render('courses', { data: data.rows, title: 'All Courses', permissions });
+          db.query(sql.semesters.queries.get_current_semester, (err2, data2) => {
+            if (err2) {
+              log.error(`Failed to get current semester`);
+              next(err2);
+            } else {
+              const semester = data2.rows[0];
+              const [past, future, current] = data1.rows.reduce(
+                (result, row) => {
+                  if (row.end_time < semester.start_time) {
+                    result[0].push(row);
+                  } else if (row.start_time > semester.end_time) {
+                    result[1].push(row);
+                  } else {
+                    result[2].push(row);
+                  }
+                  return result;
+                },
+                [[], [], []]
+              );
+              res.render('coursesAll', { past, future, current, title: 'All Courses', permissions });
+            }
+          });
         }
       });
     }
