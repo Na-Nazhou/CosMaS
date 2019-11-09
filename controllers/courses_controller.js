@@ -82,7 +82,7 @@ exports.show = async (req, res, next) => {
       can_update_forum: await canUpdateForum(req.user, semester_name, module_code),
       can_delete_forum: await canDeleteForum(req.user, semester_name, module_code),
       can_index_members: await canIndexMembers(req.user, semester_name, module_code),
-      can_request_course: await canCreateCourseRequest(req.user, semester_name, module_code),
+      can_request_course: await canCreateCourseRequest(req.user, semester_name, module_code, req.user.id),
       can_show_course_requests: await canShowCourseRequestsOfCourse(req.user, semester_name, module_code)
     };
     const course = await db.query(sql.courses.queries.find_course, [semester_name, module_code]).then(
