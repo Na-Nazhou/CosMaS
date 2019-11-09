@@ -6,10 +6,12 @@ threads.queries = {
     'FROM threads t LEFT JOIN users u ON t.author_id=u.id ' +
     'WHERE t.semester_name=$1 AND t.module_code=$2 AND t.forum_title=$3 AND t.created_at=$4',
   get_threads_info_by_forum:
-    'SELECT t.semester_name AS semester_name, t.module_code AS module_code, t.forum_title AS forum_title, u.name AS author_name, ' +
-    't.created_at AS created_at, t.title AS title, t.content AS content, COUNT(r.created_at) AS replies_count, MAX(r.created_at) AS latest_reply_time ' +
+    'SELECT t.semester_name AS semester_name, t.module_code AS module_code, t.forum_title AS forum_title, ' +
+    'u.name AS author_name, t.created_at AS created_at, t.title AS title, t.content AS content, ' +
+    'COUNT(r.created_at) AS replies_count, MAX(r.created_at) AS latest_reply_time ' +
     'FROM threads t LEFT JOIN users u ON t.author_id=u.id ' +
-    'LEFT JOIN replies r ON t.semester_name=r.semester_name AND t.module_code=r.module_code AND t.forum_title=r.forum_title AND t.created_at=r.thread_created_at ' +
+    'LEFT JOIN replies r ON t.semester_name=r.semester_name AND t.module_code=r.module_code AND ' +
+    't.forum_title=r.forum_title AND t.created_at=r.thread_created_at ' +
     'WHERE t.semester_name=$1 AND t.module_code=$2 AND t.forum_title=$3 ' +
     'GROUP BY(t.semester_name, t.module_code, t.forum_title, t.created_at, u.name) ' +
     'ORDER BY GREATEST(MAX(r.created_at), t.created_at) DESC',

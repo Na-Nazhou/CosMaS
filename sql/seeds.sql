@@ -278,6 +278,9 @@ INSERT INTO course_memberships VALUES ('TA', 'AY18/19S1', 'CS2102', 'A0170001A')
 INSERT INTO course_memberships VALUES ('TA', 'AY18/19S1', 'CS2102', 'A0170002A');
 INSERT INTO course_memberships VALUES ('professor', 'AY18/19S1', 'CS2102', 'S0200020A');
 
+INSERT INTO course_memberships VALUES ('student', 'AY19/20S1', 'CS2102', 'A0160001A');
+INSERT INTO course_memberships VALUES ('student', 'AY19/20S1', 'CS2102', 'A0170001A');
+INSERT INTO course_memberships VALUES ('student', 'AY19/20S1', 'CS2102', 'A0180001A');
 INSERT INTO course_memberships VALUES ('TA', 'AY19/20S1', 'CS2102', 'A0200001A');
 INSERT INTO course_memberships VALUES ('TA', 'AY19/20S1', 'CS2102', 'A0200002A');
 INSERT INTO course_memberships VALUES ('professor', 'AY19/20S1', 'CS2102', 'S0200020A');
@@ -394,6 +397,7 @@ INSERT INTO course_memberships VALUES ('student', 'AY19/20S1', 'CS2103', 'A01600
 INSERT INTO course_memberships VALUES ('student', 'AY19/20S1', 'CS2103', 'A0160018A');
 INSERT INTO course_memberships VALUES ('student', 'AY19/20S1', 'CS2103', 'A0160019A');
 INSERT INTO course_memberships VALUES ('student', 'AY19/20S1', 'CS2103', 'A0160020A');
+INSERT INTO course_memberships VALUES ('student', 'AY19/20S1', 'CS2103', 'A0170001A');
 INSERT INTO course_memberships VALUES ('TA', 'AY19/20S1', 'CS2103', 'A0200001A');
 INSERT INTO course_memberships VALUES ('TA', 'AY19/20S1', 'CS2103', 'A0200002A');
 INSERT INTO course_memberships VALUES ('professor', 'AY19/20S1', 'CS2103', 'S0200019A');
@@ -418,6 +422,7 @@ INSERT INTO course_memberships VALUES ('student', 'AY19/20S1', 'GEQ1000', 'A0180
 INSERT INTO course_memberships VALUES ('student', 'AY19/20S1', 'GEQ1000', 'A0180018A');
 INSERT INTO course_memberships VALUES ('student', 'AY19/20S1', 'GEQ1000', 'A0180019A');
 INSERT INTO course_memberships VALUES ('student', 'AY19/20S1', 'GEQ1000', 'A0180020A');
+INSERT INTO course_memberships VALUES ('student', 'AY19/20S1', 'GEQ1000', 'A0170001A');
 INSERT INTO course_memberships VALUES ('TA', 'AY19/20S1', 'GEQ1000', 'A0200001A');
 INSERT INTO course_memberships VALUES ('TA', 'AY19/20S1', 'GEQ1000', 'A0200002A');
 INSERT INTO course_memberships VALUES ('professor', 'AY19/20S1', 'GEQ1000', 'S0200020A');
