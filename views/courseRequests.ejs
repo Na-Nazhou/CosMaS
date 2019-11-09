@@ -23,13 +23,7 @@
                     <td><%= requests[i].requester_id %></td>
                     <td><%= requests[i].requester_name %></td>
                     <td><%= timestampToDisplayedForm(requests[i].requested_at) %></td>
-                    <% if (requests[i].closed_at === null) { %>
-                        <td>Pending</td>
-                    <% } else if (requests[i].is_approved) { %>
-                        <td>Approved</td>
-                    <% } else { %>
-                        <td>Rejected</td>
-                    <% } %>
+                    <td><%= requests[i].status %></td>
                     <td><%= requests[i].closed_at ? timestampToDisplayedForm(requests[i].closed_at) : 'Not processed yet' %></td>
                     <td>
                         <% if (requests[i].closed_at === null) { %>
@@ -76,13 +70,7 @@
                     <td><%= requests[i].module_code %></td>
                     <td><%= requests[i].title %></td>
                     <td><%= timestampToDisplayedForm(requests[i].requested_at) %></td>
-                    <% if (requests[i].closed_at === null) { %>
-                        <td>Pending</td>
-                    <% } else if (requests[i].is_approved) { %>
-                        <td>Approved</td>
-                    <% } else { %>
-                        <td>Rejected</td>
-                    <% } %>
+                    <td><%= requests[i].status %></td>
                     <td><%= requests[i].closed_at ? timestampToDisplayedForm(requests[i].closed_at) : 'Not processed yet' %></td>
                     <td>
                         <% if (requests[i].closed_at === null) { %>
