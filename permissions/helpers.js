@@ -31,6 +31,9 @@ const isInCourse = (user, semester_name, module_code) => {
     .query(course_memberships.queries.find_membership, [semester_name, module_code, user.id])
     .then(data => data.rowCount > 0);
 };
+const isNotInCourse = (user, semester_name, module_code) => {
+  return notPass(isInCourse(user, semester_name, module_code));
+};
 
 // Professors are not in any groups
 const isInGroup = (user, semester_name, module_code, group_name) => {
@@ -77,6 +80,7 @@ module.exports = {
   isNotAdmin,
   isSameUserID,
   isInCourse,
+  isNotInCourse,
   isInGroup,
   isInForum,
   isProfessorInCourse,

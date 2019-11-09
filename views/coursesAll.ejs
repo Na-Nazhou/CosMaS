@@ -1,5 +1,6 @@
 <% layout('layout') -%>
 <div class="container">
+  <%-partial('./partials/messages', { messages: flash() })%>
   <h1 class="mt-3 mb-3">
     <%= title %> (<%= past.length + current.length + future.length %>) <% if (permissions.can_create_course) { %>
     <div class="float-right" style="display: inline">
