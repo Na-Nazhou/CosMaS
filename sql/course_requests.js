@@ -3,12 +3,19 @@ const course_requests = {};
 course_requests.queries = {
   find_course_request: 'SELECT * FROM course_requests WHERE semester_name=$1 AND module_code=$2 AND requester_id=$3',
   get_course_requests_of_course:
-    'SELECT CR.semester_name, CR.module_code, CR.requester_id, CR.requested_at, CR.is_approved, CR.closed_at, U.name AS requester_name ' +
+    'SELECT CR.semester_name, CR.module_code, CR.requester_id, CR.requested_at, CR.is_approved, CR.closed_at, U.name AS requester_name, ' +
+    'COALESCE ( ' +
+    "CASE WHEN CR.closed_at IS NULL THEN 'Pending' ELSE NULL END, " +
+    "CASE WHEN is_approved THEN 'Approved' ELSE 'Rejected' END) AS status " +
     'FROM course_requests CR LEFT JOIN users U ON CR.requester_id=U.id ' +
     'WHERE semester_name=$1 AND module_code=$2 ' +
     'ORDER BY closed_at DESC, requested_at ASC',
   get_course_requests_of_student:
-    'SELECT * FROM course_requests CR NATURAL JOIN courses C ' +
+    'SELECT CR.requester_id, CR.requested_at, CR.semester_name, CR.module_code, CR.is_approved, CR.closed_at, C.title, ' +
+    'COALESCE ( ' +
+    "CASE WHEN CR.closed_at IS NULL THEN 'Pending' ELSE NULL END, " +
+    "CASE WHEN is_approved THEN 'Approved' ELSE 'Rejected' END) AS status " +
+    'FROM course_requests CR NATURAL JOIN courses C ' +
     'WHERE CR.requester_id=$1 ' +
     'ORDER BY CR.requested_at DESC, CR.closed_at DESC',
   create_course_request:
