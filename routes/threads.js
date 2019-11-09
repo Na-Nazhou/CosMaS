@@ -5,6 +5,8 @@ const replies_route = require('./replies');
 const { ensureAuthorised } = require('../permissions');
 const { canShowThread, canCreateThread, canEditThread, canDeleteThread } = require('../permissions/threads');
 
+// /courses/:semester_name/:module_code/forums/:title/threads
+
 router.use((req, res, next) => {
   log.controller('Threads controller handling the request');
   next();

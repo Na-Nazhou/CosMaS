@@ -1,7 +1,9 @@
 const db = require('../db');
 const sql = require('../sql');
 const log = require('../helpers/logging');
-const { canCreateCourse, canDeleteCourse } = require('../permissions/courses');
+const { canCreateCourse, canDeleteCourse, canShowCourseDetails } = require('../permissions/courses');
+const { canIndexMembers } = require('../permissions/course_memberships');
+const { canCreateCourseRequest, canShowCourseRequestsOfCourse } = require('../permissions/course_requests');
 const { canCreateForum, canUpdateForum, canDeleteForum } = require('../permissions/forums');
 const { canCreateGroup, canUpdateGroup, canDeleteGroup } = require('../permissions/groups');
 const { coursesPath, courseNewPath, courseEditPath } = require('../routes/helpers/courses');
@@ -33,12 +35,33 @@ exports.index = async (req, res, next) => {
         }
       });
     } else {
-      db.query(sql.courses.queries.get_courses, (err, data) => {
-        if (err) {
+      db.query(sql.courses.queries.get_courses, (err1, data1) => {
+        if (err1) {
           log.error('Failed to get courses');
-          next(err);
+          next(err1);
         } else {
-          res.render('courses', { data: data.rows, title: 'All courses', permissions });
+          db.query(sql.semesters.queries.get_current_semester, (err2, data2) => {
+            if (err2) {
+              log.error(`Failed to get current semester`);
+              next(err2);
+            } else {
+              const semester = data2.rows[0];
+              const [past, future, current] = data1.rows.reduce(
+                (result, row) => {
+                  if (row.end_time < semester.start_time) {
+                    result[0].push(row);
+                  } else if (row.start_time > semester.end_time) {
+                    result[1].push(row);
+                  } else {
+                    result[2].push(row);
+                  }
+                  return result;
+                },
+                [[], [], []]
+              );
+              res.render('coursesAll', { past, future, current, title: 'All Courses', permissions });
+            }
+          });
         }
       });
     }
@@ -51,12 +74,16 @@ exports.show = async (req, res, next) => {
   const { semester_name, module_code } = req.params;
   try {
     const permissions = {
+      can_show_course_details: await canShowCourseDetails(req.user, semester_name, module_code),
       can_create_group: await canCreateGroup(req.user, semester_name, module_code),
       can_update_group: await canUpdateGroup(req.user, semester_name, module_code),
       can_delete_group: await canDeleteGroup(req.user, semester_name, module_code),
       can_create_forum: await canCreateForum(req.user, semester_name, module_code),
       can_update_forum: await canUpdateForum(req.user, semester_name, module_code),
-      can_delete_forum: await canDeleteForum(req.user, semester_name, module_code)
+      can_delete_forum: await canDeleteForum(req.user, semester_name, module_code),
+      can_index_members: await canIndexMembers(req.user, semester_name, module_code),
+      can_request_course: await canCreateCourseRequest(req.user, semester_name, module_code, req.user.id),
+      can_show_course_requests: await canShowCourseRequestsOfCourse(req.user, semester_name, module_code)
     };
     const course = await db.query(sql.courses.queries.find_course, [semester_name, module_code]).then(
       data => data.rows[0],

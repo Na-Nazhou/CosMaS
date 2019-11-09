@@ -2,9 +2,10 @@ const router = require('express').Router();
 const courses = require('../controllers/courses_controller');
 const groups_routes = require('./groups');
 const forums_routes = require('./forums');
+const course_membership_routes = require('./course_memberships');
 const log = require('../helpers/logging');
 const { ensureAuthorised } = require('../permissions');
-const { canCreateCourse, canShowCourse, canUpdateCourse, canDeleteCourse } = require('../permissions/courses');
+const { canCreateCourse, canUpdateCourse, canDeleteCourse } = require('../permissions/courses');
 
 router.use((req, res, next) => {
   log.controller('Courses controller handling the request');
@@ -14,11 +15,7 @@ router.use((req, res, next) => {
 router.get('/', courses.index);
 router.get('/new', ensureAuthorised(req => canCreateCourse(req.user)), courses.new);
 router.post('/', ensureAuthorised(req => canCreateCourse(req.user)), courses.create);
-router.get(
-  '/:semester_name/:module_code',
-  ensureAuthorised(req => canShowCourse(req.user, req.params.semester_name, req.params.module_code)),
-  courses.show
-);
+router.get('/:semester_name/:module_code', courses.show);
 router.delete('/:semester_name/:module_code', ensureAuthorised(req => canDeleteCourse(req.user)), courses.delete);
 router.get(
   '/:semester_name/:module_code/edit',
@@ -35,5 +32,7 @@ router.put(
 router.use('/:semester_name/:module_code/groups', groups_routes);
 // Nest forum routes within courses
 router.use('/:semester_name/:module_code/forums', forums_routes);
+// Nest course member routes within courses
+router.use('/:semester_name/:module_code/members', course_membership_routes);
 
 module.exports = router;

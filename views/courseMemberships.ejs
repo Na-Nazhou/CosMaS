@@ -1,0 +1,49 @@
+<% layout('layout') -%>
+<div class="container mt-3">
+  <%-partial('./partials/messages', { messages: flash() })%>
+  <h1 class="mt-3 mb-3">
+    <a href="<%= coursePath(course.semester_name, course.module_code) %>"
+      ><%= course.module_code %> <%= course.title %>
+    </a>
+  </h1>
+  <h2><small class="text-muted"><%= course.semester_name %></small></h2>
+  <h2 class="mt-3 mb-3">
+    Members (<%= members.length%>) <% if (permissions.can_add_some_member) { %>
+    <div class="float-right" style="display: inline">
+      <a href="<%= courseMembershipNewPath(course.semester_name, course.module_code)%>" class="btn btn-outline-primary">
+        <i class="fas fa-user-plus"></i> New Member
+      </a>
+    </div>
+    <% } %>
+  </h2>
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th scope="col">Name</th>
+        <% if (user.is_admin) { %>
+        <th scope="col">User ID</th>
+        <% } %>
+        <th scope="col">Role</th>
+        <th scope="col">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% for (let i = 0; i < members.length; i++) { %>
+      <tr>
+        <td><%= members[i].name%></td>
+        <% if (user.is_admin) { %>
+        <td><%= members[i].id%></td>
+        <% } %>
+        <td><%= members[i].role%></td>
+        <td>
+          <a href="<%= userDashboardPath(members[i].id) %>" class="btn btn-primary">
+            <i class="far fa-eye"></i>
+          </a>
+          <% if (permissions.can_delete_some_member) { %> <%-partial('./partials/deleteButton',{ action:
+          courseMembershipDeletePath(course.semester_name, course.module_code, members[i].id) })%> <% } %>
+        </td>
+      </tr>
+      <% } %>
+    </tbody>
+  </table>
+</div>

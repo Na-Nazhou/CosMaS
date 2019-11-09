@@ -1,11 +1,38 @@
 <% layout('layout') -%>
 <div class="container mt-3">
   <%-partial('./partials/messages', { messages: flash() })%>
-  <h1 class="mt-3 mb-3"><%= course.module_code %> <%= course.title %></h1>
+  <h1 class="mt-3 mb-3">
+    <%= course.module_code %> <%= course.title %>
+  </h1>
   <h2><small class="text-muted"><%= course.semester_name %></small></h2>
   <p class="h6">Course Description:</p>
   <p><%= course.description %></p>
+  <% if (permissions.can_index_members) { %>
+  <div style="display: inline; margin-right:1.5em">
+    <a href="<%= courseMembershipsPath(course.semester_name, course.module_code) %>" class="btn btn-info">
+      <i class="fas fa-users"></i>
+      View Members
+    </a>
+  </div>
+  <% } %>
+  <% if (permissions.can_show_course_requests) { %>
+    <div style="display: inline; margin-right:1.5em">
+      <a href="<%= courseRequestCourseShowPath(course.semester_name, course.module_code) %>" class="btn btn-info">
+        <i class="fas fa-users"></i>
+        View Course Requests
+      </a>
+    </div>
+  <% } %> <% if (permissions.can_request_course) { %>
+  <form id="course_request_form" action="<%= courseRequestPath(course.semester_name, course.module_code, user.id) %>" method="POST" style="display: inline">
+    <button type="submit" class="btn btn-outline-primary">
+      <i class="far fa-plus"></i>
+      Request to Join
+    </button>
+  </form>
+  <% } %>
+
   <hr class="mt-5 mb-5" />
+  <% if (permissions.can_show_course_details) { %>
   <h2>
     Groups (<%= groups.length %>) <% if (permissions.can_create_group) { %>
     <div class="float-right" style="display: inline">
@@ -85,4 +112,5 @@
       <% } %>
     </tbody>
   </table>
+  <% } %>
 </div>

@@ -119,5 +119,6 @@ CREATE TABLE Replies (
     forum_title       VARCHAR(255),
     thread_created_at TIMESTAMP,
     FOREIGN KEY(semester_name, module_code, forum_title, thread_created_at) REFERENCES Threads ON DELETE CASCADE,
-    PRIMARY KEY(semester_name, module_code, forum_title, thread_created_at, created_at)
+    PRIMARY KEY(semester_name, module_code, forum_title, thread_created_at, created_at),
+    CHECK (thread_created_at < created_at)
 );

@@ -64,3 +64,53 @@ exports.update = (req, res) => {
     }
   });
 };
+
+exports.dashboard = async (req, res, next) => {
+  const user_id = req.params.id;
+  db.query(sql.course_memberships.queries.get_courses_by_user, [user_id], (err1, data1) => {
+    if (err1) {
+      log.error('Failed to get user courses');
+      next(err1);
+    } else {
+      db.query(sql.semesters.queries.get_current_semester, (err2, data2) => {
+        if (err2) {
+          log.error(`Failed to get current semester`);
+          next(err2);
+        } else {
+          const semester = data2.rows[0];
+          let courses = data1.rows.reduce(
+            (result, row) => {
+              if (row.end_time < semester.start_time) {
+                result[0].push(row);
+              } else if (row.start_time > semester.end_time) {
+                result[1].push(row);
+              } else {
+                result[2].push(row);
+              }
+              return result;
+            },
+            [[], [], []]
+          );
+          courses = courses.map(x =>
+            x.reduce(
+              (result, row) => {
+                let i;
+                if (row.role === 'student') {
+                  i = 0;
+                } else if (row.role === 'professor') {
+                  i = 1;
+                } else {
+                  i = 2;
+                }
+                result[i].push(row);
+                return result;
+              },
+              [[], [], []]
+            )
+          );
+          res.render('dashboard', { courses });
+        }
+      });
+    }
+  });
+};

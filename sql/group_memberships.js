@@ -4,8 +4,8 @@ group_memberships.queries = {
   find_membership:
     'SELECT * FROM group_memberships WHERE semester_name = $1 AND module_code=$2 AND group_name=$3 AND user_id=$4',
   get_members_by_group:
-    'SELECT * FROM group_memberships G JOIN users U ON G.user_id = U.id ' +
-    'WHERE semester_name=$1 AND module_code=$2 AND group_name = $3 AND role = $4',
+    'SELECT U.name AS name, U.id AS user_id FROM group_memberships G JOIN users U ON G.user_id = U.id ' +
+    'WHERE semester_name=$1 AND module_code=$2 AND group_name=$3 AND role=$4',
   get_members_not_in_group:
     'SELECT * FROM course_memberships C JOIN users U1 ON C.user_id = U1.id ' +
     'WHERE C.semester_name=$1 AND C.module_code=$2 AND C.role::text = $4 AND C.user_id NOT IN ' +
