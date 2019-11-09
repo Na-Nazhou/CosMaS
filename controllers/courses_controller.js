@@ -3,7 +3,7 @@ const sql = require('../sql');
 const log = require('../helpers/logging');
 const { canCreateCourse, canDeleteCourse, canShowCourseDetails } = require('../permissions/courses');
 const { canIndexMembers } = require('../permissions/course_memberships');
-const { canRequestCourse } = require('../permissions/course_requests');
+const { canCreateCourseRequest, canShowCourseRequestsOfCourse } = require('../permissions/course_requests');
 const { canCreateForum, canUpdateForum, canDeleteForum } = require('../permissions/forums');
 const { canCreateGroup, canUpdateGroup, canDeleteGroup } = require('../permissions/groups');
 const { coursesPath, courseNewPath, courseEditPath } = require('../routes/helpers/courses');
@@ -82,7 +82,8 @@ exports.show = async (req, res, next) => {
       can_update_forum: await canUpdateForum(req.user, semester_name, module_code),
       can_delete_forum: await canDeleteForum(req.user, semester_name, module_code),
       can_index_members: await canIndexMembers(req.user, semester_name, module_code),
-      can_request_course: await canRequestCourse(req.user, semester_name, module_code)
+      can_request_course: await canCreateCourseRequest(req.user, semester_name, module_code),
+      can_show_course_requests: await canShowCourseRequestsOfCourse(req.user, semester_name, module_code)
     };
     const course = await db.query(sql.courses.queries.find_course, [semester_name, module_code]).then(
       data => data.rows[0],

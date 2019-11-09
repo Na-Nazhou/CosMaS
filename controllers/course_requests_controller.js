@@ -6,14 +6,14 @@ const { handleAccessDenied } = require('../permissions');
 const { canShowCourseRequestsOfCourse } = require('../permissions/course_requests');
 
 exports.index = async (req, res, next) => {
-  const { user_id, semester_name, module_code } = req.query;
+  const { requester_id, semester_name, module_code } = req.query;
   try {
-    if (user_id) {
+    if (requester_id) {
       // Showing course requests for individual user
-      if (req.user.id !== user_id) {
+      if (req.user.id !== requester_id) {
         handleAccessDenied(req, res);
       }
-      const requests = await db.query(sql.course_requests.queries.get_course_requests_of_student, [user_id]).then(
+      const requests = await db.query(sql.course_requests.queries.get_course_requests_of_student, [requester_id]).then(
         data => data.rows,
         err => {
           log.error(`Failed to get course requests submitted by ${req.user.name}`);
@@ -22,6 +22,7 @@ exports.index = async (req, res, next) => {
       );
       res.render('courseRequests', {
         title: `Course requests submitted by ${req.user.name}`,
+        course: null,
         requests
       });
     } else if (semester_name && module_code) {
@@ -46,6 +47,7 @@ exports.index = async (req, res, next) => {
       });
     } else {
       // 404
+      log.info('No query parameters supplied, defaulting to 404');
       next();
     }
   } catch (err) {

@@ -80,6 +80,3 @@ CREATE OR REPLACE FUNCTION update_students(
 	    END LOOP;
     END
     $$ LANGUAGE plpgsql;
-
-    END
-    $$ LANGUAGE plpgsql;

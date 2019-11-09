@@ -2,7 +2,7 @@
 <div class="container">
     <%- partial('./partials/messages', { messages: flash() }) %>
     <h2 class="mt-3 mb-3">
-        Course requests <%= course ? `for ${course.semester_name} ${course.module_code} ${course.title}` : user.name %>
+        Course requests <%= course ? `for ${course.semester_name} ${course.module_code} ${course.title}` : `submitted by ${user.name}` %>
     </h2>
     <!--For Course-->
     <% if (course) { %>
@@ -86,11 +86,11 @@
                     <td><%= requests[i].closed_at ? timestampToDisplayedForm(requests[i].closed_at) : 'Not processed yet' %></td>
                     <td>
                         <% if (requests[i].closed_at === null) { %>
-                            <form action="<%= courseRequestPath(course.semester_name, course.module_code, requests[i].requester_id) %>"
+                            <form action="<%= courseRequestPath(requests[i].semester_name, requests[i].module_code, requests[i].requester_id) %>"
                                   method="POST" style="display: inline">
                                 <input type="hidden" name="_method" value="DELETE"/>
                                 <button type="submit" class="btn btn-danger">
-                                    <i class="fas fa-times">Cancel</i>
+                                    <i class="far fa-times"> Cancel</i>
                                 </button>
                             </form>
                         <% } %>

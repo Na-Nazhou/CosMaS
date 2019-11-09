@@ -14,11 +14,16 @@
       View Members
     </a>
   </div>
+  <% } %>
+  <% if (permissions.can_show_course_requests) { %>
+    <div style="display: inline; margin-right:1.5em">
+      <a href="<%= courseRequestCourseShowPath(course.semester_name, course.module_code) %>" class="btn btn-info">
+        <i class="fas fa-users"></i>
+        View Course Requests
+      </a>
+    </div>
   <% } %> <% if (permissions.can_request_course) { %>
-  <form id="course_request_form" action="<%=courseRequestsPath(user.id)%>" method="POST" style="display: inline">
-    <input type="hidden" id="requester_id" name="requester_id" value="<%=user.id%>" />
-    <input type="hidden" id="semester_name" name="semester_name" value="<%=course.semester_name%>" />
-    <input type="hidden" id="module_code" name="module_code" value="<%=course.module_code%>" />
+  <form id="course_request_form" action="<%= courseRequestPath(course.semester_name, course.module_code, user.id) %>" method="POST" style="display: inline">
     <button type="submit" class="btn btn-outline-primary">
       <i class="far fa-plus"></i>
       Request to Join

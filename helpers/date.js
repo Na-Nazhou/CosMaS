@@ -6,7 +6,7 @@ const DB_FORM_TIMESTAMP_FORMAT = 'yyyy-MM-dd HH:mm:ss';
 const DISPLAY_FORM_TIMESTAMP_FORMAT = 'PPp';
 const DISPLAY_FORM_DATE_FORMAT = 'yyyy-MM-dd';
 
-exports.dateToDisplayedForm = date => (format(toDate(date), DISPLAY_FORM_DATE_FORMAT));
+exports.dateToDisplayedForm = date => format(toDate(date), DISPLAY_FORM_DATE_FORMAT);
 
 exports.timestampToDbForm = timestamp => format(toDate(timestamp), DB_FORM_TIMESTAMP_FORMAT);
 exports.timestampToDisplayedForm = timestamp => format(toDate(timestamp), DISPLAY_FORM_TIMESTAMP_FORMAT);
