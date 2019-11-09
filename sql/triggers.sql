@@ -54,7 +54,6 @@ EXECUTE PROCEDURE enrol_student();
 /* Cannot request to join past courses */
 CREATE OR REPLACE FUNCTION check_request_to_past_courses()
 RETURNS TRIGGER AS $$
-DECLARE sem_end timestamp; now timestamp;
 BEGIN
     IF TG_OP = 'INSERT' OR TG_OP = 'UPDATE' AND OLD.is_approved = false AND NEW.is_approved = true THEN
         IF LOCALTIMESTAMP(0) > (SELECT end_time FROM semesters WHERE name=NEW.semester_name) THEN
