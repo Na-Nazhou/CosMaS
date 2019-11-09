@@ -1,11 +1,90 @@
 <% layout('layout') -%>
 <div class="container">
   <h1 class="mt-3 mb-3">Dashboard</h1>
-  <%-partial('./partials/messages', { messages: flash() })%> <% if (teaching.length > 0) { %>
-  <h3 class="mt-3 mb-3">Teaching Courses (<%= teaching.length %>)</h3>
-  <%-partial('./partials/coursesList', { data: teaching })%> <% } %> <% if (enrolled.length > 0) { %>
-  <h3 class="mt-3 mb-3">Enrolled Courses (<%= enrolled.length %>)</h3>
-  <%-partial('./partials/coursesList', { data: enrolled })%> <% } %> <% if (tutoring.length > 0) { %>
-  <h3 class="mt-3 mb-3">Tutoring Courses (<%= tutoring.length %>)</h3>
-  <%-partial('./partials/coursesList', { data: tutoring })%> <% } %>
+  <%-partial('./partials/messages', { messages: flash() })%>
+
+  <div class="accordion" id="accordionExample">
+    <div class="card">
+      <div class="card-header" id="headingOne">
+        <h2>
+          <button
+            class="btn btn-link"
+            type="button"
+            data-toggle="collapse"
+            data-target="#collapseOne"
+            aria-expanded="true"
+            aria-controls="collapseOne"
+          >
+            Current Semester
+          </button>
+        </h2>
+      </div>
+
+      <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+        <div class="card-body">
+          <% if (courses[2][1].length > 0) { %>
+          <h3>Teaching Courses (<%= courses[2][1].length %>)</h3>
+          <%-partial('./partials/coursesList', { data: courses[2][1] })%> <% } %> <% if (courses[2][0].length > 0) { %>
+          <h3>Enrolled Courses (<%= courses[2][0].length %>)</h3>
+          <%-partial('./partials/coursesList', { data: courses[2][0] })%> <% } %> <% if (courses[2][2].length > 0) { %>
+          <h3>Tutoring Courses (<%= courses[2][2].length %>)</h3>
+          <%-partial('./partials/coursesList', { data: courses[2][2] })%> <% } %>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header" id="headingTwo">
+        <h2>
+          <button
+            class="btn btn-link collapsed"
+            type="button"
+            data-toggle="collapse"
+            data-target="#collapseTwo"
+            aria-expanded="false"
+            aria-controls="collapseTwo"
+          >
+            Future Semesters
+          </button>
+        </h2>
+      </div>
+      <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
+        <div class="card-body">
+          <% if (courses[1][1].length > 0) { %>
+          <h3>Teaching Courses (<%= courses[1][1].length %>)</h3>
+          <%-partial('./partials/coursesList', { data: courses[1][1] })%> <% } %> <% if (courses[1][0].length > 0) { %>
+          <h3>Enrolled Courses (<%= courses[1][0].length %>)</h3>
+          <%-partial('./partials/coursesList', { data: courses[1][0] })%> <% } %> <% if (courses[1][2].length > 0) { %>
+          <h3>Tutoring Courses (<%= courses[1][2].length %>)</h3>
+          <%-partial('./partials/coursesList', { data: courses[1][2] })%> <% } %>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header" id="headingThree">
+        <h2>
+          <button
+            class="btn btn-link collapsed"
+            type="button"
+            data-toggle="collapse"
+            data-target="#collapseThree"
+            aria-expanded="false"
+            aria-controls="collapseThree"
+          >
+            Past Semesters
+          </button>
+        </h2>
+      </div>
+      <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
+        <div class="card-body">
+          <% if (courses[0][1].length > 0) { %>
+          <h3>Teaching Courses (<%= courses[0][1].length %>)</h3>
+          <%-partial('./partials/coursesList', { data: courses[0][1] })%> <% } %> <% if (courses[0][0].length > 0) { %>
+          <h3>Enrolled Courses (<%= courses[0][0].length %>)</h3>
+          <%-partial('./partials/coursesList', { data: courses[0][0] })%> <% } %> <% if (courses[0][2].length > 0) { %>
+          <h3>Tutoring Courses (<%= courses[0][2].length %>)</h3>
+          <%-partial('./partials/coursesList', { data: courses[0][2] })%> <% } %>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
