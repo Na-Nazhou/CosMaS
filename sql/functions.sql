@@ -80,28 +80,3 @@ CREATE OR REPLACE FUNCTION update_students(
 	    END LOOP;
     END
     $$ LANGUAGE plpgsql;
-
-/* Course Requests */
-CREATE OR REPLACE FUNCTION is_allowed_to_request(
-    users.id%TYPE,
-    semesters.name%TYPE,
-    modules.module_code%TYPE)
-    RETURNS BOOLEAN AS
-    $$ DECLARE count_membership numeric; count_request numeric;
-    BEGIN
-    SELECT COUNT(user_id)
-    INTO count_membership
-    FROM course_memberships
-    WHERE user_id = $1 AND
-        semester_name = $2 AND
-        module_code = $3;
-    SELECT COUNT(requester_id)
-    INTO count_request
-    FROM course_requests
-    WHERE requester_id = $1 AND
-        semester_name = $2 AND
-        module_code = $3;
-    RETURN count_membership + count_request = 0;
-
-    END
-    $$ LANGUAGE plpgsql;

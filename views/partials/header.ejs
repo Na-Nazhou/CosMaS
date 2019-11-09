@@ -23,7 +23,7 @@
       </li>
       <% if (!user.is_admin) { %>
       <li class="nav-item">
-        <a class="nav-link" href="/course_requests">
+        <a class="nav-link" href="<%= courseRequestStudentShowPath(user.id) %>">
           <i class="fas fa-plus-square"></i>
           My Course Requests
         </a>
