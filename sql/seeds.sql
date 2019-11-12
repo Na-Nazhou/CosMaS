@@ -1,5 +1,6 @@
 /* USERS */
 INSERT INTO users VALUES ('A9999999A', 'Admin', 'True', '$2b$10$T24mdVF8M8ie28Rkj8hHkuoftnRbVNLZMvPMkJ7TaOpbfsQC2EvMW');
+
 INSERT INTO users (id, name, password_digest) VALUES ('A0160001A', 'Chloe Tan', '$2b$10$xpXE/.ugaLhigMWJBjmXFOLId8l7YpVSC0DaV69MS//BuDhXbEwlq');
 INSERT INTO users (id, name, password_digest) VALUES ('A0160002A', 'Timothy Phua', '$2b$10$xpXE/.ugaLhigMWJBjmXFOLId8l7YpVSC0DaV69MS//BuDhXbEwlq');
 INSERT INTO users (id, name, password_digest) VALUES ('A0160003A', 'Dana Zhang', '$2b$10$xpXE/.ugaLhigMWJBjmXFOLId8l7YpVSC0DaV69MS//BuDhXbEwlq');
@@ -100,6 +101,7 @@ INSERT INTO users (id, name, password_digest) VALUES ('A0200013A', 'Dana Chan', 
 INSERT INTO users (id, name, password_digest) VALUES ('A0200014A', 'Megan Leow', '$2b$10$xpXE/.ugaLhigMWJBjmXFOLId8l7YpVSC0DaV69MS//BuDhXbEwlq');
 INSERT INTO users (id, name, password_digest) VALUES ('A0200015A', 'Karley Price', '$2b$10$xpXE/.ugaLhigMWJBjmXFOLId8l7YpVSC0DaV69MS//BuDhXbEwlq');
 
+-- professors
 INSERT INTO users (id, name, password_digest) VALUES ('S0200016A', 'Michelle Kong', '$2b$10$xpXE/.ugaLhigMWJBjmXFOLId8l7YpVSC0DaV69MS//BuDhXbEwlq');
 INSERT INTO users (id, name, password_digest) VALUES ('S0200017A', 'Rachel Ang', '$2b$10$xpXE/.ugaLhigMWJBjmXFOLId8l7YpVSC0DaV69MS//BuDhXbEwlq');
 INSERT INTO users (id, name, password_digest) VALUES ('S0200018A', 'Bernice Yu', '$2b$10$xpXE/.ugaLhigMWJBjmXFOLId8l7YpVSC0DaV69MS//BuDhXbEwlq');
@@ -118,6 +120,11 @@ INSERT INTO modules VALUES ('CS1101S');
 INSERT INTO modules VALUES ('CS2103');
 INSERT INTO modules VALUES ('GEQ1000');
 INSERT INTO modules VALUES ('CS2100');
+INSERT INTO modules VALUES ('CS2105');
+INSERT INTO modules VALUES ('CS3230');
+INSERT INTO modules VALUES ('CS2030');
+INSERT INTO modules VALUES ('CS2040');
+INSERT INTO modules VALUES ('CS2106');
 
 /* COURSES */
 INSERT INTO courses VALUES ('AY18/19S1', 'CS2102', 'Database Systems', 'The aim of this module is to introduce the fundamental concepts and techniques necessary for the understanding and practice of design and implementation of database applications and of the management of data with relational database management systems. The module covers practical and theoretical aspects of design with entity-relationship model, theory of functional dependencies and normalisation by decomposition in second, third and Boyce-Codd normal forms. The module covers practical and theoretical aspects of programming with SQL data definition and manipulation sublanguages, relational tuple calculus, relational domain calculus and relational algebra.', 4);
@@ -141,12 +148,17 @@ INSERT INTO courses VALUES ('AY19/20S1', 'GEQ1000', 'Asking Questions', 'There a
 INSERT INTO courses VALUES ('AY19/20S2', 'GEQ1000', 'Asking Questions', 'There are many ways to ask questions, and many kinds of questions that different disciplines investigate. For a start, this module introduces six dominant modes of questioning from the perspective of computational thinking, design thinking, engineering, philosophy, science, and social sciences. These six perspectives serve as a starting point to introduce all undergraduate students to different modes of questioning across these disciplines, and provide an initial exposure to how scholars from these disciplines pursue specific lines of questioning of everyday issues. We emphasize that while there is only limited time and space within one module to devote to specific disciplinary lines of investigations, we encourage all students to actively think about other lines of questioning, other questions that need to be asked, particularly in disciplines not represented in this introductory platform as we move through this journey together. We expect that in future subsequent offerings, other disciplinary modes of investigations may also be introduced.', 4);
 
 INSERT INTO courses VALUES ('AY19/20S1', 'CS2100', 'Computer Organisation', 'The objective of this module is to familiarise students with the fundamentals of computing devices. Through this module students will understand the basics of data representation, and how the various parts of a computer work, separately and with each other. This allows students to understand the issues in computing devices, and how these issues affect the implementation of solutions. Topics covered include data representation systems, combinational and sequential circuit design techniques, assembly language, processor execution cycles, pipelining, memory hierarchy and input/output systems.', 4);
+INSERT INTO courses VALUES ('AY19/20S2', 'CS2100', 'Computer Organisation', 'The objective of this module is to familiarise students with the fundamentals of computing devices. Through this module students will understand the basics of data representation, and how the various parts of a computer work, separately and with each other. This allows students to understand the issues in computing devices, and how these issues affect the implementation of solutions. Topics covered include data representation systems, combinational and sequential circuit design techniques, assembly language, processor execution cycles, pipelining, memory hierarchy and input/output systems.', 4);
+INSERT INTO courses VALUES ('AY19/20S1', 'CS2105', 'Introduction of Computer Networks', 'This module aims to provide a broad introduction to computer networks and network application programming. It covers the main concepts, the fundamental principles, and the high-level workings of important protocols in each of the Internet protocol layer. Topics include the Web and Web applications, DNS services, socket programming, reliable protocols, transport and network layer protocols, secure communication, LAN, and data communication. Practical assignments and handson exercises expose students to network application programming and various networking tools and utilities.', 3);
+INSERT INTO courses VALUES ('AY19/20S2', 'CS2105', 'Introduction of Computer Networks', 'This module aims to provide a broad introduction to computer networks and network application programming. It covers the main concepts, the fundamental principles, and the high-level workings of important protocols in each of the Internet protocol layer. Topics include the Web and Web applications, DNS services, socket programming, reliable protocols, transport and network layer protocols, secure communication, LAN, and data communication. Practical assignments and handson exercises expose students to network application programming and various networking tools and utilities.', 3);
 
 /* COURSE_REQUESTS */
 -- Approved requests to cs2102
 INSERT INTO course_requests VALUES ('A0180001A', '2019-08-14 00:00:00', 'AY19/20S1', 'CS2102', 'True', '2019-08-15 00:00:00');
 INSERT INTO course_requests VALUES ('A0180002A', '2019-08-14 00:00:00', 'AY19/20S1', 'CS2102', 'True', '2019-08-15 00:00:00');
 INSERT INTO course_requests VALUES ('A0170001A', '2019-08-14 00:00:00', 'AY19/20S1', 'CS2102', 'True', '2019-08-15 00:00:00');
+
+-- Rejected requests to cs2102
 
 -- Pending requests to cs2102
 INSERT INTO course_requests VALUES ('A0170002A', '2019-08-14 00:00:00', 'AY19/20S1', 'CS2102');
@@ -168,6 +180,12 @@ INSERT INTO course_requests VALUES ('A0170017A', '2019-08-14 00:00:00', 'AY19/20
 INSERT INTO course_requests VALUES ('A0170018A', '2019-08-14 00:00:00', 'AY19/20S1', 'CS2102');
 INSERT INTO course_requests VALUES ('A0170019A', '2019-08-14 00:00:00', 'AY19/20S1', 'CS2102');
 INSERT INTO course_requests VALUES ('A0170020A', '2019-08-14 00:00:00', 'AY19/20S1', 'CS2102');
+
+-- Approved requests to cs1101s
+INSERT INTO course_requests VALUES ('A0170001A', '2019-08-14 00:00:00', 'AY19/20S1', 'CS1101S', 'True', '2019-08-15 00:00:00');
+INSERT INTO course_requests VALUES ('A0180001A', '2019-08-14 00:00:00', 'AY19/20S1', 'CS1101S', 'True', '2019-08-15 00:00:00');
+
+-- Rejected requests to cs1101s
 
 -- Pending requests to cs1101s
 INSERT INTO course_requests VALUES ('A0170002A', '2019-08-14 00:00:00', 'AY19/20S1', 'CS1101S');
@@ -211,9 +229,9 @@ INSERT INTO course_requests VALUES ('A0160017A', '2019-08-14 00:00:00', 'AY19/20
 INSERT INTO course_requests VALUES ('A0160018A', '2019-08-14 00:00:00', 'AY19/20S1', 'CS2103', 'True', '2019-08-15 00:00:00');
 INSERT INTO course_requests VALUES ('A0160019A', '2019-08-14 00:00:00', 'AY19/20S1', 'CS2103', 'True', '2019-08-15 00:00:00');
 INSERT INTO course_requests VALUES ('A0160020A', '2019-08-14 00:00:00', 'AY19/20S1', 'CS2103', 'True', '2019-08-15 00:00:00');
+INSERT INTO course_requests VALUES ('A0170001A', '2019-08-14 00:00:00', 'AY19/20S1', 'CS2103', 'True', '2019-08-15 00:00:00');
 
 -- Rejected requests to cs2103
-INSERT INTO course_requests VALUES ('A0170001A', '2019-08-14 00:00:00', 'AY19/20S1', 'CS2103', 'False', '2019-08-15 00:00:00');
 INSERT INTO course_requests VALUES ('A0170002A', '2019-08-14 00:00:00', 'AY19/20S1', 'CS2103', 'False', '2019-08-15 00:00:00');
 INSERT INTO course_requests VALUES ('A0170003A', '2019-08-14 00:00:00', 'AY19/20S1', 'CS2103', 'False', '2019-08-15 00:00:00');
 INSERT INTO course_requests VALUES ('A0170004A', '2019-08-14 00:00:00', 'AY19/20S1', 'CS2103', 'False', '2019-08-15 00:00:00');
