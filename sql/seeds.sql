@@ -679,6 +679,54 @@ INSERT INTO group_memberships VALUES ('TA', 'AY18/19S1', 'GEQ1000', 'Group 2', '
 INSERT INTO group_memberships VALUES ('TA', 'AY18/19S1', 'GEQ1000', 'Group 3', 'A0180001A');
 INSERT INTO group_memberships VALUES ('TA', 'AY18/19S1', 'GEQ1000', 'Group 3', 'A0180002A');
 
+INSERT INTO group_memberships VALUES ('student', 'AY19/20S1', 'CS2102', 'Group 1', 'A0170001A');
+INSERT INTO group_memberships VALUES ('student', 'AY19/20S1', 'CS2102', 'Group 1', 'A0180001A');
+INSERT INTO group_memberships VALUES ('student', 'AY19/20S1', 'CS2102', 'Group 1', 'A0180002A');
+
+INSERT INTO group_memberships VALUES ('TA', 'AY19/20S1', 'CS2102', 'Group 1', 'A0200001A');
+
+INSERT INTO group_memberships VALUES ('student', 'AY19/20S1', 'CS2103', 'Group 1', 'A0160001A');
+INSERT INTO group_memberships VALUES ('student', 'AY19/20S1', 'CS2103', 'Group 1', 'A0160002A');
+INSERT INTO group_memberships VALUES ('student', 'AY19/20S1', 'CS2103', 'Group 1', 'A0160003A');
+INSERT INTO group_memberships VALUES ('student', 'AY19/20S1', 'CS2103', 'Group 1', 'A0160004A');
+INSERT INTO group_memberships VALUES ('student', 'AY19/20S1', 'CS2103', 'Group 1', 'A0160005A');
+INSERT INTO group_memberships VALUES ('student', 'AY19/20S1', 'CS2103', 'Group 2', 'A0160006A');
+INSERT INTO group_memberships VALUES ('student', 'AY19/20S1', 'CS2103', 'Group 2', 'A0160007A');
+INSERT INTO group_memberships VALUES ('student', 'AY19/20S1', 'CS2103', 'Group 2', 'A0160008A');
+INSERT INTO group_memberships VALUES ('student', 'AY19/20S1', 'CS2103', 'Group 2', 'A0160009A');
+INSERT INTO group_memberships VALUES ('student', 'AY19/20S1', 'CS2103', 'Group 2', 'A0160010A');
+INSERT INTO group_memberships VALUES ('student', 'AY19/20S1', 'CS2103', 'Group 3', 'A0160011A');
+INSERT INTO group_memberships VALUES ('student', 'AY19/20S1', 'CS2103', 'Group 3', 'A0160012A');
+INSERT INTO group_memberships VALUES ('student', 'AY19/20S1', 'CS2103', 'Group 3', 'A0160013A');
+INSERT INTO group_memberships VALUES ('student', 'AY19/20S1', 'CS2103', 'Group 3', 'A0160014A');
+INSERT INTO group_memberships VALUES ('student', 'AY19/20S1', 'CS2103', 'Group 3', 'A0160015A');
+
+INSERT INTO group_memberships VALUES ('TA', 'AY19/20S1', 'CS2103', 'Group 1', 'A0200001A');
+INSERT INTO group_memberships VALUES ('TA', 'AY19/20S1', 'CS2103', 'Group 2', 'A0200002A');
+INSERT INTO group_memberships VALUES ('TA', 'AY19/20S1', 'CS2103', 'Group 3', 'A0200001A');
+INSERT INTO group_memberships VALUES ('TA', 'AY19/20S1', 'CS2103', 'Group 3', 'A0200002A');
+
+INSERT INTO group_memberships VALUES ('student', 'AY19/20S1', 'GEQ1000', 'Group 1', 'A0180001A');
+INSERT INTO group_memberships VALUES ('student', 'AY19/20S1', 'GEQ1000', 'Group 1', 'A0180002A');
+INSERT INTO group_memberships VALUES ('student', 'AY19/20S1', 'GEQ1000', 'Group 1', 'A0180003A');
+INSERT INTO group_memberships VALUES ('student', 'AY19/20S1', 'GEQ1000', 'Group 1', 'A0180004A');
+INSERT INTO group_memberships VALUES ('student', 'AY19/20S1', 'GEQ1000', 'Group 1', 'A0180005A');
+INSERT INTO group_memberships VALUES ('student', 'AY19/20S1', 'GEQ1000', 'Group 2', 'A0180006A');
+INSERT INTO group_memberships VALUES ('student', 'AY19/20S1', 'GEQ1000', 'Group 2', 'A0180007A');
+INSERT INTO group_memberships VALUES ('student', 'AY19/20S1', 'GEQ1000', 'Group 2', 'A0180008A');
+INSERT INTO group_memberships VALUES ('student', 'AY19/20S1', 'GEQ1000', 'Group 2', 'A0180009A');
+INSERT INTO group_memberships VALUES ('student', 'AY19/20S1', 'GEQ1000', 'Group 2', 'A0180010A');
+INSERT INTO group_memberships VALUES ('student', 'AY19/20S1', 'GEQ1000', 'Group 3', 'A0180011A');
+INSERT INTO group_memberships VALUES ('student', 'AY19/20S1', 'GEQ1000', 'Group 3', 'A0180012A');
+INSERT INTO group_memberships VALUES ('student', 'AY19/20S1', 'GEQ1000', 'Group 3', 'A0180013A');
+INSERT INTO group_memberships VALUES ('student', 'AY19/20S1', 'GEQ1000', 'Group 3', 'A0180014A');
+INSERT INTO group_memberships VALUES ('student', 'AY19/20S1', 'GEQ1000', 'Group 3', 'A0180015A');
+
+INSERT INTO group_memberships VALUES ('TA', 'AY19/20S1', 'GEQ1000', 'Group 1', 'A0200001A');
+INSERT INTO group_memberships VALUES ('TA', 'AY19/20S1', 'GEQ1000', 'Group 2', 'A0200002A');
+INSERT INTO group_memberships VALUES ('TA', 'AY19/20S1', 'GEQ1000', 'Group 3', 'A0200001A');
+INSERT INTO group_memberships VALUES ('TA', 'AY19/20S1', 'GEQ1000', 'Group 3', 'A0200002A');
+
 -- TODO: update
 
 /* FORUMS */
@@ -815,9 +863,26 @@ INSERT INTO threads VALUES ('2018-09-15 23:59:59', 'Third thread in this forum!'
 
 INSERT INTO threads VALUES ('2018-08-15 09:00:00', 'Welcome to CS1101S!', 'This is the first thread.', 'S0200019A', 'AY18/19S1', 'CS1101S', 'Lectures');
 
+INSERT INTO threads VALUES ('2019-08-13 15:00:00', 'Welcome to CS2102!', 'This is the first thread.', 'S0200020A', 'AY19/20S1', 'CS2102', 'Lectures');
+INSERT INTO threads VALUES ('2019-08-19 09:00:00', 'First thread in this forum!', 'This is #1 thread.', 'A0170001A', 'AY19/20S1', 'CS2102', 'Lectures');
+INSERT INTO threads VALUES ('2019-09-19 21:00:00', 'Second thread in this forum!', 'This is #2 thread.', 'A0180001A', 'AY19/20S1', 'CS2102', 'Lectures');
+INSERT INTO threads VALUES ('2019-09-26 19:00:00', 'Third thread in this forum!', 'This is #3 thread.', 'A0180002A', 'AY19/20S1', 'CS2102', 'Lectures');
+INSERT INTO threads VALUES ('2019-10-05 06:00:00', 'Fourth thread in this forum!', 'This is #4 thread.', 'A0200001A', 'AY19/20S1', 'CS2102', 'Lectures');
+INSERT INTO threads VALUES ('2019-10-18 07:00:00', 'Fifth thread in this forum!', 'This is #5 thread.', 'A0200002A', 'AY19/20S1', 'CS2102', 'Lectures');
+INSERT INTO threads VALUES ('2019-11-05 08:00:00', 'Sixth thread in this forum!', 'This is #6 thread.', 'S0200018A', 'AY19/20S1', 'CS2102', 'Lectures');
+
 /* REPLIES */
 INSERT INTO replies VALUES ('2018-08-14 19:00:00', 'Here is my first reply.', 'A0160001A', 'AY18/19S1', 'CS2102', 'Lectures', '2018-08-13 15:00:00');
 INSERT INTO replies VALUES ('2018-08-18 19:00:00', 'Here is my first reply.', 'A0160001A', 'AY18/19S1', 'CS2102', 'Lectures', '2018-08-15 10:00:00');
 INSERT INTO replies VALUES ('2018-08-20 19:00:00', 'Here is my second reply.', 'A0160001A', 'AY18/19S1', 'CS2102', 'Lectures', '2018-08-15 10:00:00');
 
 INSERT INTO replies VALUES ('2018-08-17 21:00:00', 'Here is my first reply.', 'A0160002A', 'AY18/19S1', 'CS1101S', 'Lectures', '2018-08-15 09:00:00');
+
+INSERT INTO replies VALUES ('2019-08-14 10:15:00', 'Hello prof.', 'A0170001A', 'AY19/20S1', 'CS2102', 'Lectures', '2019-08-13 15:00:00');
+INSERT INTO replies VALUES ('2019-08-15 10:40:00', '+1', 'A0180001A', 'AY19/20S1', 'CS2102', 'Lectures', '2019-08-13 15:00:00');
+INSERT INTO replies VALUES ('2019-08-17 15:15:00', '+1', 'A0180002A', 'AY19/20S1', 'CS2102', 'Lectures', '2019-08-13 15:00:00');
+
+INSERT INTO replies VALUES ('2019-09-21 23:59:00', 'Here is my second reply.', 'A0170001A', 'AY19/20S1', 'CS2102', 'Lectures', '2019-09-19 21:00:00');
+INSERT INTO replies VALUES ('2019-09-22 10:40:00', 'Here is my first reply.', 'A0200001A', 'AY19/20S1', 'CS2102', 'Lectures', '2019-09-19 21:00:00');
+
+INSERT INTO replies VALUES ('2019-11-11 22:15:00', 'Here is my second reply.', 'A0180002A', 'AY19/20S1', 'CS2102', 'Lectures', '2019-11-05 08:00:00');
