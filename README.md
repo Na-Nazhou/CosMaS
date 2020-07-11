@@ -37,13 +37,14 @@ Note: existing database tables might be dropped.
 
 ### Deployment
 
-DB reseed:
+#### DB reseed:
 ```
 heroku pg:psql
 \i ./sql/setup.sql;
 ```
 
-Deploy to Heroku
+#### Deploy to Heroku: 
+
 First time only:
 ```
 heroku login

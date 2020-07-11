@@ -1,6 +1,9 @@
 {
   "name": "cs2102-project",
   "version": "0.0.1",
+  "engines": {
+    "node": "14.x"
+  },
   "private": true,
   "scripts": {
     "start": "nodemon ./bin/www",
