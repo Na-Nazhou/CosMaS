@@ -2,9 +2,9 @@
 
 ### Pre-requisites
 
-- npm (6.10.2)
-- node (12.9.0)
-- PostgreSQL (11.5)
+- npm (6.14.5)
+- node (14.4.0)
+- PostgreSQL (12.3)
 
 ### Getting started
 
@@ -16,6 +16,8 @@ SECRET=keyboard cat
 ```
 
 2. At the **project root directory**, run `psql postgres` and then run `\i ./sql/setup.sql;` to create the tables, functions, triggers and seed data.
+
+(Note: we assume that admin will create new semesters beforehand, so we need to manually add new semesters to seed if existing data is outdated.)
 
 Note: existing database tables might be dropped.
 
@@ -32,3 +34,21 @@ Note: existing database tables might be dropped.
 ### Contributing
 
 - Remember to run `npm run check` and `npm run fix` (if the previous check fails) before you commit!
+
+### Deployment
+
+DB reseed:
+```
+heroku pg:psql
+\i ./sql/setup.sql;
+```
+
+Deploy to Heroku
+First time only:
+```
+heroku login
+heroku git:remote -a cosmas-cs2102
+```
+```
+git push heroku master
+```
